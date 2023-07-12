@@ -291,7 +291,7 @@ with tabs_manage:
             st.write("Competitor Added")
             st.write(str(comp.get_competitors_names()))
 
-#----Why does this button refesh the whole page? How to avoid this?
+
     
     
     
