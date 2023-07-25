@@ -38,7 +38,7 @@ def calculate_points(competitors, year, grand_prix):
     #calculate points for ccompetitors
     for x in competitors:
        
-        my_guess = str_to_arr(x.get_guess(grand_prix))
+        my_guess = str_to_arr(get_guess_db(x, grand_prix))
        
         if len(my_guess) != 20:
             print("wrong length")
@@ -61,8 +61,8 @@ def calculate_points(competitors, year, grand_prix):
                 my_total = my_total + points
                 print(my_guess[i] + ": " + str(points))
             
-            print("Points for " + x.get_name() + ": " + str(my_total))
-            x.set_points(grand_prix, my_total)
+            print("Points for " + x + ": " + str(my_total))
+            set_points_db(x, grand_prix, my_total)
 
 
 #converts guess string to array
@@ -71,8 +71,8 @@ def str_to_arr(str):
 
 #gets total points for all people in a competition
 def get_leaderboard(comp):
-    for player in comp.get_competitors():
-        points = player.get_total_points()
+    for player in comp.get_competitors_names():
+        points = get_total_points_db(player)
         print("Total points for " + player.get_name() + ": " + str(points))
 
 #checks it is valid to enter a guess and sets guess
@@ -100,7 +100,37 @@ def enter_guess(gp, competitor, guess):
 
 #def get_competetitor_by_name():
     
+def get_total_points_db(name):
+    persondb = comp.get_competitor_by_name(name)
     
+    pointsdb = persondb["points"]
+    
+    tot = 0
+    for i in range(len(pointsdb)):
+        tot += pointsdb[i]
+    return tot
+
+def set_guess_db(name, gp, guess):
+    persondb = comp.get_competitor_by_name(name)
+    guessdb = persondb["guesses"]
+    guessdb[gp-1] = guess
+    db.update({"guesses": guessdb}, name)
+
+def get_guess_db(name, gp):
+    persondb = comp.get_competitor_by_name(name)
+    guessdb = persondb["guesses"]
+    return guessdb[gp-1]
+
+def set_points_db(name, gp, n):
+    persondb = comp.get_competitor_by_name(name)
+    pointsdb = persondb["points"]
+    pointsdb[gp-1] = n
+    db.update({"points" : pointsdb}, name)
+
+def get_points_db(name, gp):
+    persondb = comp.get_competitor_by_name(name)
+    pointsdb = persondb["points"]
+    return pointsdb[gp-1]
 
 
 #------Classes--------
@@ -151,51 +181,66 @@ class Competition:
         #TODO figure out solution for putting list in database
 
     def get_competitors(self):
-        return self.competitors
-        #res = db.fetch()
-        #return res.items
+        #return self.competitors
+        res = db.fetch()
+        items = res.items
+        competitors = [item["key"] for item in items]
+        return competitors
+
     
     def remove_competitor(self, person):
         self.competitors.remove(person)
+        db.delete("person")
 
     def get_competitors_names(self):
-        namelist = []
+        #namelist = []
         
-        for x in self.competitors:
-            namelist.append(x.get_name())
-        return namelist
+        #for x in self.competitors:
+        #    namelist.append(x.get_name())
+        #return namelist
+
+        competitors = self.get_competitors()
+        return competitors
+
+
+        
     
     def get_competitor_by_name(self, name):
-        for x in self.competitors:
-            if name == x.get_name():
-                return x
+        #for x in self.competitors:
+        #    if name == x.get_name():
+        #        return x
+        competitor = db.get(name)
+        return competitor
+
             
 
 
 #-------MAIN---------
-u1 = Competitor('Florence')
-u2 = Competitor('Sofia')
-u3 = Competitor('Luke')
-u4 = Competitor('Abigail')
+
+#u1 = Competitor('Florence')
+#u2 = Competitor('Sofia')
+#u3 = Competitor('Luke')
+#u4 = Competitor('Abigail')
 comp = Competition()
-comp.add_competitor(u1)
-comp.add_competitor(u2)
-comp.add_competitor(u3)
-comp.add_competitor(u4)
+#comp.add_competitor(u1)
+#comp.add_competitor(u2)
+#comp.add_competitor(u3)
+#comp.add_competitor(u4)
+#comp.add_competitor(u5)
 
-flo_guess = "PER, VER, LEC, HAM, SAI, ALO, NOR, RUS, ALB, SAR, OCO, MAG, GAS, STR, HUL, PIA, BOT, ZHO, TSU, DEV"
-sof_guess = "VER, PER, SAI, ALO, NOR, LEC, HAM, ALB, OCO, RUS, HUL, STR, GAS, PIA, MAG, BOT, TSU, SAR, DEV, ZHO"
-luk_guess = "VER, PER, ALO, SAI, HAM, LEC, ALB, RUS, STR, NOR, OCO, SAR, PIA, GAS, HUL, ZHO, BOT, DEV, TSU, MAG"
-abi_guess = "VER, PER, ALO, HAM, SAI, LEC, RUS, STR, OCO, NOR, GAS, HUL, ALB, PIA, BOT, ZHO, TSU, MAG, SAR, DEV"
+#flo_guess = "PER, VER, LEC, HAM, SAI, ALO, NOR, RUS, ALB, SAR, OCO, MAG, GAS, STR, HUL, PIA, BOT, ZHO, TSU, DEV"
+#sof_guess = "VER, PER, SAI, ALO, NOR, LEC, HAM, ALB, OCO, RUS, HUL, STR, GAS, PIA, MAG, BOT, TSU, SAR, DEV, ZHO"
+#luk_guess = "VER, PER, ALO, SAI, HAM, LEC, ALB, RUS, STR, NOR, OCO, SAR, PIA, GAS, HUL, ZHO, BOT, DEV, TSU, MAG"
+#abi_guess = "VER, PER, ALO, HAM, SAI, LEC, RUS, STR, OCO, NOR, GAS, HUL, ALB, PIA, BOT, ZHO, TSU, MAG, SAR, DEV"
 
-u1.set_guess(10, flo_guess)
-u2.set_guess(10, sof_guess)
-u3.set_guess(10, luk_guess)
-u4.set_guess(10, abi_guess)
-#calculate_points(comp.get_competitors(), 2023, 9)
-calculate_points(comp.get_competitors(), 2023, 10)
+#set_guess_db("Florence", 10, flo_guess)
+#set_guess_db("Sofia", 10, sof_guess)
+#set_guess_db("Luke", 10, luk_guess)
+#set_guess_db("Abigail", 10, abi_guess)
+#calculate_points(comp.get_competitors(), 2023, 10)
 
-get_leaderboard(comp)
+#get_leaderboard(comp)
+
 
 
 
@@ -203,17 +248,19 @@ get_leaderboard(comp)
 st.set_page_config(page_title='Formula 1 Race Predictions',page_icon = ':racing_car:', layout = "centered")
 st.title('Formula 1 Race Predictions' + " " + ':racing_car:')
 
-tabs = st.tabs(["Enter Guess", "View Leaderboard", "Manage Game"])
+tabs = st.tabs(["Enter Guess", "View Leaderboard", "Manage Game", "Race Stats"])
 
 tabs_guess = tabs[0]
 
 with tabs_guess:
     userstouse = comp.get_competitors_names()
+    print("users")
+    print(userstouse)
     users = [""]
     for i in userstouse:
         users.append(i)
     gps = ["Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
-    drivers = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'DEV']
+    drivers = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC']
     st.header(f"Enter your guess")
     with st.form("entry_form", clear_on_submit = True):
         user = st.selectbox("Select Person:", users)
@@ -248,10 +295,10 @@ with tabs_guess:
                 if user == ' ' or gp_num == 0:
                     st.write('Select a user and Grand Prix to enter a guess')
                 else:
-                    userComp = comp.get_competitor_by_name(user)
+                    #userComp = comp.get_competitor_by_name(user)
                     guess_concat = p1 + ", " + p2 + ", " + p3 + ", " + p4 + ", " + p5 + ", " + p6 + ", " + p7 + ", " + p8 + ", " + p9 + ", " + p10 + ", " + p11 + ", " + p12 + ", " + p13 + ", " + p14 + ", " + p15 + ", " + p16 + ", " + p17 + ", " + p18 + ", " + p19 + ", " + p20
-                    userComp.set_guess(gp_num, guess_concat)
-                    print(userComp.get_guess(gp_num))
+                    set_guess_db(user, gp_num, guess_concat)
+                    #print(userComp.get_guess(gp_num))
                     st.write("Guess Entered for " + user + " for the " + gp + " Grand Prix")
 
                 
@@ -262,14 +309,15 @@ with tabs_guess:
 tabs_leaderboard = tabs[1]
 
 with tabs_leaderboard:
+    
     fig, ax = plt.subplots()
     
-    for player in comp.get_competitors():
-        points = player.get_total_points()
-        st.write("Total points for " + player.get_name() + ": " + str(points))
+    for player in comp.get_competitors_names():
+        points = get_total_points_db(player)
+        st.write("Total points for " + player + ": " + str(points))
 
         plt.barh(
-            y=player.get_name(),
+            y=player,
             width=points,
             edgecolor="black",
             fill=True
@@ -278,6 +326,7 @@ with tabs_leaderboard:
     plt.ylabel("Competitor")
     plt.grid(False)
     st.pyplot(fig)
+
 
 tabs_manage = tabs[2]
 
@@ -290,6 +339,11 @@ with tabs_manage:
             comp.add_competitor(Competitor(competitor_name))
             st.write("Competitor Added")
             st.write(str(comp.get_competitors_names()))
+
+
+tabs_stats = tabs[3]
+
+#with tabs_stats:
 
 
     
