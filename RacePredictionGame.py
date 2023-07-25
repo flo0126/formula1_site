@@ -247,7 +247,7 @@ comp = Competition()
 st.set_page_config(page_title='Formula 1 Race Predictions',page_icon = ':racing_car:', layout = "centered")
 st.title('Formula 1 Race Predictions' + " " + ':racing_car:')
 
-tabs = st.tabs(["Enter Guess", "View Leaderboard", "Manage Game", "Race Stats"])
+tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Manage Game", "Race Stats"])
 
 tabs_guess = tabs[0]
 
@@ -296,30 +296,9 @@ with tabs_guess:
                     st.write("Guess Entered for " + user + " for the " + gp + " Grand Prix")
 
                 
-                
+tabs_results = tabs[1]
 
-
-tabs_leaderboard = tabs[1]
-
-with tabs_leaderboard:
-    
-    fig, ax = plt.subplots()
-    
-    for player in comp.get_competitors_names():
-        points = get_total_points_db(player)
-        st.write("Total points for " + player + ": " + str(points))
-
-        plt.barh(
-            y=player,
-            width=points,
-            edgecolor="black",
-            fill=True
-        )
-    plt.xlabel("Points")
-    plt.ylabel("Competitor")
-    plt.grid(False)
-    st.pyplot(fig)
-
+with tabs_results:
     st.header(f"View your Guess and Race Points")
     with st.form("view_form", clear_on_submit = False):
         userstouse = comp.get_competitors_names()
@@ -342,17 +321,79 @@ with tabs_leaderboard:
                 else:
                     st.write('**Points: ' + str(get_points_db(userSelect, gp_num)) + '**')
                     st.write('**Guess:**')
+                    col1, col2 = st.columns(2)
                     gs = get_guess_db(userSelect, gp_num)
                     gs = str_to_arr(gs)
+                    gs1 = gs[:10]
+                    gs2 = gs[-10:]
                     tick = 1
-                    for i in gs:
-                        st.write(str(tick) + ': ' + str(i))
-                        tick = tick + 1
+                    with col1:
+                        for i in gs1:
+                            st.write(str(tick) + ': ' + str(i))
+                            tick = tick + 1
+                    tick = 11
+                    with col2:
+                        for i in gs2:
+                            st.write(str(tick) + ': ' + str(i))
+                            tick = tick + 1
+
+
+tabs_leaderboard = tabs[2]
+
+with tabs_leaderboard:
+    st.header(f"Leaderboard")
+    fig, ax = plt.subplots()
+    
+    for player in comp.get_competitors_names():
+        points = get_total_points_db(player)
+        st.write("Total points for " + player + ": " + str(points))
+
+        plt.barh(
+            y=player,
+            width=points,
+            edgecolor="black",
+            fill=True
+        )
+    plt.xlabel("Points")
+    plt.ylabel("Competitor")
+    plt.grid(False)
+    st.pyplot(fig)
+
+    st.header(f"Leaderboard per Race")
+    with st.form("res_form", clear_on_submit = False):
+        gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
+        gp = st.selectbox("Select a Grand Prix:", gps)
+        submitted = st.form_submit_button("Enter")
+        if submitted:
+                gp_num = 0
+                for x in range(len(gps)):
+                    if gp == gps[x]:
+                        gp_num = x + (23-len(gps))
+                if gp_num == 0:
+                    st.write('Select a Grand Prix')
+                else:
+                    fig, ax = plt.subplots()
+        
+                    for player in comp.get_competitors_names():
+                        points = get_points_db(player, gp_num)
+                        st.write("Points for " + player + ": " + str(points))
+
+                        plt.barh(
+                            y=player,
+                            width=points,
+                            edgecolor="black",
+                            fill=True
+                        )
+                    plt.xlabel("Points")
+                    plt.ylabel("Competitor")
+                    plt.grid(False)
+                    plt.suptitle(gp + ' Grand Prix Prediction Results')
+                    st.pyplot(fig)
                     
 
 
 
-tabs_manage = tabs[2]
+tabs_manage = tabs[3]
 
 with tabs_manage:
     competitor_name = st.text_input('Enter Competitor Name', '')
@@ -365,10 +406,10 @@ with tabs_manage:
             #st.write(str(comp.get_competitors_names()))
 
 
-tabs_stats = tabs[3]
+tabs_stats = tabs[4]
 
-#with tabs_stats:
-
+with tabs_stats:
+    st.write("coming soon!")
 
     
     
