@@ -262,26 +262,29 @@ with tabs_guess:
     with st.form("entry_form", clear_on_submit = True):
         user = st.selectbox("Select Person:", users)
         gp = st.selectbox("Select a Grand Prix:", gps)
-        p1 = st.selectbox("p1:", drivers)
-        p2 = st.selectbox("p2:", drivers)
-        p3 = st.selectbox("p3:", drivers)
-        p4 = st.selectbox("p4:", drivers)
-        p5 = st.selectbox("p5:", drivers)
-        p6 = st.selectbox("p6:", drivers)
-        p7 = st.selectbox("p7:", drivers)
-        p8 = st.selectbox("p8:", drivers)
-        p9 = st.selectbox("p9:", drivers)
-        p10 = st.selectbox("p10:", drivers)
-        p11 = st.selectbox("p11:", drivers)
-        p12 = st.selectbox("p12:", drivers)
-        p13 = st.selectbox("p13:", drivers)
-        p14 = st.selectbox("p14:", drivers)
-        p15 = st.selectbox("p15:", drivers)
-        p16 = st.selectbox("p16:", drivers)
-        p17 = st.selectbox("p17:", drivers)
-        p18 = st.selectbox("p18:", drivers)
-        p19 = st.selectbox("p19:", drivers)
-        p20 = st.selectbox("p20:", drivers)
+        col1, col2 = st.columns(2)
+        with col1:
+            p1 = st.selectbox("p1:", drivers)
+            p2 = st.selectbox("p2:", drivers)
+            p3 = st.selectbox("p3:", drivers)
+            p4 = st.selectbox("p4:", drivers)
+            p5 = st.selectbox("p5:", drivers)
+            p6 = st.selectbox("p6:", drivers)
+            p7 = st.selectbox("p7:", drivers)
+            p8 = st.selectbox("p8:", drivers)
+            p9 = st.selectbox("p9:", drivers)
+            p10 = st.selectbox("p10:", drivers)
+        with col2:
+            p11 = st.selectbox("p11:", drivers)
+            p12 = st.selectbox("p12:", drivers)
+            p13 = st.selectbox("p13:", drivers)
+            p14 = st.selectbox("p14:", drivers)
+            p15 = st.selectbox("p15:", drivers)
+            p16 = st.selectbox("p16:", drivers)
+            p17 = st.selectbox("p17:", drivers)
+            p18 = st.selectbox("p18:", drivers)
+            p19 = st.selectbox("p19:", drivers)
+            p20 = st.selectbox("p20:", drivers)
         submitted = st.form_submit_button("Enter")
         if submitted:
                 gp_num = 0
@@ -337,6 +340,8 @@ with tabs_results:
                             st.write(str(tick) + ': ' + str(i))
                             tick = tick + 1
 
+    st.header(f"Race Trends")
+    
 
 tabs_leaderboard = tabs[2]
 
@@ -357,6 +362,7 @@ with tabs_leaderboard:
     plt.xlabel("Points")
     plt.ylabel("Competitor")
     plt.grid(False)
+    plt.suptitle("Total Points")
     st.pyplot(fig)
 
     st.header(f"Leaderboard per Race")
