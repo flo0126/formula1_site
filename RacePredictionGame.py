@@ -133,6 +133,7 @@ def get_points_db(name, gp):
     return pointsdb[gp-1]
 
 
+
 #------Classes--------
 
 #competitor class for each user
@@ -217,27 +218,25 @@ class Competition:
 
 #-------MAIN---------
 
-#u1 = Competitor('Florence')
-#u2 = Competitor('Sofia')
-#u3 = Competitor('Luke')
-#u4 = Competitor('Abigail')
+
 comp = Competition()
-#comp.add_competitor(u1)
-#comp.add_competitor(u2)
-#comp.add_competitor(u3)
-#comp.add_competitor(u4)
-#comp.add_competitor(u5)
+
 
 #flo_guess = "PER, VER, LEC, HAM, SAI, ALO, NOR, RUS, ALB, SAR, OCO, MAG, GAS, STR, HUL, PIA, BOT, ZHO, TSU, DEV"
 #sof_guess = "VER, PER, SAI, ALO, NOR, LEC, HAM, ALB, OCO, RUS, HUL, STR, GAS, PIA, MAG, BOT, TSU, SAR, DEV, ZHO"
 #luk_guess = "VER, PER, ALO, SAI, HAM, LEC, ALB, RUS, STR, NOR, OCO, SAR, PIA, GAS, HUL, ZHO, BOT, DEV, TSU, MAG"
 #abi_guess = "VER, PER, ALO, HAM, SAI, LEC, RUS, STR, OCO, NOR, GAS, HUL, ALB, PIA, BOT, ZHO, TSU, MAG, SAR, DEV"
 
-#set_guess_db("Florence", 10, flo_guess)
-#set_guess_db("Sofia", 10, sof_guess)
-#set_guess_db("Luke", 10, luk_guess)
-#set_guess_db("Abigail", 10, abi_guess)
-#calculate_points(comp.get_competitors(), 2023, 10)
+#flo_guess2 = "VER, PER, ALO, LEC, HAM, SAI, RUS, OCO, NOR, STR, GAS, ALB, BOT, PIA, SAR, HUL, RIC, TSU, ZHO, MAG"
+#sof_guess2 = "VER, NOR, PER, ALO, LEC, RUS, HAM, SAI, HUL, STR, BOT, PIA, OCO, TSU, ALB, GAS, MAG, ZHO, RIC, SAR"
+#luk_guess2 = "VER, ALO, PER, HAM, RUS, NOR, SAI, LEC, STR, ALB, PIA, SAR, OCO, RIC, GAS, HUL, BOT, TSU, ZHO, MAG"
+#abi_guess2 = "ALO, PER, NOR, PIA, RUS, SAI, HAM, LEC, RIC, STR, MAG, OCO, ALB, BOT, GAS, ZHO, HUL, SAR, TSU, VER"
+
+#set_guess_db("Florence", 11, flo_guess2)
+#set_guess_db("Sofia", 11, sof_guess2)
+#set_guess_db("Luke", 11, luk_guess2)
+#set_guess_db("Abigail", 11, abi_guess2)
+#calculate_points(comp.get_competitors_names(), 2023, 11)
 
 #get_leaderboard(comp)
 
@@ -254,12 +253,10 @@ tabs_guess = tabs[0]
 
 with tabs_guess:
     userstouse = comp.get_competitors_names()
-    print("users")
-    print(userstouse)
     users = [""]
     for i in userstouse:
         users.append(i)
-    gps = ["Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
+    gps = ["Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
     drivers = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC']
     st.header(f"Enter your guess")
     with st.form("entry_form", clear_on_submit = True):
@@ -291,19 +288,15 @@ with tabs_guess:
                 for x in range(len(gps)):
                     if gp == gps[x]:
                         gp_num = x + (23-len(gps))
-                        print(gp_num)
-                if user == ' ' or gp_num == 0:
+                if user == '' or gp_num == 0:
                     st.write('Select a user and Grand Prix to enter a guess')
                 else:
-                    #userComp = comp.get_competitor_by_name(user)
                     guess_concat = p1 + ", " + p2 + ", " + p3 + ", " + p4 + ", " + p5 + ", " + p6 + ", " + p7 + ", " + p8 + ", " + p9 + ", " + p10 + ", " + p11 + ", " + p12 + ", " + p13 + ", " + p14 + ", " + p15 + ", " + p16 + ", " + p17 + ", " + p18 + ", " + p19 + ", " + p20
                     set_guess_db(user, gp_num, guess_concat)
-                    #print(userComp.get_guess(gp_num))
                     st.write("Guess Entered for " + user + " for the " + gp + " Grand Prix")
 
                 
-                ##
-                #calculate_points(comp.get_competitors(), 2023, 9)
+                
 
 
 tabs_leaderboard = tabs[1]
@@ -337,8 +330,8 @@ with tabs_manage:
             st.write("Sorry, this name is taken")
         else:
             comp.add_competitor(Competitor(competitor_name))
-            st.write("Competitor Added")
-            st.write(str(comp.get_competitors_names()))
+            st.write("Competitor Added, Refresh Page to See Competitor")
+            #st.write(str(comp.get_competitors_names()))
 
 
 tabs_stats = tabs[3]
