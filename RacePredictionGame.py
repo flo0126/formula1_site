@@ -341,7 +341,7 @@ with tabs_results:
                             tick = tick + 1
 
     st.header(f"Race Trends")
-    
+    st.write("coming soon!")
 
 tabs_leaderboard = tabs[2]
 
