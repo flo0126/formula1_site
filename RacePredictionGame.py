@@ -25,7 +25,7 @@ DETA_KEY = "b0c6conepbn_sCXCz4BFP3tTzQbqRvoWT55PjD33V8hJ"
 deta = Deta(DETA_KEY)
 db = deta.Base("competitors_db")
 
-
+DRIVER_ORDER = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC', 'DEV']
 
 
 #-----METHODS----------
@@ -49,6 +49,7 @@ def calculate_points(competitors, year, grand_prix):
             print("wrong length")
         else:
             my_total = 0
+            coll_points = np.zeros(21, dtype = int)
             print('Points for the ' + str(year) + ' ' + session.event.EventName + ' ')
             for i in range(20):
                 curr_row = results.loc[results["Abbreviation"] == my_guess[i]]
@@ -65,13 +66,19 @@ def calculate_points(competitors, year, grand_prix):
                     points = 3
                 my_total = my_total + points
                 print(my_guess[i] + ": " + str(points))
+                for y in range(21):
+                    if my_guess[i] == DRIVER_ORDER[y]:
+                        coll_points[y] = int(points)
             
             print("Points for " + x + ": " + str(my_total))
             set_points_db(x, grand_prix, my_total)
+            set_coll_points_db(x, grand_prix, points_driver_to_string(coll_points))
 
 
 #converts guess string to array
 def str_to_arr(str):
+    if str == None:
+        return []
     return str.split(', ')
 
 #gets total points for all people in a competition
@@ -99,7 +106,8 @@ def enter_guess(gp, competitor, guess):
     else:
         print('Cannot enter a prediction after qualifying occurs')
 
-
+def points_driver_to_string(arr):
+    return ', '.join(str(v) for v in arr)
 
 #------DATABASE-METHODS------
 
@@ -138,6 +146,17 @@ def get_points_db(name, gp):
     persondb = comp.get_competitor_by_name(name)
     pointsdb = persondb["points"]
     return pointsdb[gp-1]
+
+def set_coll_points_db(name, gp, arr):
+    persondb = comp.get_competitor_by_name(name)
+    arrdb = persondb["pointsdriver"]
+    arrdb[gp-1] = arr
+    db.update({"pointsdriver": arrdb}, name)
+
+def get_coll_points_db(name, gp):
+    persondb = comp.get_competitor_by_name(name)
+    arrdb = persondb["pointsdriver"]
+    return arrdb[gp-1]
 
 
 
