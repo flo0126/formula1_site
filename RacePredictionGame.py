@@ -244,6 +244,8 @@ comp = Competition()
 #set_guess_db("Sofia", 11, sof_guess2)
 #set_guess_db("Luke", 11, luk_guess2)
 #set_guess_db("Abigail", 11, abi_guess2)
+
+
 #calculate_points(comp.get_competitors_names(), 2023, 11)
 
 #get_leaderboard(comp)
