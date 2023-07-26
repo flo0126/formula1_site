@@ -1,3 +1,5 @@
+#------SETUP---------------------------------
+
 import fastf1 as ff1
 from fastf1 import plotting
 from fastf1 import utils
@@ -22,6 +24,9 @@ ff1.Cache.enable_cache('cache')
 DETA_KEY = "b0c6conepbn_sCXCz4BFP3tTzQbqRvoWT55PjD33V8hJ"
 deta = Deta(DETA_KEY)
 db = deta.Base("competitors_db")
+
+
+
 
 #-----METHODS----------
 
@@ -98,8 +103,8 @@ def enter_guess(gp, competitor, guess):
 
 #------DATABASE-METHODS------
 
-#def get_competetitor_by_name():
-    
+
+#points for all races for 1 person  
 def get_total_points_db(name):
     persondb = comp.get_competitor_by_name(name)
     
@@ -121,12 +126,14 @@ def get_guess_db(name, gp):
     guessdb = persondb["guesses"]
     return guessdb[gp-1]
 
+#points for 1 race for 1 person
 def set_points_db(name, gp, n):
     persondb = comp.get_competitor_by_name(name)
     pointsdb = persondb["points"]
     pointsdb[gp-1] = n
     db.update({"points" : pointsdb}, name)
 
+#points for 1 race for 1 person
 def get_points_db(name, gp):
     persondb = comp.get_competitor_by_name(name)
     pointsdb = persondb["points"]
@@ -137,6 +144,7 @@ def get_points_db(name, gp):
 #------Classes--------
 
 #competitor class for each user
+#maybe get rid of this???
 class Competitor:
     def __init__(self, name):
         self.name = name
@@ -243,14 +251,22 @@ comp = Competition()
 
 
 
-#------ Frontend with streamlit
+#------ Frontend with streamlit ----------------------------
+
+#Set up page and title
 st.set_page_config(page_title='Formula 1 Race Predictions',page_icon = ':racing_car:', layout = "centered")
 st.title('Formula 1 Race Predictions' + " " + ':racing_car:')
 
+# Set Tabs
 tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Manage Game", "Race Stats"])
+
+
+
+
 
 tabs_guess = tabs[0]
 
+#---------Enter Guess Tab-------------------------------------
 with tabs_guess:
     userstouse = comp.get_competitors_names()
     users = [""]
@@ -298,9 +314,12 @@ with tabs_guess:
                     set_guess_db(user, gp_num, guess_concat)
                     st.write("Guess Entered for " + user + " for the " + gp + " Grand Prix")
 
-                
+
+
+
 tabs_results = tabs[1]
 
+#--------------- Your Results Tab--------------------
 with tabs_results:
     st.header(f"View your Guess and Race Points")
     with st.form("view_form", clear_on_submit = False):
@@ -343,8 +362,12 @@ with tabs_results:
     st.header(f"Race Trends")
     st.write("coming soon!")
 
+
+
+
 tabs_leaderboard = tabs[2]
 
+#------------ Leaderboard Tab ---------------------------------
 with tabs_leaderboard:
     st.header(f"Leaderboard")
     fig, ax = plt.subplots()
@@ -401,6 +424,7 @@ with tabs_leaderboard:
 
 tabs_manage = tabs[3]
 
+#------------Manage Game Tab-----------------------------------
 with tabs_manage:
     competitor_name = st.text_input('Enter Competitor Name', '')
     if st.button("Add Competitor"): 
@@ -412,8 +436,11 @@ with tabs_manage:
             #st.write(str(comp.get_competitors_names()))
 
 
+
+
 tabs_stats = tabs[4]
 
+#------------- Race Stats Tab -----------------------------------
 with tabs_stats:
     st.write("coming soon!")
 
