@@ -186,7 +186,7 @@ class Competition:
 
     def add_competitor(self, person):
         self.competitors.append(person)
-        return db.put({"key": person.get_name(), "points": np.array(person.get_points()).tolist(), "guesses": np.array(person.get_guesses()).tolist()})
+        return db.put({"key": person.get_name(), "points": np.array(person.get_points()).tolist(), "guesses": np.array(person.get_guesses()).tolist(), "pointsdriver": ["" for x in range(23)]})
         #TODO figure out solution for putting list in database
 
     def get_competitors(self):
@@ -228,6 +228,7 @@ class Competition:
 
 
 comp = Competition()
+
 
 
 #flo_guess = "PER, VER, LEC, HAM, SAI, ALO, NOR, RUS, ALB, SAR, OCO, MAG, GAS, STR, HUL, PIA, BOT, ZHO, TSU, DEV"
