@@ -343,7 +343,7 @@ tabs_results = tabs[1]
 
 #--------------- Your Results Tab--------------------
 with tabs_results:
-    st.header(f"View your Guess and Race Points")
+    st.header(f"View your Guess")
     with st.form("view_form", clear_on_submit = False):
         userstouse = comp.get_competitors_names()
         users = [""]
@@ -363,7 +363,7 @@ with tabs_results:
                 elif get_guess_db(userSelect, gp_num) == None:
                     st.write('No guess has been entered for this Grand Prix')
                 else:
-                    st.write('**Points: ' + str(get_points_db(userSelect, gp_num)) + '**')
+                    #st.write('**Points: ' + str(get_points_db(userSelect, gp_num)) + '**')
                     st.write('**Guess:**')
                     col1, col2 = st.columns(2)
                     gs = get_guess_db(userSelect, gp_num)
@@ -381,6 +381,45 @@ with tabs_results:
                             st.write(str(tick) + ': ' + str(i))
                             tick = tick + 1
 
+    st.header(f"View your Race Points")
+    with st.form("view2_form", clear_on_submit = False):
+        userstouse = comp.get_competitors_names()
+        users = [""]
+        for i in userstouse:
+            users.append(i)
+        gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
+        userSelect = st.selectbox("Select Person:", users)
+        gpSelect = st.selectbox("Select a Grand Prix:", gps)
+        submitted2 = st.form_submit_button("Enter")
+        if submitted2:
+                gp_num = 0
+                for x in range(len(gps)):
+                    if gpSelect == gps[x]:
+                        gp_num = x + (23-len(gps))
+                if userSelect == '' or gp_num == 0:
+                    st.write('Select a user and Grand Prix to view a guess')
+                elif get_guess_db(userSelect, gp_num) == None or get_guess_db(userSelect, gp_num) == "":
+                    st.write('No guess has been entered for this Grand Prix')
+                elif get_points_db(userSelect, gp_num) == 0:
+                    st.write('Sorry, points have not been calculated yet')
+                else:
+                    st.write('**Points: ' + str(get_points_db(userSelect, gp_num)) + '**')
+                    st.write('**Points by Driver:**')
+                    col1, col2 = st.columns(2)
+                    gs = get_coll_points_db(userSelect, gp_num)
+                    gs = str_to_arr(gs)
+                    gs1 = gs[:10]
+                    gs2 = gs[-10:]
+                    tick = 0
+                    with col1:
+                        for i in gs1:
+                            st.write(DRIVER_ORDER[tick] + ': ' + str(i))
+                            tick = tick + 1
+                    tick = 10
+                    with col2:
+                        for i in gs2:
+                            st.write(DRIVER_ORDER[tick] + ': ' + str(i))
+                            tick = tick + 1
     st.header(f"Race Trends")
     st.write("coming soon!")
 
