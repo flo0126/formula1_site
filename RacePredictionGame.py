@@ -26,7 +26,7 @@ deta = Deta(DETA_KEY)
 db = deta.Base("competitors_db")
 
 DRIVER_ORDER = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC', 'DEV']
-
+TEAM_ORDER = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "McLaren", "McLaren", "Haas", "Haas", "Williams", "Williams", "Alfa Romeo", "Alfa Romeo", "Alpha Tauri", "Alpha Tauri","Alpha Tauri"]
 
 #-----METHODS----------
 
@@ -369,7 +369,7 @@ with tabs_results:
                     gs = get_guess_db(userSelect, gp_num)
                     gs = str_to_arr(gs)
                     gs1 = gs[:10]
-                    gs2 = gs[-11:]
+                    gs2 = gs[-10:]
                     tick = 1
                     with col1:
                         for i in gs1:
@@ -420,6 +420,9 @@ with tabs_results:
                         for i in gs2:
                             st.write(DRIVER_ORDER[tick] + ': ' + str(i))
                             tick = tick + 1
+
+
+                    
     st.header(f"Race Trends")
     st.write("coming soon!")
 
