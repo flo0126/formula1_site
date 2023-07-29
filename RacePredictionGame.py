@@ -369,7 +369,7 @@ with tabs_results:
                     gs = get_guess_db(userSelect, gp_num)
                     gs = str_to_arr(gs)
                     gs1 = gs[:10]
-                    gs2 = gs[-10:]
+                    gs2 = gs[-11:]
                     tick = 1
                     with col1:
                         for i in gs1:
@@ -409,7 +409,7 @@ with tabs_results:
                     gs = get_coll_points_db(userSelect, gp_num)
                     gs = str_to_arr(gs)
                     gs1 = gs[:10]
-                    gs2 = gs[-10:]
+                    gs2 = gs[-11:]
                     tick = 0
                     with col1:
                         for i in gs1:
