@@ -408,19 +408,29 @@ with tabs_results:
                     col1, col2 = st.columns(2)
                     gs = get_coll_points_db(userSelect, gp_num)
                     gs = str_to_arr(gs)
-                    gs1 = gs[:10]
-                    gs2 = gs[-11:]
-                    tick = 0
-                    with col1:
-                        for i in gs1:
-                            st.write(DRIVER_ORDER[tick] + ': ' + str(i))
-                            tick = tick + 1
-                    tick = 10
-                    with col2:
-                        for i in gs2:
-                            st.write(DRIVER_ORDER[tick] + ': ' + str(i))
-                            tick = tick + 1
-
+                    #gs1 = gs[:10]
+                    #gs2 = gs[-11:]
+                    #tick = 0
+                    #with col1:
+                    #    for i in gs1:
+                    #        st.write(DRIVER_ORDER[tick] + ': ' + str(i))
+                    #        tick = tick + 1
+                    #tick = 10
+                    #with col2:
+                    #    for i in gs2:
+                    #        st.write(DRIVER_ORDER[tick] + ': ' + str(i))
+                    #        tick = tick + 1
+                    data = np.array([TEAM_ORDER, DRIVER_ORDER, gs])
+                    data = data.transpose()
+                    df = pd.DataFrame(
+                        data,
+                        columns=['Team', 'Driver', 'Points']
+                    )
+                    st.dataframe(
+                        df,
+                        hide_index=True,
+                        height = 775
+                    )
 
                     
     st.header(f"Race Trends")
