@@ -9,6 +9,7 @@ import streamlit as st
 from matplotlib import pyplot as plt
 from matplotlib.pyplot import figure
 
+
 from datetime import datetime
 
 import numpy as np
@@ -85,7 +86,7 @@ def str_to_arr(str):
 def get_leaderboard(comp):
     for player in comp.get_competitors_names():
         points = get_total_points_db(player)
-        print("Total points for " + player.get_name() + ": " + str(points))
+        print("Total points for " + player + ": " + str(points))
 
 #checks it is valid to enter a guess and sets guess
 def enter_guess(gp, competitor, guess):
@@ -266,8 +267,7 @@ comp = Competition()
 #set_guess_db("Abigail", 11, abi_guess2)
 
 
-#calculate_points(comp.get_competitors_names(), 2023, 11)
-
+#calculate_points(comp.get_competitors_names(), 2023, 12)
 #get_leaderboard(comp)
 
 
@@ -405,7 +405,7 @@ with tabs_results:
                 else:
                     st.write('**Points: ' + str(get_points_db(userSelect, gp_num)) + '**')
                     st.write('**Points by Driver:**')
-                    col1, col2 = st.columns(2)
+                    #col1, col2 = st.columns(2)
                     gs = get_coll_points_db(userSelect, gp_num)
                     gs = str_to_arr(gs)
                     #gs1 = gs[:10]
@@ -434,7 +434,58 @@ with tabs_results:
 
                     
     st.header(f"Race Trends")
-    st.write("coming soon!")
+    #st.write("coming soon!")
+    with st.form("view3_form", clear_on_submit = False):
+        userstouse = comp.get_competitors_names()
+        users = [""]
+        for i in userstouse:
+            users.append(i)
+        userSelect = st.selectbox("Select Person:", users)
+        gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
+        submitted3 = st.form_submit_button("Enter")
+        if submitted3:
+            st.write("Loading")
+            if userSelect == '':
+                    st.write('Select a user to view a guess')
+            else:
+                data = np.array([TEAM_ORDER, DRIVER_ORDER])
+                data = data.transpose()
+                df = pd.DataFrame(
+                    data,
+                    columns=['Team', 'Driver']
+                )
+                arr = []
+                xarr = [1,2,3,4,5,6,7,8,9,10,11,12,13]
+                for i in range(10,23):
+                    if get_points_db(userSelect, i) != 0:
+                        ppd = get_coll_points_db(userSelect, i)
+                        ppd = str_to_arr(ppd)
+                        ppd = list(map(int,ppd))
+                        arr.append(ppd)
+                        
+                
+                if len(arr) > 1:
+                    arr = [list(i) for i in zip(*arr)]
+                    arr = np.array(arr)
+                    for a in range(len(arr)):
+                        arr[a] = arr[a].cumsum()
+                    #st.dataframe(df, hide_index = True)
+                    #TODO: not dataframe, this should be a graph of some sort
+                    fig, ax = plt.subplots()
+                    for ind in range(len(arr)):
+                        driv = df['Driver'][ind]
+                        color =  ""
+                        if driv == 'RIC':
+                            color =  ff1.plotting.driver_color('DEV')
+                        else:
+                            color = ff1.plotting.driver_color(driv)
+                        ax.plot(gps[:len(arr[ind])], arr[ind], label = driv, color = color,)
+                    ax.legend(bbox_to_anchor=(1.0, 1.02))
+                    plt.suptitle("Points for each driver")
+                    
+                    st.pyplot(fig)
+                else:
+                    st.write("Sorry, not enough data yet!")
 
 
 
