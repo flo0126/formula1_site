@@ -582,6 +582,8 @@ with tabs_analysis:
     st.image(image)
     image2 = Image.open('photos/tirestratbelgium.png')
     st.image(image2, caption = 'Tire Strategy')
+    image3 = Image.open('photos/PositionChanges2023Spa.png')
+    st.image(image3, caption = 'Position Changes')
     
 
 
