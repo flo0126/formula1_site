@@ -17,6 +17,8 @@ import pandas as pd
 
 from deta import Deta
 
+from PIL import Image
+
 # Enable the cache by providing the name of the cache folder
 #ff1.Cache.clear_cache('cache')
 ff1.Cache.enable_cache('cache') 
@@ -280,7 +282,7 @@ st.set_page_config(page_title='Formula 1 Race Predictions',page_icon = ':racing_
 st.title('Formula 1 Race Predictions' + " " + ':racing_car:')
 
 # Set Tabs
-tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Manage Game", "Race Stats"])
+tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Manage Game", "Race Stats", "Race Analysis"])
 
 
 
@@ -570,7 +572,16 @@ with tabs_stats:
     st.write("coming soon!")
 
     
-    
+
+tabs_analysis = tabs[5]
+
+#------------ Race Analysis Tab ---------------------------------
+with tabs_analysis:
+    st.header("Spa (Belgium) Grand Prix")
+    image = Image.open('photos/fueladjustracepagebelgium.png')
+    st.image(image)
+    image2 = Image.open('photos/tirestratbelgium.png')
+    st.image(image2, caption = 'Tire Strategy')
     
 
 
