@@ -577,13 +577,14 @@ tabs_analysis = tabs[5]
 
 #------------ Race Analysis Tab ---------------------------------
 with tabs_analysis:
-    st.header("Spa (Belgium) Grand Prix")
-    image = Image.open('photos/fueladjustracepagebelgium.png')
-    st.image(image)
-    image2 = Image.open('photos/tirestratbelgium.png')
-    st.image(image2, caption = 'Tire Strategy')
-    image3 = Image.open('photos/PositionChanges2023Spa.png')
-    st.image(image3, caption = 'Position Changes')
+    with st.expander("Spa Grand Prix Analysis"):
+        image = Image.open('photos/fueladjustracepagebelgium.png')
+        st.image(image)
+        image2 = Image.open('photos/tirestratbelgium.png')
+        st.image(image2, caption = 'Tire Strategy')
+        image3 = Image.open('photos/PositionChanges2023Spa.png')
+        st.image(image3, caption = 'Position Changes')
+
     
 
 
