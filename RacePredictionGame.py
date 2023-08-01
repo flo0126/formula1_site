@@ -5,6 +5,7 @@ from fastf1 import plotting
 from fastf1 import utils
 
 import streamlit as st
+from streamlit_sortables import sort_items
 
 
 from matplotlib import pyplot as plt
@@ -303,31 +304,31 @@ with tabs_guess:
     with st.form("entry_form", clear_on_submit = True):
         user = st.selectbox("Select Person:", users)
         gp = st.selectbox("Select a Grand Prix:", gps)
-        col1, col2 = st.columns(2)
-        with col1:
-            p1 = st.selectbox("p1:", drivers)
-            p2 = st.selectbox("p2:", drivers)
-            p3 = st.selectbox("p3:", drivers)
-            p4 = st.selectbox("p4:", drivers)
-            p5 = st.selectbox("p5:", drivers)
-            p6 = st.selectbox("p6:", drivers)
-            p7 = st.selectbox("p7:", drivers)
-            p8 = st.selectbox("p8:", drivers)
-            p9 = st.selectbox("p9:", drivers)
-            p10 = st.selectbox("p10:", drivers)
-        with col2:
-            p11 = st.selectbox("p11:", drivers)
-            p12 = st.selectbox("p12:", drivers)
-            p13 = st.selectbox("p13:", drivers)
-            p14 = st.selectbox("p14:", drivers)
-            p15 = st.selectbox("p15:", drivers)
-            p16 = st.selectbox("p16:", drivers)
-            p17 = st.selectbox("p17:", drivers)
-            p18 = st.selectbox("p18:", drivers)
-            p19 = st.selectbox("p19:", drivers)
-            p20 = st.selectbox("p20:", drivers)
-        #st.write("Drag and dop to reorder the drivers below (If no drivers are shown, please refresh page):")
-        #sorted_items = sort_items(drivers)
+        #col1, col2 = st.columns(2)
+        #with col1:
+        #    p1 = st.selectbox("p1:", drivers)
+        #    p2 = st.selectbox("p2:", drivers)
+        #    p3 = st.selectbox("p3:", drivers)
+        #    p4 = st.selectbox("p4:", drivers)
+        #    p5 = st.selectbox("p5:", drivers)
+        #    p6 = st.selectbox("p6:", drivers)
+        #    p7 = st.selectbox("p7:", drivers)
+        #    p8 = st.selectbox("p8:", drivers)
+        #    p9 = st.selectbox("p9:", drivers)
+        #    p10 = st.selectbox("p10:", drivers)
+        #with col2:
+        #    p11 = st.selectbox("p11:", drivers)
+        #    p12 = st.selectbox("p12:", drivers)
+        #    p13 = st.selectbox("p13:", drivers)
+        #    p14 = st.selectbox("p14:", drivers)
+        #    p15 = st.selectbox("p15:", drivers)
+        #    p16 = st.selectbox("p16:", drivers)
+        #    p17 = st.selectbox("p17:", drivers)
+        #    p18 = st.selectbox("p18:", drivers)
+        #    p19 = st.selectbox("p19:", drivers)
+        #    p20 = st.selectbox("p20:", drivers)
+        st.write("Drag and dop to reorder the drivers below (If no drivers are shown, please refresh page):")
+        sorted_items = sort_items(drivers)
         submitted = st.form_submit_button("Enter")
         if submitted:
                 gp_num = 0
@@ -337,11 +338,11 @@ with tabs_guess:
                 if user == '' or gp_num == 0:
                     st.write('Select a user and Grand Prix to enter a guess')
                 else:
-                    #guessList = []
-                    #for v in range(20):
-                    #    guessList.append(sorted_items[v])
-                    guess_concat = p1 + ", " + p2 + ", " + p3 + ", " + p4 + ", " + p5 + ", " + p6 + ", " + p7 + ", " + p8 + ", " + p9 + ", " + p10 + ", " + p11 + ", " + p12 + ", " + p13 + ", " + p14 + ", " + p15 + ", " + p16 + ", " + p17 + ", " + p18 + ", " + p19 + ", " + p20
-                    #guess_concat = ', '.join(guessList)
+                    guessList = []
+                    for v in range(20):
+                        guessList.append(sorted_items[v])
+                    #guess_concat = p1 + ", " + p2 + ", " + p3 + ", " + p4 + ", " + p5 + ", " + p6 + ", " + p7 + ", " + p8 + ", " + p9 + ", " + p10 + ", " + p11 + ", " + p12 + ", " + p13 + ", " + p14 + ", " + p15 + ", " + p16 + ", " + p17 + ", " + p18 + ", " + p19 + ", " + p20
+                    guess_concat = ', '.join(guessList)
                     #print(guess_concat)
                     set_guess_db(user, gp_num, guess_concat)
                     st.write("Guess Entered for " + user + " for the " + gp + " Grand Prix")
