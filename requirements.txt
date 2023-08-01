@@ -5,4 +5,4 @@ numpy
 pandas
 deta
 PIL
-st_sortables
+streamlit-sortables
