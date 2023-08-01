@@ -4,5 +4,5 @@ datetime
 numpy
 pandas
 deta
+streamlit_sortables
 PIL
-streamlit_sortables==0.1.3
