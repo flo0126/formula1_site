@@ -5,4 +5,4 @@ numpy
 pandas
 deta
 PIL
-streamlit_sortables
+streamlit_sortables==0.1.3
