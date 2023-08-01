@@ -328,7 +328,7 @@ with tabs_guess:
         #    p19 = st.selectbox("p19:", drivers)
         #    p20 = st.selectbox("p20:", drivers)
         st.write("Drag and dop to reorder the drivers below (If no drivers are shown, please refresh page):")
-        col1, col2 = st.columns([1,3])
+        col1, col2 = st.columns([2,3])
         with col1:
             items = [
                 {'header': 'Drivers', 'items': drivers}
