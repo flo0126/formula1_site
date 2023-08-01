@@ -304,7 +304,7 @@ with tabs_guess:
     with st.form("entry_form", clear_on_submit = True):
         user = st.selectbox("Select Person:", users)
         gp = st.selectbox("Select a Grand Prix:", gps)
-        #col1, col2 = st.columns(2)
+        
         #with col1:
         #    p1 = st.selectbox("p1:", drivers)
         #    p2 = st.selectbox("p2:", drivers)
@@ -328,7 +328,12 @@ with tabs_guess:
         #    p19 = st.selectbox("p19:", drivers)
         #    p20 = st.selectbox("p20:", drivers)
         st.write("Drag and dop to reorder the drivers below (If no drivers are shown, please refresh page):")
-        sorted_items = sort_items(drivers)
+        col1, col2 = st.columns([1,3])
+        with col1:
+            items = [
+                {'header': 'Drivers', 'items': drivers}
+                ]
+            sorted_items = sort_items(drivers, direction = 'vertical')
         submitted = st.form_submit_button("Enter")
         if submitted:
                 gp_num = 0
@@ -339,9 +344,10 @@ with tabs_guess:
                     st.write('Select a user and Grand Prix to enter a guess')
                 else:
                     guessList = []
+                    
                     for v in range(20):
                         guessList.append(sorted_items[v])
-                    #guess_concat = p1 + ", " + p2 + ", " + p3 + ", " + p4 + ", " + p5 + ", " + p6 + ", " + p7 + ", " + p8 + ", " + p9 + ", " + p10 + ", " + p11 + ", " + p12 + ", " + p13 + ", " + p14 + ", " + p15 + ", " + p16 + ", " + p17 + ", " + p18 + ", " + p19 + ", " + p20
+                    ##guess_concat = p1 + ", " + p2 + ", " + p3 + ", " + p4 + ", " + p5 + ", " + p6 + ", " + p7 + ", " + p8 + ", " + p9 + ", " + p10 + ", " + p11 + ", " + p12 + ", " + p13 + ", " + p14 + ", " + p15 + ", " + p16 + ", " + p17 + ", " + p18 + ", " + p19 + ", " + p20
                     guess_concat = ', '.join(guessList)
                     #print(guess_concat)
                     set_guess_db(user, gp_num, guess_concat)
