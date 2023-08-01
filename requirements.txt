@@ -6,3 +6,4 @@ pandas
 deta
 PIL
 streamlit_sortables
+sort_items
