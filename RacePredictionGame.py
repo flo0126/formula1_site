@@ -284,7 +284,7 @@ st.set_page_config(page_title='Formula 1 Race Predictions',page_icon = ':racing_
 st.title('Formula 1 Race Predictions' + " " + ':racing_car:')
 
 # Set Tabs
-tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Manage Game", "Race Stats", "Race Analysis"])
+tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Add Competitor", "Race Stats", "Race Analysis"])
 
 
 
@@ -302,7 +302,7 @@ with tabs_guess:
     drivers = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC',]
     st.header(f"Enter your guess")
     with st.form("entry_form", clear_on_submit = True):
-        user = st.selectbox("Select Person:", users)
+        user = st.selectbox("Select Competitor:", users)
         gp = st.selectbox("Select a Grand Prix:", gps)
         
         #with col1:
@@ -341,7 +341,7 @@ with tabs_guess:
                     if gp == gps[x]:
                         gp_num = x + (23-len(gps))
                 if user == '' or gp_num == 0:
-                    st.write('Select a user and Grand Prix to enter a guess')
+                    st.error('Select a user and Grand Prix to enter a guess')
                 else:
                     guessList = []
                     
@@ -351,7 +351,7 @@ with tabs_guess:
                     guess_concat = ', '.join(guessList)
                     #print(guess_concat)
                     set_guess_db(user, gp_num, guess_concat)
-                    st.write("Guess Entered for " + user + " for the " + gp + " Grand Prix")
+                    st.success("Guess Entered for " + user + " for the " + gp + " Grand Prix")
 
 
 
@@ -367,7 +367,7 @@ with tabs_results:
         for i in userstouse:
             users.append(i)
         gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
-        userSelect = st.selectbox("Select Person:", users)
+        userSelect = st.selectbox("Select Competitor:", users)
         gpSelect = st.selectbox("Select a Grand Prix:", gps)
         submitted2 = st.form_submit_button("Enter")
         if submitted2:
@@ -376,9 +376,9 @@ with tabs_results:
                     if gpSelect == gps[x]:
                         gp_num = x + (23-len(gps))
                 if userSelect == '' or gp_num == 0:
-                    st.write('Select a user and Grand Prix to view a guess')
+                    st.error('Select a user and Grand Prix to view a guess')
                 elif get_guess_db(userSelect, gp_num) == None:
-                    st.write('No guess has been entered for this Grand Prix')
+                    st.error('No guess has been entered for this Grand Prix')
                 else:
                     #st.write('**Points: ' + str(get_points_db(userSelect, gp_num)) + '**')
                     st.write('**Guess:**')
@@ -405,7 +405,7 @@ with tabs_results:
         for i in userstouse:
             users.append(i)
         gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
-        userSelect = st.selectbox("Select Person:", users)
+        userSelect = st.selectbox("Select Competitor:", users)
         gpSelect = st.selectbox("Select a Grand Prix:", gps)
         submitted2 = st.form_submit_button("Enter")
         if submitted2:
@@ -414,11 +414,11 @@ with tabs_results:
                     if gpSelect == gps[x]:
                         gp_num = x + (23-len(gps))
                 if userSelect == '' or gp_num == 0:
-                    st.write('Select a user and Grand Prix to view a guess')
+                    st.error('Select a user and Grand Prix to view a guess')
                 elif get_guess_db(userSelect, gp_num) == None or get_guess_db(userSelect, gp_num) == "":
-                    st.write('No guess has been entered for this Grand Prix')
+                    st.error('No guess has been entered for this Grand Prix')
                 elif get_points_db(userSelect, gp_num) == 0:
-                    st.write('Sorry, points have not been calculated yet')
+                    st.error('Sorry, points have not been calculated yet')
                 else:
                     st.write('**Points: ' + str(get_points_db(userSelect, gp_num)) + '**')
                     st.write('**Points by Driver:**')
@@ -457,13 +457,13 @@ with tabs_results:
         users = [""]
         for i in userstouse:
             users.append(i)
-        userSelect = st.selectbox("Select Person:", users)
+        userSelect = st.selectbox("Select Competitor:", users)
         gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
         submitted3 = st.form_submit_button("Enter")
         if submitted3:
             st.write("Loading")
             if userSelect == '':
-                    st.write('Select a user to view a guess')
+                    st.error('Select a user to view a guess')
             else:
                 data = np.array([TEAM_ORDER, DRIVER_ORDER])
                 data = data.transpose()
@@ -502,7 +502,7 @@ with tabs_results:
                     
                     st.pyplot(fig)
                 else:
-                    st.write("Sorry, not enough data yet!")
+                    st.error("Sorry, not enough data yet!")
 
 
 
@@ -541,7 +541,7 @@ with tabs_leaderboard:
                     if gp == gps[x]:
                         gp_num = x + (23-len(gps))
                 if gp_num == 0:
-                    st.write('Select a Grand Prix')
+                    st.error('Select a Grand Prix')
                 else:
                     fig, ax = plt.subplots()
         
@@ -571,10 +571,10 @@ with tabs_manage:
     competitor_name = st.text_input('Enter Competitor Name', '')
     if st.button("Add Competitor"): 
         if competitor_name in comp.get_competitors_names():
-            st.write("Sorry, this name is taken")
+            st.error("Sorry, this name is taken")
         else:
             comp.add_competitor(Competitor(competitor_name))
-            st.write("Competitor Added, Refresh Page to See Competitor")
+            st.success("Competitor Added, Refresh Page to See Competitor")
             #st.write(str(comp.get_competitors_names()))
 
 
