@@ -33,6 +33,7 @@ db = deta.Base("competitors_db")
 DRIVER_ORDER = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC', 'DEV']
 TEAM_ORDER = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "McLaren", "McLaren", "Haas", "Haas", "Williams", "Williams", "Alfa Romeo", "Alfa Romeo", "Alpha Tauri", "Alpha Tauri","Alpha Tauri"]
 
+
 #-----METHODS----------
 
 #calculates the points for a grand prix for all the players in a competition
@@ -300,6 +301,7 @@ with tabs_guess:
         users.append(i)
     gps = ["Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
     drivers = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC',]
+    driversRICTOLAW = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'LAW',]
     st.header(f"Enter your guess")
     with st.form("entry_form", clear_on_submit = True):
         user = st.selectbox("Select Competitor:", users)
@@ -331,9 +333,9 @@ with tabs_guess:
         col1, col2 = st.columns([2,3])
         with col1:
             items = [
-                {'header': 'Drivers', 'items': drivers}
+                {'header': 'Drivers', 'items': driversRICTOLAW}
                 ]
-            sorted_items = sort_items(drivers, direction = 'vertical')
+            sorted_items = sort_items(driversRICTOLAW, direction = 'vertical')
         submitted = st.form_submit_button("Enter")
         if submitted:
                 gp_num = 0
