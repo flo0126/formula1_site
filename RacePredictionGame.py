@@ -272,7 +272,7 @@ comp = Competition()
 #set_guess_db("Abigail", 11, abi_guess2)
 
 
-#calculate_points(comp.get_competitors_names(), 2023, 12)
+#calculate_points(comp.get_competitors_names(), 2023, 14)
 #get_leaderboard(comp)
 
 
