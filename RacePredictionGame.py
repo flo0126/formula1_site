@@ -256,24 +256,11 @@ comp = Competition()
 
 
 
-#flo_guess = "PER, VER, LEC, HAM, SAI, ALO, NOR, RUS, ALB, SAR, OCO, MAG, GAS, STR, HUL, PIA, BOT, ZHO, TSU, DEV"
-#sof_guess = "VER, PER, SAI, ALO, NOR, LEC, HAM, ALB, OCO, RUS, HUL, STR, GAS, PIA, MAG, BOT, TSU, SAR, DEV, ZHO"
-#luk_guess = "VER, PER, ALO, SAI, HAM, LEC, ALB, RUS, STR, NOR, OCO, SAR, PIA, GAS, HUL, ZHO, BOT, DEV, TSU, MAG"
-#abi_guess = "VER, PER, ALO, HAM, SAI, LEC, RUS, STR, OCO, NOR, GAS, HUL, ALB, PIA, BOT, ZHO, TSU, MAG, SAR, DEV"
 
-#flo_guess2 = "VER, PER, ALO, LEC, HAM, SAI, RUS, OCO, NOR, STR, GAS, ALB, BOT, PIA, SAR, HUL, RIC, TSU, ZHO, MAG"
-#sof_guess2 = "VER, NOR, PER, ALO, LEC, RUS, HAM, SAI, HUL, STR, BOT, PIA, OCO, TSU, ALB, GAS, MAG, ZHO, RIC, SAR"
-#luk_guess2 = "VER, ALO, PER, HAM, RUS, NOR, SAI, LEC, STR, ALB, PIA, SAR, OCO, RIC, GAS, HUL, BOT, TSU, ZHO, MAG"
-#abi_guess2 = "ALO, PER, NOR, PIA, RUS, SAI, HAM, LEC, RIC, STR, MAG, OCO, ALB, BOT, GAS, ZHO, HUL, SAR, TSU, VER"
-
-#set_guess_db("Florence", 11, flo_guess2)
-#set_guess_db("Sofia", 11, sof_guess2)
-#set_guess_db("Luke", 11, luk_guess2)
-#set_guess_db("Abigail", 11, abi_guess2)
 
 
 #calculate_points(comp.get_competitors_names(), 2023, 14)
-#get_leaderboard(comp)
+
 
 
 
@@ -299,7 +286,7 @@ with tabs_guess:
     users = [""]
     for i in userstouse:
         users.append(i)
-    gps = ["Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
+    gps = ["Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
     drivers = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC',]
     driversRICTOLAW = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'LAW',]
     st.header(f"Enter your guess")
@@ -307,28 +294,7 @@ with tabs_guess:
         user = st.selectbox("Select Competitor:", users)
         gp = st.selectbox("Select a Grand Prix:", gps)
         
-        #with col1:
-        #    p1 = st.selectbox("p1:", drivers)
-        #    p2 = st.selectbox("p2:", drivers)
-        #    p3 = st.selectbox("p3:", drivers)
-        #    p4 = st.selectbox("p4:", drivers)
-        #    p5 = st.selectbox("p5:", drivers)
-        #    p6 = st.selectbox("p6:", drivers)
-        #    p7 = st.selectbox("p7:", drivers)
-        #    p8 = st.selectbox("p8:", drivers)
-        #    p9 = st.selectbox("p9:", drivers)
-        #    p10 = st.selectbox("p10:", drivers)
-        #with col2:
-        #    p11 = st.selectbox("p11:", drivers)
-        #    p12 = st.selectbox("p12:", drivers)
-        #    p13 = st.selectbox("p13:", drivers)
-        #    p14 = st.selectbox("p14:", drivers)
-        #    p15 = st.selectbox("p15:", drivers)
-        #    p16 = st.selectbox("p16:", drivers)
-        #    p17 = st.selectbox("p17:", drivers)
-        #    p18 = st.selectbox("p18:", drivers)
-        #    p19 = st.selectbox("p19:", drivers)
-        #    p20 = st.selectbox("p20:", drivers)
+       
         st.write("Drag and dop to reorder the drivers below (If no drivers are shown, please refresh page):")
         col1, col2 = st.columns([2,3])
         with col1:
