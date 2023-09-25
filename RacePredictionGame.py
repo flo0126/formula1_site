@@ -33,6 +33,29 @@ db = deta.Base("competitors_db")
 DRIVER_ORDER = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC', 'DEV']
 TEAM_ORDER = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "McLaren", "McLaren", "Haas", "Haas", "Williams", "Williams", "Alfa Romeo", "Alfa Romeo", "Alpha Tauri", "Alpha Tauri","Alpha Tauri"]
 
+DRIVER_NUMBERS = {  'VER' : '1', 
+                    'PER' : '11', 
+                    'LEC' : '16', 
+                    'SAI' : '55', 
+                    'HAM' : '44', 
+                    'RUS' : '63', 
+                    'ALO' : '14', 
+                    'STR' : '18', 
+                    'GAS' : '10', 
+                    'OCO' : '31', 
+                    'NOR' : '4', 
+                    'PIA' : '81', 
+                    'MAG' : '20', 
+                    'HUL' : '27', 
+                    'ALB' : '23', 
+                    'SAR' : '2', 
+                    'BOT' : '77', 
+                    'ZHO' : '24',  
+                    'TSU' : '22', 
+                    'LAW' : '40'
+                }
+
+
 
 #-----METHODS----------
 
@@ -552,7 +575,104 @@ tabs_stats = tabs[4]
 
 #------------- Race Stats Tab -----------------------------------
 with tabs_stats:
-    st.write("coming soon!")
+    st.write("Japan Prediction:")
+    
+    similarRace = False
+    prevSimRace = 'Singapore'
+    
+    prevRace = 'Japan'
+    
+    year = 2023
+    
+    # weights
+    fp1Weight = 0.2
+    fp2Weight = 0.3
+    fp3Weight = 0.4
+    standingsWeight = 1.5
+    prevRaceWeight = 0.7
+    prevSimRaceWeight = 1.1
+    
+    racesSoFar = 11
+    
+    
+    posWeight = [30, 27, 24, 21, 19, 17, 15, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+    # start with a dictionary (there has to be a better way of instantiating this but I don't want to do that right now)
+    driverPredictionPoints = {  'VER' : 0, 
+                                'PER' : 0, 
+                                'LEC' : 0, 
+                                'SAI' : 0, 
+                                'HAM' : 0, 
+                                'RUS' : 0, 
+                                'ALO' : 0, 
+                                'STR' : 0, 
+                                'GAS' : 0, 
+                                'OCO' : 0, 
+                                'NOR' : 0, 
+                                'PIA' : 0, 
+                                'MAG' : 0, 
+                                'HUL' : 0, 
+                                'ALB' : 0, 
+                                'SAR' : 0, 
+                                'BOT' : 0, 
+                                'ZHO' : 0,  
+                                'TSU' : 0, 
+                                'LAW' : 0
+                                }
+    
+    
+    
+    # get previous race
+    prevRace = ff1.get_session(2023, prevRace, 'R')
+    prevRace.load()
+    prevRace = prevRace.results
+    
+    results = prevRace[["Abbreviation", "ClassifiedPosition"]]
+    
+    for driver in driverPredictionPoints.keys():
+        curr_row = results.loc[results["Abbreviation"] == driver]
+        curr_pos = curr_row.iat[0,1]
+        
+        if curr_pos != 'R' or '':
+            driverPredictionPoints[driver] += posWeight[int(curr_pos)-1]
+    
+    if similarRace:
+        # get previous similar race
+        prevSimRace = ff1.get_session(2023, prevSimRace, 'R')
+        prevSimRace.load()
+        prevSimRace = prevRace.results
+        
+        results = prevSimRace[["Abbreviation", "ClassifiedPosition"]]
+        
+        
+        for driver in driverPredictionPoints.keys():
+            curr_row = results.loc[results["Abbreviation"] == driver]
+            curr_pos = curr_row.iat[0,1]
+            
+            if curr_pos != 'R' or '':
+                driverPredictionPoints[driver] += posWeight[int(curr_pos)-1]
+    
+    
+    
+    
+    # get all 3 free practices
+    fp1, fp2, fp3 = False, False, False
+    
+    
+    
+    # display if all data has been collected
+    if not (fp1 and fp2 and fp3):
+        st.write("Missing free practive data.")
+    
+    
+    
+    # calculate and display prediction
+    for driver in driverPredictionPoints.keys():
+        st.write(driver, driverPredictionPoints.get(driver, 0))
+    
+    
+    
+    
+    
 
     
 
