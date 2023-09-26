@@ -596,28 +596,10 @@ with tabs_stats:
     prevSimRaceWeight = 1.1
     
     posWeight = [30, 27, 24, 21, 19, 17, 15, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+    drivers_currently_out = ['DEV', 'RIC', 'nan']
     
     # start with a dictionary (there has to be a better way of instantiating this but I don't want to do that right now)
-    driverPredictionPoints = {  'VER' : 0, 
-                                'PER' : 0, 
-                                'LEC' : 0, 
-                                'SAI' : 0, 
-                                'HAM' : 0, 
-                                'RUS' : 0, 
-                                'ALO' : 0, 
-                                'STR' : 0, 
-                                'GAS' : 0, 
-                                'OCO' : 0, 
-                                'NOR' : 0, 
-                                'PIA' : 0, 
-                                'MAG' : 0, 
-                                'HUL' : 0, 
-                                'ALB' : 0, 
-                                'SAR' : 0, 
-                                'BOT' : 0, 
-                                'ZHO' : 0,  
-                                'TSU' : 0, 
-                                'LAW' : 0
+    driverPredictionPoints = {  
                                 }
     
     
@@ -668,9 +650,13 @@ with tabs_stats:
         st.write("Not using previous similar race.")
 
     
-        
+    
     sorted_drivers_by_prediction_points = sorted(driverPredictionPoints.items(), key=lambda x:x[1], reverse=True)
-    st.write(sorted_drivers_by_prediction_points)
+    pos = 1
+    for driver in sorted_drivers_by_prediction_points:
+        if not drivers_currently_out.__contains__(driver[0]):
+            st.write("{}. {}: {:.2f}".format(pos, driver[0], driver[1]))
+            pos += 1
     
     
     
