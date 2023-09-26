@@ -21,6 +21,7 @@ from deta import Deta
 
 from PIL import Image
 
+
 # Enable the cache by providing the name of the cache folder
 #ff1.Cache.clear_cache('cache')
 ff1.Cache.enable_cache('cache') 
@@ -577,25 +578,25 @@ tabs_stats = tabs[4]
 with tabs_stats:
     st.write("Japan Prediction:")
     
-    similarRace = False
-    prevSimRace = 'Singapore'
-    
-    prevRace = 'Japan'
+    similarRace = True # Determines if we want to use a similar previous race
+    prevSimRace = 'Monaco'
+    prevRace = 'Singapore'
+    nextRace = 'Japan'
     
     year = 2023
+    racesSoFar = 11
     
     # weights
     fp1Weight = 0.2
     fp2Weight = 0.3
     fp3Weight = 0.4
+    fp1, fp2, fp3 = False, False, False
     standingsWeight = 1.5
     prevRaceWeight = 0.7
     prevSimRaceWeight = 1.1
     
-    racesSoFar = 11
-    
-    
     posWeight = [30, 27, 24, 21, 19, 17, 15, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+    
     # start with a dictionary (there has to be a better way of instantiating this but I don't want to do that right now)
     driverPredictionPoints = {  'VER' : 0, 
                                 'PER' : 0, 
@@ -622,59 +623,61 @@ with tabs_stats:
     
     
     # get previous race
-    prevRace = ff1.get_session(2023, prevRace, 'R')
+    prevRace = ff1.get_session(year, prevRace, 'R')
     prevRace.load()
-    prevRace = prevRace.results
+    prevRaceResults = prevRace.results
+    prevRaceResults = prevRaceResults["Abbreviation"]
     
-    results = prevRace[["Abbreviation", "ClassifiedPosition"]]
+    # get previous similar race
+    prevSimRace = ff1.get_session(year, prevSimRace, 'R')
+    prevSimRace.load()
+    prevSimRaceResults = prevSimRace.results
+    prevSimRaceResults = prevSimRaceResults["Abbreviation"]
     
-    for driver in driverPredictionPoints.keys():
-        curr_row = results.loc[results["Abbreviation"] == driver]
-        curr_pos = curr_row.iat[0,1]
-        
-        if curr_pos != 'R' or '':
-            driverPredictionPoints[driver] += posWeight[int(curr_pos)-1]
+    # get standings
+    e = ff1.ergast.Ergast(result_type='pandas', auto_cast=True)
+    season = e.get_driver_standings(season = year)
+    #st.write(season)
     
-    if similarRace:
-        # get previous similar race
-        prevSimRace = ff1.get_session(2023, prevSimRace, 'R')
-        prevSimRace.load()
-        prevSimRace = prevRace.results
+    
+    
+    # loop through and add points
+    for i in range(20):
+        # previous race
+        driverPredictionPoints[prevRaceResults[i]] = driverPredictionPoints.get(prevRaceResults[i], 0) + (posWeight[i] * prevRaceWeight)
         
-        results = prevSimRace[["Abbreviation", "ClassifiedPosition"]]
+        # previous similar race
+        if similarRace:
+            driverPredictionPoints[prevSimRaceResults[i]] = driverPredictionPoints.get(prevSimRaceResults[i], 0) + (posWeight[i] * prevSimRaceWeight)
+        
+        # standings
         
         
-        for driver in driverPredictionPoints.keys():
-            curr_row = results.loc[results["Abbreviation"] == driver]
-            curr_pos = curr_row.iat[0,1]
+        # free practices
+        
             
-            if curr_pos != 'R' or '':
-                driverPredictionPoints[driver] += posWeight[int(curr_pos)-1]
     
     
-    
-    
-    # get all 3 free practices
-    fp1, fp2, fp3 = False, False, False
     
     
     
     # display if all data has been collected
     if not (fp1 and fp2 and fp3):
         st.write("Missing free practive data.")
+    if not similarRace:
+        st.write("Not using previous similar race.")
+
     
-    
-    
-    # calculate and display prediction
-    for driver in driverPredictionPoints.keys():
-        st.write(driver, driverPredictionPoints.get(driver, 0))
-    
+        
+    sorted_drivers_by_prediction_points = sorted(driverPredictionPoints.items(), key=lambda x:x[1], reverse=True)
+    st.write(sorted_drivers_by_prediction_points)
     
     
     
     
 
-    
+
+
 
 tabs_analysis = tabs[5]
 
