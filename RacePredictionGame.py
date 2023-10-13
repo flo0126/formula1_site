@@ -60,23 +60,26 @@ def calculate_points(competitors, year, grand_prix):
             coll_points = np.zeros(21, dtype = int)
             print('Points for the ' + str(year) + ' ' + session.event.EventName + ' ')
             for i in range(20):
-                curr_row = results.loc[results["Abbreviation"] == my_guess[i]]
-                curr_pos = curr_row.iat[0,1]
-                act_pos = i + 1
-                points = 0
-                if curr_pos == 'R' or '':
-                    curr_pos = '10000' #DNF
-                if abs(act_pos - int(curr_pos)) == 2:
-                    points =  1
-                if abs(act_pos - int(curr_pos)) == 1:
-                    points = 2
-                if abs(act_pos - int(curr_pos)) == 0:
-                    points = 3
-                my_total = my_total + points
-                print(my_guess[i] + ": " + str(points))
-                for y in range(21):
-                    if my_guess[i] == DRIVER_ORDER[y]:
-                        coll_points[y] = int(points)
+                try:
+                    curr_row = results.loc[results["Abbreviation"] == my_guess[i]]
+                    curr_pos = curr_row.iat[0,1]
+                    act_pos = i + 1
+                    points = 0
+                    if curr_pos == 'R' or '':
+                        curr_pos = '10000' #DNF
+                    if abs(act_pos - int(curr_pos)) == 2:
+                        points =  1
+                    if abs(act_pos - int(curr_pos)) == 1:
+                        points = 2
+                    if abs(act_pos - int(curr_pos)) == 0:
+                        points = 3
+                    my_total = my_total + points
+                    print(my_guess[i] + ": " + str(points))
+                    for y in range(21):
+                        if my_guess[i] == DRIVER_ORDER[y]:
+                            coll_points[y] = int(points)
+                except:
+                    print(my_guess[i] + " did not start race")
             
             print("Points for " + x + ": " + str(my_total))
             set_points_db(x, grand_prix, my_total)
