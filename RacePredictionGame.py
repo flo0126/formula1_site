@@ -32,7 +32,7 @@ db = deta.Base("competitors_db")
 
 DRIVER_ORDER = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC', 'DEV']
 TEAM_ORDER = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "McLaren", "McLaren", "Haas", "Haas", "Williams", "Williams", "Alfa Romeo", "Alfa Romeo", "Alpha Tauri", "Alpha Tauri","Alpha Tauri"]
-
+ADMIN_PASS = "jamesitsvaltteri"
 
 #-----METHODS----------
 
@@ -275,7 +275,7 @@ st.set_page_config(page_title='Formula 1 Race Predictions',page_icon = ':racing_
 st.title('Formula 1 Race Predictions' + " " + ':racing_car:')
 
 # Set Tabs
-tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Add Competitor", "Race Stats", "Race Analysis"])
+tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Add Competitor", "Race Stats", "Race Analysis", "Admin View"])
 
 
 
@@ -302,9 +302,9 @@ with tabs_guess:
         col1, col2 = st.columns([2,3])
         with col1:
             items = [
-                {'header': 'Drivers', 'items': driversRICTOLAW}
+                {'header': 'Drivers', 'items': drivers}
                 ]
-            sorted_items = sort_items(driversRICTOLAW, direction = 'vertical')
+            sorted_items = sort_items(drivers, direction = 'vertical')
         submitted = st.form_submit_button("Enter")
         if submitted:
                 gp_num = 0
@@ -570,6 +570,32 @@ with tabs_analysis:
         st.image(image2, caption = 'Tire Strategy')
         image3 = Image.open('photos/PositionChanges2023Spa.png')
         st.image(image3, caption = 'Position Changes')
+
+
+tabs_admin = tabs[6]
+
+#-------------- Admin View Tab -----------------------------------
+with tabs_admin:
+    admin_enter = st.text_input('Enter Admin Password', '')
+    if admin_enter == ADMIN_PASS:
+        st.header("Calculate Points")
+        with st.form("admin_form",clear_on_submit = False):
+            gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
+            gp = st.selectbox("Select a Grand Prix:", gps)
+            submitted = st.form_submit_button("Enter")
+            if submitted:
+                gp_num = 0
+                for x in range(len(gps)):
+                    if gp == gps[x]:
+                        gp_num = x + (23-len(gps))
+                try:
+                    calculate_points(comp.get_competitors_names(), 2023, gp_num)
+                    st.success("all done")
+                except:
+                    st.error("Something went wrong")
+
+    else:
+        st.error("Please enter correct password")
 
     
 
