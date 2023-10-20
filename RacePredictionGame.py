@@ -292,7 +292,7 @@ with tabs_guess:
     users = [""]
     for i in userstouse:
         users.append(i)
-    gps = ["USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
+    gps = ["Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
     drivers = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC',]
     driversRICTOLAW = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'LAW',]
     st.header(f"Enter your guess")
