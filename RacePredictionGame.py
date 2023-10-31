@@ -264,7 +264,7 @@ comp = Competition()
 
 #set_guess_db('Lindsey', 15, "VER, SAI, LEC, RUS, HAM, PER, GAS, ALO, NOR, PIA, OCO, ALB, STR, LAW, TSU, MAG, HUL, BOT, ZHO, SAR")
 
-#calculate_points(comp.get_competitors_names(), 2023, 17)
+calculate_points(comp.get_competitors_names(), 2023, 18)
 
 
 
@@ -292,7 +292,7 @@ with tabs_guess:
     users = [""]
     for i in userstouse:
         users.append(i)
-    gps = ["Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
+    gps = ["Brazil", "Las Vegas", "Abu Dhabi"]
     drivers = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC',]
     driversRICTOLAW = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'LAW',]
     st.header(f"Enter your guess")
