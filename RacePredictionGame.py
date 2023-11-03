@@ -264,7 +264,7 @@ comp = Competition()
 
 #set_guess_db('Lindsey', 15, "VER, SAI, LEC, RUS, HAM, PER, GAS, ALO, NOR, PIA, OCO, ALB, STR, LAW, TSU, MAG, HUL, BOT, ZHO, SAR")
 
-calculate_points(comp.get_competitors_names(), 2023, 18)
+#calculate_points(comp.get_competitors_names(), 2023, 18)
 
 
 
