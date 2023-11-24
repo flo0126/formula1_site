@@ -40,11 +40,13 @@ ADMIN_PASS = "jamesitsvaltteri"
 def calculate_points(competitors, year, grand_prix):
 
     #load session results
+    ff1.set_log_level('DEBUG')
     session = ff1.get_session(year, grand_prix, 'R')
     session.load()
     laps = session.laps
     results = session.results
     results = results[["Abbreviation", "ClassifiedPosition"]]
+    
     #print(results)
    
     #calculate points for ccompetitors
@@ -262,10 +264,9 @@ comp = Competition()
 
 
 
-#set_guess_db('Lindsey', 15, "VER, SAI, LEC, RUS, HAM, PER, GAS, ALO, NOR, PIA, OCO, ALB, STR, LAW, TSU, MAG, HUL, BOT, ZHO, SAR")
+#set_guess_db('Abigail', 20, "LEC, NOR, PIA, SAI, HAM, OCO, RIC, RUS, PER, TSU, GAS, ALO, HUL, BOT, ALB, MAG, SAR, ZHO, STR, VER")
 
-#calculate_points(comp.get_competitors_names(), 2023, 18)
-
+#calculate_points(comp.get_competitors_names(), 2023, 21)
 
 
 
@@ -292,7 +293,7 @@ with tabs_guess:
     users = [""]
     for i in userstouse:
         users.append(i)
-    gps = ["Las Vegas", "Abu Dhabi"]
+    gps = ["Abu Dhabi"]
     drivers = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC',]
     driversRICTOLAW = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'LAW',]
     st.header(f"Enter your guess")
