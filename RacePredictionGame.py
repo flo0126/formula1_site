@@ -43,7 +43,7 @@ def calculate_points(competitors, year, grand_prix):
     ff1.set_log_level('DEBUG')
     session = ff1.get_session(year, grand_prix, 'R')
     session.load()
-    laps = session.laps
+    #laps = session.laps
     results = session.results
     results = results[["Abbreviation", "ClassifiedPosition"]]
     
