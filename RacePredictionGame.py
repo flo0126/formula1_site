@@ -252,6 +252,12 @@ class Competition:
         #        return x
         competitor = db.get(name)
         return competitor
+    
+    def get_competitors_points(self):
+        res = db.fetch()
+        items = res.items
+        points = [item["points"] for item in items]
+        return points
 
             
 
@@ -272,16 +278,43 @@ comp = Competition()
 
 
 
+
 #------ Frontend with streamlit ----------------------------
 
 #Set up page and title
 st.set_page_config(page_title='Formula 1 Race Predictions',page_icon = ':racing_car:', layout = "centered")
-st.title('Formula 1 Race Predictions' + " " + ':racing_car:')
+st.title('F1 Predictions' + " " + ':racing_car:')
 
 # Set Tabs
 tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Add Competitor", "Race Stats", "Race Analysis", "Admin View"])
 
+st.markdown("""
+<style>
+    
 
+	.stTabs [data-baseweb="tab-list"] {
+		gap: 10px;
+    }
+
+	.stTabs [data-baseweb="tab"] {
+		height: 50px;
+        white-space: pre-wrap;
+		background-color: #FFECEC;
+		border-radius: 4px 4px 1px 1px;
+		gap: 5px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+    }
+
+	.stTabs [aria-selected="true"] {
+  		background-color: #FFFFFF;
+	}
+    
+    
+            
+            
+
+</style>""", unsafe_allow_html=True)
 
 
 
@@ -289,6 +322,17 @@ tabs_guess = tabs[0]
 
 #---------Enter Guess Tab-------------------------------------
 with tabs_guess:
+    st.markdown( """
+    <style>
+
+        .st-bd {
+            color: #EA0C0C;
+        }
+            
+
+    </style>""", unsafe_allow_html=True
+
+    )
     userstouse = comp.get_competitors_names()
     users = [""]
     for i in userstouse:
@@ -489,20 +533,17 @@ with tabs_leaderboard:
     st.header(f"Leaderboard")
     fig, ax = plt.subplots()
     
-    for player in comp.get_competitors_names():
-        points = get_total_points_db(player)
-        st.write("Total points for " + player + ": " + str(points))
-
-        plt.barh(
-            y=player,
-            width=points,
-            edgecolor="black",
-            fill=True
-        )
-    plt.xlabel("Points")
-    plt.ylabel("Competitor")
+    names_plot = comp.get_competitors_names()
+    points_plot = np.sum(comp.get_competitors_points(), axis = 1)
+    df = pd.DataFrame({'name': names_plot, 'points': points_plot}, columns = ['name', 'points'])
+    df = df.sort_values(by=['points'], ascending=True)
+    color = (0.918, 0.047, 0.047, 1)
+    bars = plt.barh(df['name'], df['points'], color=color)
     plt.grid(False)
-    plt.suptitle("Total Points")
+    plt.bar_label(bars)
+    for spine in plt.gca().spines.values():
+        spine.set_visible(False)
+    plt.tick_params(left = False, right = False , labelleft = True , labelbottom = False, bottom = False)
     st.pyplot(fig)
 
     st.header(f"Leaderboard per Race")
@@ -519,21 +560,20 @@ with tabs_leaderboard:
                     st.error('Select a Grand Prix')
                 else:
                     fig, ax = plt.subplots()
-        
-                    for player in comp.get_competitors_names():
-                        points = get_points_db(player, gp_num)
-                        st.write("Points for " + player + ": " + str(points))
 
-                        plt.barh(
-                            y=player,
-                            width=points,
-                            edgecolor="black",
-                            fill=True
-                        )
-                    plt.xlabel("Points")
-                    plt.ylabel("Competitor")
+                    gpval = gp_num - 1
+                    points2 = np.array(comp.get_competitors_points())
+                    points2 = points2[:, gpval]
+                    
+                    df2 = pd.DataFrame({'name': names_plot, 'points': points2}, columns = ['name', 'points'])
+                    df2 = df2.sort_values(by=['points'], ascending=True)
+                    color = (0.918, 0.047, 0.047, 1)
+                    bars = plt.barh(df2['name'], df2['points'], color=color)
                     plt.grid(False)
-                    plt.suptitle(gp + ' Grand Prix Prediction Results')
+                    plt.bar_label(bars)
+                    for spine in plt.gca().spines.values():
+                        spine.set_visible(False)
+                    plt.tick_params(left = False, right = False , labelleft = True , labelbottom = False, bottom = False)
                     st.pyplot(fig)
                     
 
