@@ -296,15 +296,11 @@ tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Add Competit
 
 st.markdown("""
 <style>
-    
-
-	
-
-	
-    
-    
-            
-            
+    .st-emotion-cache-1y4p8pa {
+        width: 100%;
+        padding: 2rem 1rem 10rem;
+        max-width: 46rem;
+    }
 
 </style>""", unsafe_allow_html=True)
 
