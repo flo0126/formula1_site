@@ -31,7 +31,11 @@ deta = Deta(DETA_KEY)
 db = deta.Base("competitors_db")
 
 DRIVER_ORDER = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC', 'DEV']
+TEAM_COLOR_RGB = [(0.078, 0.122, 0.702, 1), (0.078, 0.122, 0.702, 1), (1, 0.008, 0.008, 1), (1, 0.008, 0.008, 1), (0.4, 0.929, 0.929, 1), (0.4, 0.929, 0.929, 1), (0.059, 0.451, 0.251, 1), (0.059, 0.451, 0.251, 1), (1, 0.341, 0.827,1), (1, 0.341, 0.827, 1), (1, 0.494, 0, 1), (1, 0.494, 0, 1),
+              (0.612, 0.612, 0.612, 1), (0.612, 0.612, 0.612, 1), (0.251, 0.439, 1, 1), (0.251, 0.439, 1, 1), (0, 0.91, 0.078, 1), (0, 0.91, 0.078, 1), (0, 0.012, 1, 1), (0, 0.012, 1, 1), (0, 0.012, 1, 1) ]
+TEAM_COLOR = ['darkblue', 'darkblue', 'red', 'red', 'turquoise', 'turquoise', 'seagreen', 'seagreen', 'hotpink', 'hotpink', 'darkorange', 'darkorange', 'silver', 'silver', 'royalblue', 'royalblue', 'lime', 'lime', 'blue', 'blue', 'blue']
 TEAM_ORDER = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "McLaren", "McLaren", "Haas", "Haas", "Williams", "Williams", "Alfa Romeo", "Alfa Romeo", "Alpha Tauri", "Alpha Tauri","Alpha Tauri"]
+DRIVER_NUM = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]
 ADMIN_PASS = "jamesitsvaltteri"
 
 #-----METHODS----------
@@ -283,7 +287,9 @@ comp = Competition()
 
 #Set up page and title
 st.set_page_config(page_title='Formula 1 Race Predictions',page_icon = ':racing_car:', layout = "centered")
-st.title('F1 Predictions' + " " + ':racing_car:')
+#st.title('F1 Predictions' + " " + ':racing_car:')
+im = Image.open('photos/f1predictions.png')
+st.image(im)
 
 # Set Tabs
 tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Add Competitor", "Race Stats", "Race Analysis", "Admin View"])
@@ -292,23 +298,9 @@ st.markdown("""
 <style>
     
 
-	.stTabs [data-baseweb="tab-list"] {
-		gap: 10px;
-    }
+	
 
-	.stTabs [data-baseweb="tab"] {
-		height: 50px;
-        white-space: pre-wrap;
-		background-color: #FFECEC;
-		border-radius: 4px 4px 1px 1px;
-		gap: 5px;
-		padding-top: 10px;
-		padding-bottom: 10px;
-    }
-
-	.stTabs [aria-selected="true"] {
-  		background-color: #FFFFFF;
-	}
+	
     
     
             
@@ -440,33 +432,24 @@ with tabs_results:
                     st.error('Sorry, points have not been calculated yet')
                 else:
                     st.write('**Points: ' + str(get_points_db(userSelect, gp_num)) + '**')
-                    st.write('**Points by Driver:**')
-                    #col1, col2 = st.columns(2)
+                    
                     gs = get_coll_points_db(userSelect, gp_num)
                     gs = str_to_arr(gs)
-                    #gs1 = gs[:10]
-                    #gs2 = gs[-11:]
-                    #tick = 0
-                    #with col1:
-                    #    for i in gs1:
-                    #        st.write(DRIVER_ORDER[tick] + ': ' + str(i))
-                    #        tick = tick + 1
-                    #tick = 10
-                    #with col2:
-                    #    for i in gs2:
-                    #        st.write(DRIVER_ORDER[tick] + ': ' + str(i))
-                    #        tick = tick + 1
-                    data = np.array([TEAM_ORDER, DRIVER_ORDER, gs])
-                    data = data.transpose()
                     df = pd.DataFrame(
-                        data,
-                        columns=['Team', 'Driver', 'Points']
+                        {'Driver': DRIVER_ORDER, 'Points': gs, 'Color': TEAM_COLOR, 'Num': DRIVER_NUM},
+                        columns=['Driver', 'Points', 'Color', 'Num']
                     )
-                    st.dataframe(
-                        df,
-                        hide_index=True,
-                        height = 775
-                    )
+                    df = df.sort_values(by=['Num','Points'], ascending=[False,True])
+                    
+                    fig, ax = plt.subplots()
+                    bars = plt.barh(df['Driver'], df['Points'], color=df['Color'])
+                    plt.grid(False)
+                    plt.bar_label(bars)
+                    for spine in plt.gca().spines.values():
+                        spine.set_visible(False)
+                    plt.tick_params(left = False, right = False , labelleft = True , labelbottom = False, bottom = False)
+                    st.pyplot(fig)
+
 
                     
     st.header(f"Race Trends")
