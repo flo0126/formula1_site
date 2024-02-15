@@ -312,6 +312,7 @@ if 'user' not in st.session_state:
 logincont = st.empty()
 amlog = False
 with logincont.form("login form"):
+    #st.header("Log in")
     userstouse = comp.get_competitors_names()
     useSel = st.selectbox("Select Competitor:", userstouse)
     submittedLogin = st.form_submit_button("Enter")
@@ -350,7 +351,7 @@ if st.session_state['user'] != 'Invalid':
 
 
 
-        st.header(f"Enter your guess")
+        st.header("Enter Guess for " + st.session_state['user'])
         with st.form("entry_form", clear_on_submit = True):
             #user = st.selectbox("Select Competitor:", users)
             gp = st.selectbox("Select a Grand Prix:", gps)
@@ -400,9 +401,10 @@ if st.session_state['user'] != 'Invalid':
             #users.append(i)
         gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
         #userSelect = st.selectbox("Select Competitor:", users)
+        st.header("View Results for "+ st.session_state['user'])
         gpSelect = st.selectbox("Select a Grand Prix:", gps)
 
-        st.header(gpSelect + " Guess")
+        st.subheader(gpSelect + " Guess")
         gp_num = 0
         for x in range(len(gps)):
             if gpSelect == gps[x]:
@@ -434,7 +436,7 @@ if st.session_state['user'] != 'Invalid':
 
         st.write(" -- ")
 
-        st.header(gpSelect + " Race Points")
+        st.subheader(gpSelect + " Race Points")
         
             #userstouse = comp.get_competitors_names()
             #users = [""]
@@ -456,7 +458,7 @@ if st.session_state['user'] != 'Invalid':
         elif get_points_db(st.session_state['user'], gp_num) == 0:
             st.error('Sorry, points have not been calculated yet')
         else:
-            st.subheader('**Points: ' + str(get_points_db(st.session_state['user'], gp_num)) + '**')
+            st.write('**Points: ' + str(get_points_db(st.session_state['user'], gp_num)) + '**')
             
             gs = get_coll_points_db(st.session_state['user'], gp_num)
             gs = str_to_arr(gs)
