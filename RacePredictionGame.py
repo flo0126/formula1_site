@@ -21,6 +21,9 @@ from deta import Deta
 
 from PIL import Image
 
+from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, JsCode # pip install streamlit-aggrid==0.2.3
+
+
 # Enable the cache by providing the name of the cache folder
 #ff1.Cache.clear_cache('cache')
 ff1.Cache.enable_cache('cache') 
@@ -292,7 +295,7 @@ im = Image.open('photos/f1predictions.png')
 st.image(im)
 
 # Set Tabs
-tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Add Competitor", "Race Stats", "Race Analysis", "Admin View"])
+tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Add Competitor", "Admin View"])
 
 st.markdown("""
 <style>
@@ -301,8 +304,10 @@ st.markdown("""
         padding: 3rem 1rem 10rem;
         max-width: 46rem;
     }
+    
 
 </style>""", unsafe_allow_html=True)
+
 
 
 
@@ -310,17 +315,7 @@ tabs_guess = tabs[0]
 
 #---------Enter Guess Tab-------------------------------------
 with tabs_guess:
-    st.markdown( """
-    <style>
-
-        .st-bd {
-            color: #EA0C0C;
-        }
-            
-
-    </style>""", unsafe_allow_html=True
-
-    )
+    
     userstouse = comp.get_competitors_names()
     users = [""]
     for i in userstouse:
@@ -328,6 +323,15 @@ with tabs_guess:
     gps = ["Abu Dhabi"]
     drivers = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC',]
     driversRICTOLAW = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'LAW',]
+    driversOrder = ['Max Verstappen - Red Bull', 'Sergio Perez - Red Bull', 'Charles Leclerc - Ferrari', 'Carlos Sainz - Ferrari', 'Lewis Hamilton - Mercedes', 'George Russell - Mercedes', 'Fernando Alonso - Aston Martin', 'Lance Stroll - Aston Martin', 'Pierre Gasly - Alpine', 'Esteban Ocon - Alpine', "Lando Norris - Mclaren", "Oscar Piastri - Mclaren", 'Kevin Magnussen - Haas', 'Nico Hulkenburg - Haas', 'Alex Albon - Williams', 'Logan Sargeant - Williams', 'Valtteri Bottas - Stake', 'Zhou Guanyu - Stake', 'Yuki Tsunoda - RB', 'Daniel Ricciardo - RB']
+    drivdict = {'Max Verstappen - Red Bull': 'VER', 'Sergio Perez - Red Bull': 'PER', 'Charles Leclerc - Ferrari': 'LEC', 'Carlos Sainz - Ferrari': 'SAI', 'Lewis Hamilton - Mercedes':'HAM', 'George Russell - Mercedes':'RUS', 'Fernando Alonso - Aston Martin':'ALO', 'Lance Stroll - Aston Martin':'STR', 'Pierre Gasly - Alpine':'GAS', 'Esteban Ocon - Alpine':'OCO',
+                "Lando Norris - Mclaren":'NOR', "Oscar Piastri - Mclaren":'PIA', 'Kevin Magnussen - Haas':'MAG', 'Nico Hulkenburg - Haas':'HUL', 'Alex Albon - Williams':'ALB', 'Logan Sargeant - Williams':'SAR', 'Valtteri Bottas - Stake':'BOT', 'Zhou Guanyu - Stake': 'ZHO', 'Yuki Tsunoda - RB': 'TSU', 'Daniel Ricciardo - RB': 'RIC'}
+
+    teams = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "McLaren", "McLaren", "Haas", "Haas", "Williams", "Williams", "Alfa Romeo", "Alfa Romeo", "Alpha Tauri", "Alpha Tauri"]
+    daf = pd.DataFrame({'drivers': driversOrder, 'abb': drivers}, columns=['drivers', 'abb'])
+
+
+
     st.header(f"Enter your guess")
     with st.form("entry_form", clear_on_submit = True):
         user = st.selectbox("Select Competitor:", users)
@@ -335,12 +339,12 @@ with tabs_guess:
         
        
         st.write("Drag and dop to reorder the drivers below (If no drivers are shown, please refresh page):")
-        col1, col2 = st.columns([2,3])
+        col1, col2 = st.columns([1,1])
         with col1:
             items = [
-                {'header': 'Drivers', 'items': drivers}
+                {'header': 'Drivers', 'items': driversOrder}
                 ]
-            sorted_items = sort_items(drivers, direction = 'vertical')
+            sorted_items = sort_items(driversOrder, direction = 'vertical')
         submitted = st.form_submit_button("Enter")
         if submitted:
                 gp_num = 0
@@ -352,8 +356,11 @@ with tabs_guess:
                 else:
                     guessList = []
                     
+                    #guessList = np.vectorize(drivdict.get)(sample)
+                    
                     for v in range(20):
-                        guessList.append(sorted_items[v])
+                        additem = drivdict.get(sorted_items[v])
+                        guessList.append(additem)
                     ##guess_concat = p1 + ", " + p2 + ", " + p3 + ", " + p4 + ", " + p5 + ", " + p6 + ", " + p7 + ", " + p8 + ", " + p9 + ", " + p10 + ", " + p11 + ", " + p12 + ", " + p13 + ", " + p14 + ", " + p15 + ", " + p16 + ", " + p17 + ", " + p18 + ", " + p19 + ", " + p20
                     guess_concat = ', '.join(guessList)
                     #print(guess_concat)
@@ -435,7 +442,7 @@ with tabs_results:
                         {'Driver': DRIVER_ORDER, 'Points': gs, 'Color': TEAM_COLOR, 'Num': DRIVER_NUM},
                         columns=['Driver', 'Points', 'Color', 'Num']
                     )
-                    df = df.sort_values(by=['Num','Points'], ascending=[False,True])
+                    df = df.sort_values(by=['Points', 'Num'], ascending=[True,False])
                     
                     fig, ax = plt.subplots()
                     bars = plt.barh(df['Driver'], df['Points'], color=df['Color'])
@@ -574,28 +581,7 @@ with tabs_manage:
 
 
 
-tabs_stats = tabs[4]
-
-#------------- Race Stats Tab -----------------------------------
-with tabs_stats:
-    st.write("coming soon!")
-
-    
-
-tabs_analysis = tabs[5]
-
-#------------ Race Analysis Tab ---------------------------------
-with tabs_analysis:
-    with st.expander("Spa Grand Prix Analysis"):
-        image = Image.open('photos/fueladjustracepagebelgium.png')
-        st.image(image)
-        image2 = Image.open('photos/tirestratbelgium.png')
-        st.image(image2, caption = 'Tire Strategy')
-        image3 = Image.open('photos/PositionChanges2023Spa.png')
-        st.image(image3, caption = 'Position Changes')
-
-
-tabs_admin = tabs[6]
+tabs_admin = tabs[4]
 
 #-------------- Admin View Tab -----------------------------------
 with tabs_admin:
