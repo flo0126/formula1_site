@@ -21,7 +21,7 @@ from deta import Deta
 
 from PIL import Image
 
-from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, JsCode # pip install streamlit-aggrid==0.2.3
+
 
 
 # Enable the cache by providing the name of the cache folder
