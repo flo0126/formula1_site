@@ -350,8 +350,9 @@ if st.session_state['user'] != 'Invalid':
         daf = pd.DataFrame({'drivers': driversOrder, 'abb': drivers}, columns=['drivers', 'abb'])
 
 
-
+        
         st.header("Enter Guess for " + st.session_state['user'])
+
         with st.form("entry_form", clear_on_submit = True):
             #user = st.selectbox("Select Competitor:", users)
             gp = st.selectbox("Select a Grand Prix:", gps)
@@ -365,6 +366,8 @@ if st.session_state['user'] != 'Invalid':
                     {'header': 'Drivers', 'items': driversOrder}
                     ]
                 sorted_items = sort_items(driversOrder, direction = 'vertical')
+                
+            
             submitted = st.form_submit_button("Enter")
             if submitted:
                     gp_num = 0
