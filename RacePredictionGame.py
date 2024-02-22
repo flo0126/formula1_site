@@ -358,11 +358,8 @@ if st.session_state['user'] != 'Invalid':
             
         
             st.write("Drag and dop to reorder the drivers below (If no drivers are shown, please refresh page):")
-            col0, col1, col2 = st.columns([1,10,12])
-            with col0:
-                st.subheader("1:")
-                st.subheader("2:")
-                st.subheader("3:")
+            col1, col2 = st.columns([12,12])
+            
             with col1:
                 items = [
                     {'header': 'Drivers', 'items': driversOrder}
