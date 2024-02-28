@@ -461,9 +461,9 @@ if st.session_state['user'] != 'Invalid':
                     gp_num = -1
                     for x in range(len(gps)):
                         if gp == gps[x]:
-                            print(x)
+                            
                             gp_num = x + (24-len(gps)) + 1
-                            print(gp_num)
+                            
                     if gp_num == -1: #removed user
                         st.error('Select a user and Grand Prix to enter a guess')
                     else:
