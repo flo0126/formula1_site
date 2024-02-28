@@ -61,7 +61,7 @@ def calculate_points(competitors, year, grand_prix):
     #calculate points for ccompetitors
     for x in competitors:
        
-        my_guess = str_to_arr(get_guess_db(x, grand_prix))
+        my_guess = str_to_arr(get_guess_db24(x, grand_prix))
         #print(my_guess)
        
         if len(my_guess) != 20:
@@ -93,8 +93,8 @@ def calculate_points(competitors, year, grand_prix):
                     print(my_guess[i] + " did not start race")
             
             print("Points for " + x + ": " + str(my_total))
-            set_points_db(x, grand_prix, my_total)
-            set_coll_points_db(x, grand_prix, points_driver_to_string(coll_points))
+            set_points_db24(x, grand_prix, my_total)
+            set_coll_points_db24(x, grand_prix, points_driver_to_string(coll_points))
 
 
 #converts guess string to array
@@ -145,15 +145,36 @@ def get_total_points_db(name):
         tot += pointsdb[i]
     return tot
 
+def get_total_points_db24(name):
+    persondb = comp.get_competitor_by_name(name)
+    
+    pointsdb = persondb["points24"]
+    
+    tot = 0
+    for i in range(len(pointsdb)):
+        tot += pointsdb[i]
+    return tot
+
 def set_guess_db(name, gp, guess):
     persondb = comp.get_competitor_by_name(name)
     guessdb = persondb["guesses"]
     guessdb[gp-1] = guess
     db.update({"guesses": guessdb}, name)
 
+def set_guess_db24(name, gp, guess):
+    persondb = comp.get_competitor_by_name(name)
+    guessdb = persondb["guesses24"]
+    guessdb[gp-1] = guess
+    db.update({"guesses24": guessdb}, name)
+
 def get_guess_db(name, gp):
     persondb = comp.get_competitor_by_name(name)
     guessdb = persondb["guesses"]
+    return guessdb[gp-1]
+
+def get_guess_db24(name, gp):
+    persondb = comp.get_competitor_by_name(name)
+    guessdb = persondb["guesses24"]
     return guessdb[gp-1]
 
 #points for 1 race for 1 person
@@ -163,10 +184,21 @@ def set_points_db(name, gp, n):
     pointsdb[gp-1] = n
     db.update({"points" : pointsdb}, name)
 
+def set_points_db24(name, gp, n):
+    persondb = comp.get_competitor_by_name(name)
+    pointsdb = persondb["points24"]
+    pointsdb[gp-1] = n
+    db.update({"points24" : pointsdb}, name)
+
 #points for 1 race for 1 person
 def get_points_db(name, gp):
     persondb = comp.get_competitor_by_name(name)
     pointsdb = persondb["points"]
+    return pointsdb[gp-1]
+
+def get_points_db24(name, gp):
+    persondb = comp.get_competitor_by_name(name)
+    pointsdb = persondb["points24"]
     return pointsdb[gp-1]
 
 def set_coll_points_db(name, gp, arr):
@@ -175,9 +207,20 @@ def set_coll_points_db(name, gp, arr):
     arrdb[gp-1] = arr
     db.update({"pointsdriver": arrdb}, name)
 
+def set_coll_points_db24(name, gp, arr):
+    persondb = comp.get_competitor_by_name(name)
+    arrdb = persondb["pointsdriver24"]
+    arrdb[gp-1] = arr
+    db.update({"pointsdriver24": arrdb}, name)
+
 def get_coll_points_db(name, gp):
     persondb = comp.get_competitor_by_name(name)
     arrdb = persondb["pointsdriver"]
+    return arrdb[gp-1]
+
+def get_coll_points_db24(name, gp):
+    persondb = comp.get_competitor_by_name(name)
+    arrdb = persondb["pointsdriver24"]
     return arrdb[gp-1]
 
 
@@ -190,11 +233,15 @@ class Competitor:
     def __init__(self, name):
         self.name = name
         self.points = np.zeros(23)
+        self.points24 = np.zeros(24)
         #s = (23)
         self.guesses = ["" for x in range(23)]
 
     def get_points(self):
         return self.points
+    
+    def get_points24(self):
+        return self.points24
     
     def set_points(self, gp, n):
         self.points[gp-1] = n
@@ -227,7 +274,8 @@ class Competition:
 
     def add_competitor(self, person):
         self.competitors.append(person)
-        return db.put({"key": person.get_name(), "points": np.array(person.get_points()).tolist(), "guesses": np.array(person.get_guesses()).tolist(), "pointsdriver": ["" for x in range(23)]})
+        return db.put({"key": person.get_name(), "points": np.array(person.get_points()).tolist(), "guesses": np.array(person.get_guesses()).tolist(), "pointsdriver": ["" for x in range(23)],
+                       "points24": np.array(person.get_points24()).tolist(), "guesses24": ["" for x in range(24)], "pointsdriver24": ["" for x in range(24)]})
         #TODO figure out solution for putting list in database
 
     def get_competitors(self):
@@ -267,6 +315,12 @@ class Competition:
         items = res.items
         points = [item["points"] for item in items]
         return points
+    
+    def get_competitors_points24(self):
+        res = db.fetch()
+        items = res.items
+        points = [item["points24"] for item in items]
+        return points
 
             
 
@@ -288,6 +342,7 @@ comp = Competition()
 
 
 
+
 #------ Frontend with streamlit ----------------------------
 
 #Set up page and title
@@ -302,6 +357,14 @@ st.markdown("""
             padding: 3rem 1rem 10rem;
             max-width: 46rem;
         }
+        .sortable-item, .sortable-item:hover {
+            margin: 5px;
+            background-color: #a65050;
+            color: #fff;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            height: 100%;
+        }
         
 
     </style>""", unsafe_allow_html=True)
@@ -310,6 +373,7 @@ if 'user' not in st.session_state:
 
 ##login
 logincont = st.empty()
+createcont = st.empty()
 amlog = False
 with logincont.form("login form"):
     #st.header("Log in")
@@ -319,12 +383,23 @@ with logincont.form("login form"):
     if submittedLogin:
         st.session_state['user'] = useSel
 
+with createcont.expander("New to the game? Create an account"):
+    competitor_name = st.text_input('Enter Your Competitor Name', '')
+    if st.button("Add New Competitor"): 
+        if competitor_name in comp.get_competitors_names():
+            st.error("Sorry, this name is taken")
+        else:
+            comp.add_competitor(Competitor(competitor_name))
+            st.session_state['user'] = competitor_name
+
+
 if st.session_state['user'] != 'Invalid':
     logincont.empty()
+    createcont.empty()
     
 
     # Set Tabs
-    tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Race Trends", "Add Competitor", "Admin View"])
+    tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Race Trends", "2023", "Admin View"])
 
     
 
@@ -339,7 +414,7 @@ if st.session_state['user'] != 'Invalid':
         #users = [""]
         #for i in userstouse:
             #users.append(i)
-        gps = ["Abu Dhabi"]
+        gps = ["Bahrain", "Saudi Arabia", "Australia", "Japan", "China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
         drivers = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC',]
         driversRICTOLAW = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'LAW',]
         driversOrder = ['Max Verstappen - Red Bull', 'Sergio Perez - Red Bull', 'Charles Leclerc - Ferrari', 'Carlos Sainz - Ferrari', 'Lewis Hamilton - Mercedes', 'George Russell - Mercedes', 'Fernando Alonso - Aston Martin', 'Lance Stroll - Aston Martin', 'Pierre Gasly - Alpine', 'Esteban Ocon - Alpine', "Lando Norris - Mclaren", "Oscar Piastri - Mclaren", 'Kevin Magnussen - Haas', 'Nico Hulkenburg - Haas', 'Alex Albon - Williams', 'Logan Sargeant - Williams', 'Valtteri Bottas - Stake', 'Zhou Guanyu - Stake', 'Yuki Tsunoda - RB', 'Daniel Ricciardo - RB']
@@ -354,6 +429,7 @@ if st.session_state['user'] != 'Invalid':
         st.header("Enter Guess for " + st.session_state['user'])
 
         with st.form("entry_form", clear_on_submit = True):
+            
             #user = st.selectbox("Select Competitor:", users)
             gp = st.selectbox("Select a Grand Prix:", gps)
             
@@ -367,14 +443,28 @@ if st.session_state['user'] != 'Invalid':
                     ]
                 sorted_items = sort_items(driversOrder, direction = 'vertical')
                 
-            
+            st.markdown("""
+            <style>
+                .sortable-item, .sortable-item:hover {
+                    margin: 5px;
+                    background-color: #a65050;
+                    color: #fff;
+                    padding-top: 3px;
+                    padding-bottom: 3px;
+                    height: 100%;
+                }
+                
+
+            </style>""", unsafe_allow_html=True)
             submitted = st.form_submit_button("Enter")
             if submitted:
-                    gp_num = 0
+                    gp_num = -1
                     for x in range(len(gps)):
                         if gp == gps[x]:
-                            gp_num = x + (23-len(gps))
-                    if gp_num == 0: #removed user
+                            
+                            gp_num = x + (24-len(gps)) + 1
+                            
+                    if gp_num == -1: #removed user
                         st.error('Select a user and Grand Prix to enter a guess')
                     else:
                         guessList = []
@@ -387,7 +477,7 @@ if st.session_state['user'] != 'Invalid':
                         ##guess_concat = p1 + ", " + p2 + ", " + p3 + ", " + p4 + ", " + p5 + ", " + p6 + ", " + p7 + ", " + p8 + ", " + p9 + ", " + p10 + ", " + p11 + ", " + p12 + ", " + p13 + ", " + p14 + ", " + p15 + ", " + p16 + ", " + p17 + ", " + p18 + ", " + p19 + ", " + p20
                         guess_concat = ', '.join(guessList)
                         #print(guess_concat)
-                        set_guess_db(st.session_state['user'], gp_num, guess_concat)
+                        set_guess_db24(st.session_state['user'], gp_num, guess_concat)
                         st.success("Guess Entered for " + st.session_state['user'] + " for the " + gp + " Grand Prix")
 
 
@@ -403,7 +493,7 @@ if st.session_state['user'] != 'Invalid':
         #users = [""]
         #for i in userstouse:
             #users.append(i)
-        gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
+        gps = ["Bahrain", "Saudi Arabia", "Australia", "Japan", "China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
         #userSelect = st.selectbox("Select Competitor:", users)
         st.header("View Results for "+ st.session_state['user'])
         gpSelect = st.selectbox("Select a Grand Prix:", gps)
@@ -412,16 +502,16 @@ if st.session_state['user'] != 'Invalid':
         gp_num = 0
         for x in range(len(gps)):
             if gpSelect == gps[x]:
-                gp_num = x + (23-len(gps))
+                gp_num = x + (24-len(gps)) + 1
         if gp_num == 0: #removed user == ''
             st.error('Select a Grand Prix to view a guess')
-        elif get_guess_db(st.session_state['user'], gp_num) == None:
+        elif get_guess_db24(st.session_state['user'], gp_num) == None:
             st.error('No guess has been entered for this Grand Prix')
         else:
             #st.write('**Points: ' + str(get_points_db(userSelect, gp_num)) + '**')
             #st.write('**Guess:**')
             col1, col2, col3 = st.columns([2,2,1])
-            gs = get_guess_db(st.session_state['user'], gp_num)
+            gs = get_guess_db24(st.session_state['user'], gp_num)
             gs = str_to_arr(gs)
             gs1 = gs[:10]
             gs2 = gs[-10:]
@@ -446,7 +536,7 @@ if st.session_state['user'] != 'Invalid':
             #users = [""]
             #for i in userstouse:
                 #users.append(i)
-        gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
+        #gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
         #userSelect = st.selectbox("Select Competitor:", users)
         #gpSelect2 = st.selectbox("Select a Grand Prix:", gps)
         
@@ -454,17 +544,17 @@ if st.session_state['user'] != 'Invalid':
         gp_num = 0
         for x in range(len(gps)):
             if gpSelect == gps[x]:
-                gp_num = x + (23-len(gps))
+                gp_num = x + (24-len(gps)) + 1
         if gp_num == 0: #removed user
             st.error('Select a Grand Prix to view a guess')
-        elif get_guess_db(st.session_state['user'], gp_num) == None or get_guess_db(st.session_state['user'], gp_num) == "":
+        elif get_guess_db24(st.session_state['user'], gp_num) == None or get_guess_db24(st.session_state['user'], gp_num) == "":
             st.error('No guess has been entered for this Grand Prix')
-        elif get_points_db(st.session_state['user'], gp_num) == 0:
+        elif get_points_db24(st.session_state['user'], gp_num) == 0:
             st.error('Sorry, points have not been calculated yet')
         else:
-            st.write('**Points: ' + str(get_points_db(st.session_state['user'], gp_num)) + '**')
+            st.write('**Points: ' + str(get_points_db24(st.session_state['user'], gp_num)) + '**')
             
-            gs = get_coll_points_db(st.session_state['user'], gp_num)
+            gs = get_coll_points_db24(st.session_state['user'], gp_num)
             gs = str_to_arr(gs)
             df = pd.DataFrame(
                 {'Driver': DRIVER_ORDER, 'Points': gs, 'Color': TEAM_COLOR, 'Num': DRIVER_NUM},
@@ -495,7 +585,7 @@ if st.session_state['user'] != 'Invalid':
         fig, ax = plt.subplots()
         
         names_plot = comp.get_competitors_names()
-        points_plot = np.sum(comp.get_competitors_points(), axis = 1)
+        points_plot = np.sum(comp.get_competitors_points24(), axis = 1)
         df = pd.DataFrame({'name': names_plot, 'points': points_plot}, columns = ['name', 'points'])
         df = df.sort_values(by=['points'], ascending=True)
         color = (0.918, 0.047, 0.047, 1)
@@ -508,34 +598,34 @@ if st.session_state['user'] != 'Invalid':
         st.pyplot(fig)
 
         st.header(f"Leaderboard per Race")
-        with st.form("res_form", clear_on_submit = False):
-            gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
-            gp = st.selectbox("Select a Grand Prix:", gps)
-            submitted = st.form_submit_button("Enter")
-            if submitted:
-                    gp_num = 0
-                    for x in range(len(gps)):
-                        if gp == gps[x]:
-                            gp_num = x + (23-len(gps))
-                    if gp_num == 0:
-                        st.error('Select a Grand Prix')
-                    else:
-                        fig, ax = plt.subplots()
+        
+        gps2 = ["Bahrain", "Saudi Arabia", "Australia", "Japan", "China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
+        gp3 = st.selectbox("Select Grand Prix:", gps2)
+        #submitted = st.form_submit_button("Enter")
+        
+        gp_num = 0
+        for x in range(len(gps)):
+            if gp3 == gps[x]:
+                gp_num = x + (24-len(gps)) + 1
+        if gp_num == 0:
+            st.error('Select a Grand Prix')
+        else:
+            fig, ax = plt.subplots()
 
-                        gpval = gp_num - 1
-                        points2 = np.array(comp.get_competitors_points())
-                        points2 = points2[:, gpval]
-                        
-                        df2 = pd.DataFrame({'name': names_plot, 'points': points2}, columns = ['name', 'points'])
-                        df2 = df2.sort_values(by=['points'], ascending=True)
-                        color = (0.918, 0.047, 0.047, 1)
-                        bars = plt.barh(df2['name'], df2['points'], color=color)
-                        plt.grid(False)
-                        plt.bar_label(bars)
-                        for spine in plt.gca().spines.values():
-                            spine.set_visible(False)
-                        plt.tick_params(left = False, right = False , labelleft = True , labelbottom = False, bottom = False)
-                        st.pyplot(fig)
+            gpval = gp_num - 1
+            points2 = np.array(comp.get_competitors_points24())
+            points2 = points2[:, gpval]
+            
+            df2 = pd.DataFrame({'name': names_plot, 'points': points2}, columns = ['name', 'points'])
+            df2 = df2.sort_values(by=['points'], ascending=True)
+            color = (0.918, 0.047, 0.047, 1)
+            bars = plt.barh(df2['name'], df2['points'], color=color)
+            plt.grid(False)
+            plt.bar_label(bars)
+            for spine in plt.gca().spines.values():
+                spine.set_visible(False)
+            plt.tick_params(left = False, right = False , labelleft = True , labelbottom = False, bottom = False)
+            st.pyplot(fig)
                         
 
     tabs_trends = tabs[3]
@@ -595,18 +685,142 @@ if st.session_state['user'] != 'Invalid':
             st.error("Sorry, not enough data yet!")
 
 
-    tabs_manage = tabs[4]
+    tabs_2023 = tabs[4]
+
+    #-----------2023 Results-------------------------------------
+    with tabs_2023:
+        st.header(f"Leaderboard")
+        fig, ax = plt.subplots()
+        
+        names_plot = comp.get_competitors_names()
+        points_plot = np.sum(comp.get_competitors_points(), axis = 1)
+        df = pd.DataFrame({'name': names_plot, 'points': points_plot}, columns = ['name', 'points'])
+        df = df.sort_values(by=['points'], ascending=True)
+        color = (0.918, 0.047, 0.047, 1)
+        bars = plt.barh(df['name'], df['points'], color=color)
+        plt.grid(False)
+        plt.bar_label(bars)
+        for spine in plt.gca().spines.values():
+            spine.set_visible(False)
+        plt.tick_params(left = False, right = False , labelleft = True , labelbottom = False, bottom = False)
+        st.pyplot(fig)
+
+        gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
+        #userSelect = st.selectbox("Select Competitor:", users)
+        st.header("View Results for "+ st.session_state['user'])
+        gpSelect2 = st.selectbox("Choose a Grand Prix:", gps)
+
+        st.subheader(gpSelect2 + " Guess")
+        gp_num = 0
+        for x in range(len(gps)):
+            if gpSelect2 == gps[x]:
+                gp_num = x + (23-len(gps))
+        if gp_num == 0: #removed user == ''
+            st.error('Select a Grand Prix to view a guess')
+        elif get_guess_db(st.session_state['user'], gp_num) == None:
+            st.error('No guess has been entered for this Grand Prix')
+        else:
+            #st.write('**Points: ' + str(get_points_db(userSelect, gp_num)) + '**')
+            #st.write('**Guess:**')
+            col1, col2, col3 = st.columns([2,2,1])
+            gs = get_guess_db(st.session_state['user'], gp_num)
+            gs = str_to_arr(gs)
+            gs1 = gs[:10]
+            gs2 = gs[-10:]
+            tick = 1
+
+
+            with col1:
+                for i in gs1:
+                    st.write(str(tick) + ': ' + str(DRIVER_DICT.get(i)))
+                    tick = tick + 1
+            tick = 11
+            with col2:
+                for i in gs2:
+                    st.write(str(tick) + ': ' + str(DRIVER_DICT.get(i)))
+                    tick = tick + 1
+
+        st.write(" -- ")
+
+        st.subheader(gpSelect2 + " Race Points")
+        
+            #userstouse = comp.get_competitors_names()
+            #users = [""]
+            #for i in userstouse:
+                #users.append(i)
+        #gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
+        #userSelect = st.selectbox("Select Competitor:", users)
+        #gpSelect2 = st.selectbox("Select a Grand Prix:", gps)
+        
+        
+        gp_num = 0
+        for x in range(len(gps)):
+            if gpSelect2 == gps[x]:
+                gp_num = x + (23-len(gps))
+        if gp_num == 0: #removed user
+            st.error('Select a Grand Prix to view a guess')
+        elif get_guess_db(st.session_state['user'], gp_num) == None or get_guess_db(st.session_state['user'], gp_num) == "":
+            st.error('No guess has been entered for this Grand Prix')
+        elif get_points_db(st.session_state['user'], gp_num) == 0:
+            st.error('Sorry, points have not been calculated yet')
+        else:
+            st.write('**Points: ' + str(get_points_db(st.session_state['user'], gp_num)) + '**')
+            
+            gs = get_coll_points_db(st.session_state['user'], gp_num)
+            gs = str_to_arr(gs)
+            df = pd.DataFrame(
+                {'Driver': DRIVER_ORDER, 'Points': gs, 'Color': TEAM_COLOR, 'Num': DRIVER_NUM},
+                columns=['Driver', 'Points', 'Color', 'Num']
+            )
+            df = df.sort_values(by=['Points', 'Num'], ascending=[True,False])
+            
+            fig, ax = plt.subplots()
+            bars = plt.barh(df['Driver'], df['Points'], color=df['Color'])
+            plt.grid(False)
+            plt.bar_label(bars)
+            for spine in plt.gca().spines.values():
+                spine.set_visible(False)
+            plt.tick_params(left = False, right = False , labelleft = True , labelbottom = False, bottom = False)
+            st.pyplot(fig)
+
+        #gp_num = 0
+        #for x in range(len(gps)):
+            #if gp == gps[x]:
+                #gp_num = x + (23-len(gps))
+        st.subheader(gpSelect2 + " Race Leaderboard")
+        if gp_num == 0:
+            st.error('Select a Grand Prix')
+        else:
+            fig, ax = plt.subplots()
+
+            gpval = gp_num - 1
+            points2 = np.array(comp.get_competitors_points())
+            points2 = points2[:, gpval]
+            
+            df2 = pd.DataFrame({'name': names_plot, 'points': points2}, columns = ['name', 'points'])
+            df2 = df2.sort_values(by=['points'], ascending=True)
+            color = (0.918, 0.047, 0.047, 1)
+            bars = plt.barh(df2['name'], df2['points'], color=color)
+            plt.grid(False)
+            plt.bar_label(bars)
+            for spine in plt.gca().spines.values():
+                spine.set_visible(False)
+            plt.tick_params(left = False, right = False , labelleft = True , labelbottom = False, bottom = False)
+            st.pyplot(fig)
+
+
+    #tabs_manage = tabs[5]
 
     #------------Manage Game Tab-----------------------------------
-    with tabs_manage:
-        competitor_name = st.text_input('Enter Competitor Name', '')
-        if st.button("Add Competitor"): 
-            if competitor_name in comp.get_competitors_names():
-                st.error("Sorry, this name is taken")
-            else:
-                comp.add_competitor(Competitor(competitor_name))
-                st.success("Competitor Added, Refresh Page to See Competitor")
-                #st.write(str(comp.get_competitors_names()))
+    #with tabs_manage:
+    #    competitor_name = st.text_input('Enter Competitor Name', '')
+    #    if st.button("Add Competitor"): 
+    #        if competitor_name in comp.get_competitors_names():
+    #            st.error("Sorry, this name is taken")
+    #        else:
+    #            comp.add_competitor(Competitor(competitor_name))
+    #            st.success("Competitor Added, Refresh Page to See Competitor")
+    #            #st.write(str(comp.get_competitors_names()))
 
 
 
@@ -619,16 +833,16 @@ if st.session_state['user'] != 'Invalid':
         if admin_enter == ADMIN_PASS:
             st.header("Calculate Points")
             with st.form("admin_form",clear_on_submit = False):
-                gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
+                gps = ["Bahrain", "Saudi Arabia", "Australia", "Japan", "China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
                 gp = st.selectbox("Select a Grand Prix:", gps)
                 submitted = st.form_submit_button("Enter")
                 if submitted:
                     gp_num = 0
                     for x in range(len(gps)):
                         if gp == gps[x]:
-                            gp_num = x + (23-len(gps))
+                            gp_num = x + (24-len(gps)) + 1
                     try:
-                        calculate_points(comp.get_competitors_names(), 2023, gp_num)
+                        calculate_points(comp.get_competitors_names(), 2024, gp_num)
                         st.success("all done")
                     except:
                         st.error("Something went wrong")
