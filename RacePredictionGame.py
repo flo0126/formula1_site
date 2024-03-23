@@ -34,10 +34,12 @@ deta = Deta(DETA_KEY)
 db = deta.Base("competitors_db")
 
 DRIVER_ORDER = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC', 'DEV']
+DRIVER_ORDERnodev = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC']
 TEAM_COLOR_RGB = [(0.078, 0.122, 0.702, 1), (0.078, 0.122, 0.702, 1), (1, 0.008, 0.008, 1), (1, 0.008, 0.008, 1), (0.4, 0.929, 0.929, 1), (0.4, 0.929, 0.929, 1), (0.059, 0.451, 0.251, 1), (0.059, 0.451, 0.251, 1), (1, 0.341, 0.827,1), (1, 0.341, 0.827, 1), (1, 0.494, 0, 1), (1, 0.494, 0, 1),
               (0.612, 0.612, 0.612, 1), (0.612, 0.612, 0.612, 1), (0.251, 0.439, 1, 1), (0.251, 0.439, 1, 1), (0, 0.91, 0.078, 1), (0, 0.91, 0.078, 1), (0, 0.012, 1, 1), (0, 0.012, 1, 1), (0, 0.012, 1, 1) ]
 TEAM_COLOR = ['darkblue', 'darkblue', 'red', 'red', 'turquoise', 'turquoise', 'seagreen', 'seagreen', 'hotpink', 'hotpink', 'darkorange', 'darkorange', 'silver', 'silver', 'royalblue', 'royalblue', 'lime', 'lime', 'blue', 'blue', 'blue']
 TEAM_ORDER = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "McLaren", "McLaren", "Haas", "Haas", "Williams", "Williams", "Alfa Romeo", "Alfa Romeo", "Alpha Tauri", "Alpha Tauri","Alpha Tauri"]
+TEAM_ORDERnodev = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "McLaren", "McLaren", "Haas", "Haas", "Williams", "Williams", "Sauber", "Sauber", "RB", "RB"]
 DRIVER_NUM = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]
 DRIVER_DICT = { 'VER':'Max Verstappen - Red Bull', 'PER': 'Sergio Perez - Red Bull', 'LEC':'Charles Leclerc - Ferrari' , 'SAI':'Carlos Sainz - Ferrari' , 'HAM': 'Lewis Hamilton - Mercedes', 'RUS':'George Russell - Mercedes', 'ALO':'Fernando Alonso - Aston Martin', 'STR':'Lance Stroll - Aston Martin', 'GAS':'Pierre Gasly - Alpine', 'OCO':'Esteban Ocon - Alpine',
                 'NOR':"Lando Norris - Mclaren", 'PIA':"Oscar Piastri - Mclaren", 'MAG':'Kevin Magnussen - Haas', 'HUL':'Nico Hulkenburg - Haas', 'ALB':'Alex Albon - Williams', 'SAR':'Logan Sargeant - Williams', 'BOT':'Valtteri Bottas - Stake', 'ZHO':'Zhou Guanyu - Stake', 'TSU':'Yuki Tsunoda - RB' , 'RIC':'Daniel Ricciardo - RB' , 'DEV':'Nyck Devries - RB' }
@@ -647,25 +649,29 @@ if st.session_state['user'] != 'Invalid':
         #for i in userstouse:
             #users.append(i)
         #userSelect = st.selectbox("Select Competitor:", users)
-        gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
-    
+        #gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
+        gps = ["Bahrain", "Saudi Arabia", "Australia", "Japan", "China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
         
     
-        data = np.array([TEAM_ORDER, DRIVER_ORDER])
+        data = np.array([TEAM_ORDERnodev, DRIVER_ORDERnodev])
         data = data.transpose()
         df = pd.DataFrame(
             data,
             columns=['Team', 'Driver']
         )
         arr = []
-        xarr = [1,2,3,4,5,6,7,8,9,10,11,12,13]
-        for i in range(10,23):
-            if get_points_db(st.session_state['user'], i) != 0:
-                ppd = get_coll_points_db(st.session_state['user'], i)
+        #xarr = [1,2,3,4,5,6,7,8,9,10,11,12,13]
+        xarr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
+        for i in range(1,24):
+            if get_points_db24(st.session_state['user'], i) != 0:
+                ppd = get_coll_points_db24(st.session_state['user'], i)
                 ppd = str_to_arr(ppd)
+                
+                ppd.pop() #remove last one bc only 20 drivers
+
                 ppd = list(map(int,ppd))
                 arr.append(ppd)
-                
+        
         
         if len(arr) > 1:
             arr = [list(i) for i in zip(*arr)]
@@ -678,10 +684,10 @@ if st.session_state['user'] != 'Invalid':
             for ind in range(len(arr)):
                 driv = df['Driver'][ind]
                 color =  ""
-                if driv == 'RIC':
-                    color =  ff1.plotting.driver_color('DEV')
-                else:
-                    color = ff1.plotting.driver_color(driv)
+                #if driv == 'RIC':
+                    #color =  ff1.plotting.driver_color('DEV')
+                #else:
+                color = ff1.plotting.driver_color(driv)
                 ax.plot(gps[:len(arr[ind])], arr[ind], label = driv, color = color,)
             ax.legend(bbox_to_anchor=(1.0, 1.02))
             plt.xticks(rotation=90)
