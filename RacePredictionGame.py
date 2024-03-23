@@ -55,8 +55,13 @@ def calculate_points(competitors, year, grand_prix):
     #laps = session.laps
     results = session.results
     results = results[["Abbreviation", "ClassifiedPosition"]]
+    print(results)
+    #abshere = ['VER', 'PER', 'LEC', 'PIA', 'ALO', 'RUS', 'BEA', 'NOR', 'HAM', 'HUL', 'ALB', 'MAG', 'OCO', 'SAR', 'TSU', 'RIC', 'BOT', 'ZHO', 'STR', 'GAS']
+    #cp = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+
+    #results = pd.DataFrame({'Abbreviation': abshere, "ClassifiedPosition": cp}, columns=['Abbreviation', "ClassifiedPosition"])
     
-    #print(results)
+    
    
     #calculate points for ccompetitors
     for x in competitors:
@@ -73,6 +78,8 @@ def calculate_points(competitors, year, grand_prix):
             for i in range(20):
                 try:
                     curr_row = results.loc[results["Abbreviation"] == my_guess[i]]
+                    #if my_guess[i] == 'SAI':
+                        #curr_row = results.loc[results["Abbreviation"] == 'BEA']
                     curr_pos = curr_row.iat[0,1]
                     act_pos = i + 1
                     points = 0
@@ -335,7 +342,7 @@ comp = Competition()
 
 #set_guess_db('Abigail', 20, "LEC, NOR, PIA, SAI, HAM, OCO, RIC, RUS, PER, TSU, GAS, ALO, HUL, BOT, ALB, MAG, SAR, ZHO, STR, VER")
 
-#calculate_points(comp.get_competitors_names(), 2023, 21)
+#calculate_points(comp.get_competitors_names(), 2024, 2)
 
 
 
@@ -414,7 +421,7 @@ if st.session_state['user'] != 'Invalid':
         #users = [""]
         #for i in userstouse:
             #users.append(i)
-        gps = ["Australia", "Japan", "China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
+        gps = ["Japan", "China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
         drivers = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC',]
         driversRICTOLAW = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'LAW',]
         driversOrder = ['Max Verstappen - Red Bull', 'Sergio Perez - Red Bull', 'Charles Leclerc - Ferrari', 'Carlos Sainz - Ferrari', 'Lewis Hamilton - Mercedes', 'George Russell - Mercedes', 'Fernando Alonso - Aston Martin', 'Lance Stroll - Aston Martin', 'Pierre Gasly - Alpine', 'Esteban Ocon - Alpine', "Lando Norris - Mclaren", "Oscar Piastri - Mclaren", 'Kevin Magnussen - Haas', 'Nico Hulkenburg - Haas', 'Alex Albon - Williams', 'Logan Sargeant - Williams', 'Valtteri Bottas - Stake', 'Zhou Guanyu - Stake', 'Yuki Tsunoda - RB', 'Daniel Ricciardo - RB']
