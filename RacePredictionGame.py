@@ -447,15 +447,18 @@ if st.session_state['user'] != 'Invalid':
             gp = st.selectbox("Select a Grand Prix:", gps)
             
         
-            #st.write("Drag and dop to reorder the drivers below (If no drivers are shown, please refresh page):")
+            st.write("Drag and dop to reorder the drivers below (If no drivers are shown, please refresh page):")
             col1, col2 = st.columns([10,12])
             
             with col1:
-                st.write("Drag and dop to reorder the drivers below (If no drivers are shown, please refresh page):")
+                im2 = Image.open('photos/raceorder.png')
+                st.image(im2)
+                #st.write("Drag and dop to reorder the drivers below (If no drivers are shown, please refresh page):")
                 #si1 = sort_items(['a','b','c','d'], direction='vertical')
                 #items = [
                     #{'header': 'Drivers', 'items': driversOrder}
                     #]
+                
                 sorted_items = sort_items(driversOrder2, direction = 'vertical')
                 
             
