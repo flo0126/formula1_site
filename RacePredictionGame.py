@@ -452,19 +452,19 @@ if st.session_state['user'] != 'Invalid':
                     ]
                 sorted_items = sort_items(driversOrder, direction = 'vertical')
                 
-            st.markdown("""
-            <style>
-                .sortable-item, .sortable-item:hover {
-                    margin: 5px;
-                    background-color: #a65050;
-                    color: #fff;
-                    padding-top: 3px;
-                    padding-bottom: 3px;
-                    height: 100%;
-                }
+            #st.markdown("""
+            #<style>
+                #.sortable-item, .sortable-item:hover {
+                #    margin: 5px;
+                #    background-color: #a65050;
+                #    color: #fff;
+                #    padding-top: 3px;
+                #    padding-bottom: 3px;
+                #    height: 100%;
+                #}
                 
 
-            </style>""", unsafe_allow_html=True)
+            #</style>""", unsafe_allow_html=True)
             submitted = st.form_submit_button("Enter")
             if submitted:
                     gp_num = -1
