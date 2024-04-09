@@ -463,7 +463,7 @@ if st.session_state['user'] != 'Invalid':
                     #{'header': 'Drivers', 'items': driversOrder}
                     #]
                 
-                sorted_items = sort_items(['Max Verstappen', 'Sergio Perez', 'Charles Leclerc', 'Carlos Sainz', 'Lewis Hamilton', 'George Russell', 'Fernando Alonso', 'Lance Stroll', 'Pierre Gasly', 'Esteban Ocon', "Lando Norris", "Oscar Piastri", 'Kevin Magnussen', 'Nico Hulkenburg', 'Alex Albon', 'Logan Sargeant', 'Valtteri Bottas', 'Zhou Guanyu', 'Yuki Tsunoda', 'Daniel Ricciardo'], direction = 'vertical')
+                sorted_items = sort_items(driversOrder2, direction = 'vertical')
                 
             
             
