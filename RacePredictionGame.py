@@ -444,7 +444,7 @@ if st.session_state['user'] != 'Invalid':
             
         
             st.write("Drag and dop to reorder the drivers below (If no drivers are shown, please refresh page):")
-            col1, col2 = st.columns([12,12])
+            col1, col2 = st.columns([10,12])
             
             with col1:
                 items = [
