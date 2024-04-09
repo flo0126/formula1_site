@@ -359,21 +359,15 @@ st.set_page_config(page_title='Formula 1 Race Predictions',page_icon = ':racing_
 #st.title('F1 Predictions' + " " + ':racing_car:')
 im = Image.open('photos/f1predictions.png')
 st.image(im)
+#max-width: 46rem;
 st.markdown("""
     <style>
         .st-emotion-cache-1y4p8pa {
             width: 100%;
             padding: 3rem 1rem 10rem;
-            max-width: 46rem;
         }
-        .sortable-item, .sortable-item:hover {
-            margin: 5px;
-            background-color: #a65050;
-            color: #fff;
-            padding-top: 3px;
-            padding-bottom: 3px;
-            height: 100%;
-        }
+        
+        
         
 
     </style>""", unsafe_allow_html=True)
@@ -452,23 +446,8 @@ if st.session_state['user'] != 'Invalid':
                     ]
                 sorted_items = sort_items(driversOrder, direction = 'vertical')
                 
-            #.sortable-item, .sortable-item:hover {
-                #    margin: 5px;
-                #    background-color: #a65050;
-                #    color: #fff;
-                #    padding-top: 3px;
-                #    padding-bottom: 3px;
-                #    height: 100%;
-                #}
-            st.markdown("""
-            <style>
-                .appview-container .main .block-container{{
-                    padding-top: {padding_top}rem;
-                    padding-right: {padding_right}rem;
-                    padding-left: {padding_left}rem;    }}
-                
-
-            </style>""", unsafe_allow_html=True)
+            
+            
             submitted = st.form_submit_button("Enter")
             if submitted:
                     gp_num = -1
