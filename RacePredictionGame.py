@@ -359,13 +359,14 @@ st.set_page_config(page_title='Formula 1 Race Predictions',page_icon = ':racing_
 #st.title('F1 Predictions' + " " + ':racing_car:')
 im = Image.open('photos/f1predictions.png')
 st.image(im)
-#max-width: 46rem;
-#st.markdown("""
-#    <style>
-#        .st-emotion-cache-1y4p8pa {
-#            width: 100%;
-#            padding: 3rem 1rem 10rem;
-#        }
+
+st.markdown("""
+    <style>
+        .st-emotion-cache-1y4p8pa {
+            width: 100%;
+            padding: 3rem 1rem 10rem;
+            max-width: 55rem;
+        }
         
         
         
