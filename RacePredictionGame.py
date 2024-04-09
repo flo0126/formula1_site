@@ -451,8 +451,6 @@ if st.session_state['user'] != 'Invalid':
             col1, col2 = st.columns([10,12])
             
             with col1:
-                im2 = Image.open('photos/raceorder.png')
-                st.image(im2)
                 #st.write("Drag and dop to reorder the drivers below (If no drivers are shown, please refresh page):")
                 #si1 = sort_items(['a','b','c','d'], direction='vertical')
                 #items = [
