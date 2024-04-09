@@ -450,7 +450,7 @@ if st.session_state['user'] != 'Invalid':
             st.write("Drag and dop to reorder the drivers below (If no drivers are shown, please refresh page):")
             col1, col2 = st.columns([10,12])
             
-            #with col1:
+            with col1:
                 
                 #gp = st.selectbox("Select a Grand Prix:", gps)
             
@@ -463,7 +463,7 @@ if st.session_state['user'] != 'Invalid':
                     #{'header': 'Drivers', 'items': driversOrder}
                     #]
                 
-            sorted_items = sort_items(driversOrder2, direction = 'vertical')
+                sorted_items = sort_items(driversOrder2, direction = 'vertical')
                 
             
             
