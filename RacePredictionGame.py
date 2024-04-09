@@ -452,9 +452,7 @@ if st.session_state['user'] != 'Invalid':
                     ]
                 sorted_items = sort_items(driversOrder, direction = 'vertical')
                 
-            #st.markdown("""
-            #<style>
-                #.sortable-item, .sortable-item:hover {
+            #.sortable-item, .sortable-item:hover {
                 #    margin: 5px;
                 #    background-color: #a65050;
                 #    color: #fff;
@@ -462,9 +460,15 @@ if st.session_state['user'] != 'Invalid':
                 #    padding-bottom: 3px;
                 #    height: 100%;
                 #}
+            st.markdown("""
+            <style>
+                .appview-container .main .block-container{{
+                    padding-top: {padding_top}rem;
+                    padding-right: {padding_right}rem;
+                    padding-left: {padding_left}rem;    }}
                 
 
-            #</style>""", unsafe_allow_html=True)
+            </style>""", unsafe_allow_html=True)
             submitted = st.form_submit_button("Enter")
             if submitted:
                     gp_num = -1
