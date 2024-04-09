@@ -419,11 +419,20 @@ if st.session_state['user'] != 'Invalid':
         #for i in userstouse:
             #users.append(i)
         gps = ["China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
+        
+        #drivers abbreviation
         drivers = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC',]
         driversRICTOLAW = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'LAW',]
+        
+        #drivers with teams
         driversOrder = ['Max Verstappen - Red Bull', 'Sergio Perez - Red Bull', 'Charles Leclerc - Ferrari', 'Carlos Sainz - Ferrari', 'Lewis Hamilton - Mercedes', 'George Russell - Mercedes', 'Fernando Alonso - Aston Martin', 'Lance Stroll - Aston Martin', 'Pierre Gasly - Alpine', 'Esteban Ocon - Alpine', "Lando Norris - Mclaren", "Oscar Piastri - Mclaren", 'Kevin Magnussen - Haas', 'Nico Hulkenburg - Haas', 'Alex Albon - Williams', 'Logan Sargeant - Williams', 'Valtteri Bottas - Stake', 'Zhou Guanyu - Stake', 'Yuki Tsunoda - RB', 'Daniel Ricciardo - RB']
         drivdict = {'Max Verstappen - Red Bull': 'VER', 'Sergio Perez - Red Bull': 'PER', 'Charles Leclerc - Ferrari': 'LEC', 'Carlos Sainz - Ferrari': 'SAI', 'Lewis Hamilton - Mercedes':'HAM', 'George Russell - Mercedes':'RUS', 'Fernando Alonso - Aston Martin':'ALO', 'Lance Stroll - Aston Martin':'STR', 'Pierre Gasly - Alpine':'GAS', 'Esteban Ocon - Alpine':'OCO',
                     "Lando Norris - Mclaren":'NOR', "Oscar Piastri - Mclaren":'PIA', 'Kevin Magnussen - Haas':'MAG', 'Nico Hulkenburg - Haas':'HUL', 'Alex Albon - Williams':'ALB', 'Logan Sargeant - Williams':'SAR', 'Valtteri Bottas - Stake':'BOT', 'Zhou Guanyu - Stake': 'ZHO', 'Yuki Tsunoda - RB': 'TSU', 'Daniel Ricciardo - RB': 'RIC'}
+
+        #without teams
+        driversOrder2 = ['Max Verstappen', 'Sergio Perez', 'Charles Leclerc', 'Carlos Sainz', 'Lewis Hamilton', 'George Russell', 'Fernando Alonso', 'Lance Stroll', 'Pierre Gasly', 'Esteban Ocon', "Lando Norris", "Oscar Piastri", 'Kevin Magnussen', 'Nico Hulkenburg', 'Alex Albon', 'Logan Sargeant', 'Valtteri Bottas', 'Zhou Guanyu', 'Yuki Tsunoda', 'Daniel Ricciardo']
+        drivdict2 = {'Max Verstappen': 'VER', 'Sergio Perez': 'PER', 'Charles Leclerc': 'LEC', 'Carlos Sainz': 'SAI', 'Lewis Hamilton':'HAM', 'George Russell':'RUS', 'Fernando Alonso':'ALO', 'Lance Stroll':'STR', 'Pierre Gasly':'GAS', 'Esteban Ocon':'OCO',
+                    "Lando Norris":'NOR', "Oscar Piastri":'PIA', 'Kevin Magnussen':'MAG', 'Nico Hulkenburg':'HUL', 'Alex Albon':'ALB', 'Logan Sargeant':'SAR', 'Valtteri Bottas':'BOT', 'Zhou Guanyu': 'ZHO', 'Yuki Tsunoda': 'TSU', 'Daniel Ricciardo': 'RIC'}
 
         teams = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "McLaren", "McLaren", "Haas", "Haas", "Williams", "Williams", "Alfa Romeo", "Alfa Romeo", "Alpha Tauri", "Alpha Tauri"]
         daf = pd.DataFrame({'drivers': driversOrder, 'abb': drivers}, columns=['drivers', 'abb'])
@@ -442,11 +451,11 @@ if st.session_state['user'] != 'Invalid':
             col1, col2 = st.columns([10,12])
             
             with col1:
-                si1 = sort_items(['a','b','c','d'], direction='vertical')
-                items = [
-                    {'header': 'Drivers', 'items': driversOrder}
-                    ]
-                sorted_items = sort_items(driversOrder, direction = 'vertical')
+                #si1 = sort_items(['a','b','c','d'], direction='vertical')
+                #items = [
+                    #{'header': 'Drivers', 'items': driversOrder}
+                    #]
+                sorted_items = sort_items(driversOrder2, direction = 'vertical')
                 
             
             
@@ -466,7 +475,7 @@ if st.session_state['user'] != 'Invalid':
                         #guessList = np.vectorize(drivdict.get)(sample)
                         
                         for v in range(20):
-                            additem = drivdict.get(sorted_items[v])
+                            additem = drivdict2.get(sorted_items[v])
                             guessList.append(additem)
                         ##guess_concat = p1 + ", " + p2 + ", " + p3 + ", " + p4 + ", " + p5 + ", " + p6 + ", " + p7 + ", " + p8 + ", " + p9 + ", " + p10 + ", " + p11 + ", " + p12 + ", " + p13 + ", " + p14 + ", " + p15 + ", " + p16 + ", " + p17 + ", " + p18 + ", " + p19 + ", " + p20
                         guess_concat = ', '.join(guessList)
