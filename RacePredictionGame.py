@@ -440,6 +440,7 @@ if st.session_state['user'] != 'Invalid':
 
         
         st.header("Enter Guess for " + st.session_state['user'])
+        sorted_items2 = sort_items(driversOrder2, direction = 'vertical')
 
         with st.form("entry_form", clear_on_submit = False):
             
