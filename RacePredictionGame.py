@@ -32,6 +32,7 @@ ff1.Cache.enable_cache('cache')
 DETA_KEY = "b0c6conepbn_sCXCz4BFP3tTzQbqRvoWT55PjD33V8hJ"
 deta = Deta(DETA_KEY)
 db = deta.Base("competitors_db")
+rrdb = deta.Base("raceround_db")
 
 DRIVER_ORDER = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC', 'DEV']
 DRIVER_ORDERnodev = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC']
@@ -141,7 +142,14 @@ def points_driver_to_string(arr):
     return ', '.join(str(v) for v in arr)
 
 #------DATABASE-METHODS------
+def get_round_db():
+    cf = rrdb.fetch()
+    r = cf.items
+    round = [item["round"] for item in r]
+    return round[0]
 
+def set_round_db(round):
+    rrdb.update({"round": round}, "current round")
 
 #points for all races for 1 person  
 def get_total_points_db(name):
@@ -345,6 +353,7 @@ comp = Competition()
 #set_guess_db('Abigail', 20, "LEC, NOR, PIA, SAI, HAM, OCO, RIC, RUS, PER, TSU, GAS, ALO, HUL, BOT, ALB, MAG, SAR, ZHO, STR, VER")
 
 #calculate_points(comp.get_competitors_names(), 2024, 2)
+#rrdb.put({"key": "current round", "round": 5})
 
 
 
@@ -419,7 +428,8 @@ if st.session_state['user'] != 'Invalid':
         #for i in userstouse:
             #users.append(i)
         gps = ["China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
-        
+        allGps = ["Bahrain", "Saudi Arabia", "Australia", "Japan", "China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
+
         #drivers abbreviation
         drivers = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC',]
         driversRICTOLAW = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'LAW',]
@@ -437,21 +447,24 @@ if st.session_state['user'] != 'Invalid':
         teams = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "McLaren", "McLaren", "Haas", "Haas", "Williams", "Williams", "Alfa Romeo", "Alfa Romeo", "Alpha Tauri", "Alpha Tauri"]
         daf = pd.DataFrame({'drivers': driversOrder, 'abb': drivers}, columns=['drivers', 'abb'])
 
-
+        round = get_round_db()
         
         st.header("Enter Guess for " + st.session_state['user'])
-        sorted_items2 = sort_items(driversOrder2, direction = 'vertical')
+        st.subheader("Round "+ str(round) + ": " + allGps[round-1])
 
-        with st.form("entry_form", clear_on_submit = False):
+        #sorted_items2 = sort_items(driversOrder2, direction = 'vertical')
+
+        #with st.form("entry_form", clear_on_submit = False):
             
             
-            gp = st.selectbox("Select a Grand Prix:", gps)
+            #gp = st.selectbox("Select a Grand Prix:", gps)
+            
             
         
-            st.write("Drag and dop to reorder the drivers below (If no drivers are shown, please refresh page):")
-            col1, col2 = st.columns([10,12])
+        st.write("Drag and dop to reorder the drivers below (If no drivers are shown, please refresh page):")
+        col1, col2 = st.columns([10,12])
             
-            with col1:
+        with col1:
                 
                 #gp = st.selectbox("Select a Grand Prix:", gps)
             
@@ -464,33 +477,33 @@ if st.session_state['user'] != 'Invalid':
                     #{'header': 'Drivers', 'items': driversOrder}
                     #]
                 
-                sorted_items = sort_items(driversOrder2, direction = 'vertical')
+            sorted_items = sort_items(driversOrder2, direction = 'vertical')
                 
             
             
-            submitted = st.form_submit_button("Enter")
-            if submitted:
-                    gp_num = -1
-                    for x in range(len(gps)):
-                        if gp == gps[x]:
-                            
-                            gp_num = x + (24-len(gps)) + 1
-                            
-                    if gp_num == -1: #removed user
-                        st.error('Select a user and Grand Prix to enter a guess')
-                    else:
-                        guessList = []
+        submitted = st.button("Enter")
+        if submitted:
+                gp_num = round
+                #for x in range(len(gps)):
+                #    if gp == gps[x]:
+                #        
+                #        gp_num = x + (24-len(gps)) + 1
                         
-                        #guessList = np.vectorize(drivdict.get)(sample)
-                        
-                        for v in range(20):
-                            additem = drivdict2.get(sorted_items[v])
-                            guessList.append(additem)
-                        ##guess_concat = p1 + ", " + p2 + ", " + p3 + ", " + p4 + ", " + p5 + ", " + p6 + ", " + p7 + ", " + p8 + ", " + p9 + ", " + p10 + ", " + p11 + ", " + p12 + ", " + p13 + ", " + p14 + ", " + p15 + ", " + p16 + ", " + p17 + ", " + p18 + ", " + p19 + ", " + p20
-                        guess_concat = ', '.join(guessList)
-                        #print(guess_concat)
-                        set_guess_db24(st.session_state['user'], gp_num, guess_concat)
-                        st.success("Guess Entered for " + st.session_state['user'] + " for the " + gp + " Grand Prix")
+                if gp_num == -1: #removed user
+                    st.error('Select a user and Grand Prix to enter a guess')
+                else:
+                    guessList = []
+                    
+                    #guessList = np.vectorize(drivdict.get)(sample)
+                    
+                    for v in range(20):
+                        additem = drivdict2.get(sorted_items[v])
+                        guessList.append(additem)
+                    ##guess_concat = p1 + ", " + p2 + ", " + p3 + ", " + p4 + ", " + p5 + ", " + p6 + ", " + p7 + ", " + p8 + ", " + p9 + ", " + p10 + ", " + p11 + ", " + p12 + ", " + p13 + ", " + p14 + ", " + p15 + ", " + p16 + ", " + p17 + ", " + p18 + ", " + p19 + ", " + p20
+                    guess_concat = ', '.join(guessList)
+                    #print(guess_concat)
+                    set_guess_db24(st.session_state['user'], gp_num, guess_concat)
+                    st.success("Guess Entered for " + st.session_state['user'] + " for the " + allGps[round-1] + " Grand Prix")
 
 
 
@@ -508,7 +521,11 @@ if st.session_state['user'] != 'Invalid':
         gps = ["Bahrain", "Saudi Arabia", "Australia", "Japan", "China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
         #userSelect = st.selectbox("Select Competitor:", users)
         st.header("View Results for "+ st.session_state['user'])
-        gpSelect = st.selectbox("Select a Grand Prix:", gps)
+        round = get_round_db()
+        index = 0
+        if round > 2:
+            index = round - 2
+        gpSelect = st.selectbox("Select a Grand Prix:", gps, index=index)
 
         st.subheader(gpSelect + " Guess")
         gp_num = 0
@@ -611,8 +628,13 @@ if st.session_state['user'] != 'Invalid':
 
         st.header(f"Leaderboard per Race")
         
+        
         gps2 = ["Bahrain", "Saudi Arabia", "Australia", "Japan", "China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
-        gp3 = st.selectbox("Select Grand Prix:", gps2)
+        round = get_round_db()
+        index = 0
+        if round > 2:
+            index = round - 2
+        gp3 = st.selectbox("Select Grand Prix:", gps2, index=index)
         #submitted = st.form_submit_button("Enter")
         
         gp_num = 0
@@ -862,6 +884,21 @@ if st.session_state['user'] != 'Invalid':
                         st.success("all done")
                     except:
                         st.error("Something went wrong")
+            st.header("Change Round")
+            with st.form("admin_form_round", clear_on_submit = False):
+                curr = get_round_db()
+                gps = ["Bahrain", "Saudi Arabia", "Australia", "Japan", "China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
+                #st.write("Current Round: " + gps[curr - 1])
+                round = st.selectbox("Select Current Round:", gps)
+                submitted = st.form_submit_button("Enter")
+                if submitted:
+                    gp_num = 0
+                    for x in range(len(gps)):
+                        if round == gps[x]:
+                            gp_num = x + (24-len(gps)) + 1
+                            set_round_db(gp_num)
+                            st.success("round changed to "+ gps[gp_num - 1])
+
 
         else:
             st.error("Please enter correct password")
