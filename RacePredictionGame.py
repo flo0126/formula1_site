@@ -466,6 +466,7 @@ if st.session_state['user'] != 'Invalid':
             
         with col1:
             sitems = sort_items(driversOrder2, direction="vertical")
+            
                 
                 #gp = st.selectbox("Select a Grand Prix:", gps)
             
@@ -505,7 +506,7 @@ if st.session_state['user'] != 'Invalid':
                     #print(guess_concat)
                     set_guess_db24(st.session_state['user'], gp_num, guess_concat)
                     st.success("Guess Entered for " + st.session_state['user'] + " for the " + allGps[round-1] + " Grand Prix")
-
+        s = sort_items([], direction="vertical")
 
 
 
