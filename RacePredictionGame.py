@@ -465,7 +465,7 @@ if st.session_state['user'] != 'Invalid':
         col1, col2 = st.columns([10,12])
             
         with col1:
-            items = sort_items(driversOrder2, direction="vertical")
+            sitems = sort_items(driversOrder2, direction="vertical")
                 
                 #gp = st.selectbox("Select a Grand Prix:", gps)
             
@@ -498,7 +498,7 @@ if st.session_state['user'] != 'Invalid':
                     #guessList = np.vectorize(drivdict.get)(sample)
                     
                     for v in range(20):
-                        additem = drivdict2.get(sorted_items[v])
+                        additem = drivdict2.get(sitems[v])
                         guessList.append(additem)
                     ##guess_concat = p1 + ", " + p2 + ", " + p3 + ", " + p4 + ", " + p5 + ", " + p6 + ", " + p7 + ", " + p8 + ", " + p9 + ", " + p10 + ", " + p11 + ", " + p12 + ", " + p13 + ", " + p14 + ", " + p15 + ", " + p16 + ", " + p17 + ", " + p18 + ", " + p19 + ", " + p20
                     guess_concat = ', '.join(guessList)
