@@ -465,6 +465,7 @@ if st.session_state['user'] != 'Invalid':
         col1, col2 = st.columns([10,12])
             
         with col1:
+            items = sort_items(driversOrder2, direction="vertical")
                 
                 #gp = st.selectbox("Select a Grand Prix:", gps)
             
@@ -477,7 +478,7 @@ if st.session_state['user'] != 'Invalid':
                     #{'header': 'Drivers', 'items': driversOrder}
                     #]
                 
-            sorted_items = sort_items(driversOrder2, direction = 'vertical')
+            #sorted_items = sort_items(driversOrder2, direction = 'vertical')
                 
             
             
