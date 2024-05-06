@@ -596,7 +596,7 @@ if st.session_state['user'] != 'Invalid':
             fig, ax = plt.subplots()
             bars = plt.barh(df['Driver'], df['Points'], color=df['Color'])
             plt.grid(False)
-            plt.bar_label(bars)
+            #plt.bar_label(bars)
             for spine in plt.gca().spines.values():
                 spine.set_visible(False)
             plt.tick_params(left = False, right = False , labelleft = True , labelbottom = False, bottom = False)
