@@ -57,7 +57,7 @@ ax.legend()
 
 plt.suptitle("Fuel Adjusted Race Pace Comparison: " + grand_prix)
 
-plt.savefig("fueladjustracepagebelgium.png")
+plt.savefig("photos/fueladjustracepagebelgium.png")
 
 
 fig, ax = plt.subplots(figsize = (6, 2))
@@ -88,4 +88,4 @@ ax.invert_yaxis()
 #plt.show()
 
 
-plt.savefig("tirestratbelgium.png")
+plt.savefig("photos/tirestratbelgium.png")

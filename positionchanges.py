@@ -41,6 +41,6 @@ ax.legend(bbox_to_anchor=(1.0, 1.02))
 plt.tight_layout()
 #plt.suptitle("Position Changes: " + grand_prix)
 
-plot_filename = f"PositionChanges2023Spa.png"
+plot_filename = f"photos/PositionChanges2023Spa.png"
 plt.savefig(plot_filename)
 plt.show()
