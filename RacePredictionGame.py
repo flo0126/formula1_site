@@ -34,7 +34,7 @@ deta = Deta(DETA_KEY)
 db = deta.Base("competitors_db")
 rrdb = deta.Base("raceround_db")
 
-DRIVER_ORDER = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC', 'DEV']
+DRIVER_ORDER = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'COL', 'BOT', 'ZHO',  'TSU', 'RIC', 'DEV',]
 DRIVER_ORDERnodev = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC']
 TEAM_COLOR_RGB = [(0.078, 0.122, 0.702, 1), (0.078, 0.122, 0.702, 1), (1, 0.008, 0.008, 1), (1, 0.008, 0.008, 1), (0.4, 0.929, 0.929, 1), (0.4, 0.929, 0.929, 1), (0.059, 0.451, 0.251, 1), (0.059, 0.451, 0.251, 1), (1, 0.341, 0.827,1), (1, 0.341, 0.827, 1), (1, 0.494, 0, 1), (1, 0.494, 0, 1),
               (0.612, 0.612, 0.612, 1), (0.612, 0.612, 0.612, 1), (0.251, 0.439, 1, 1), (0.251, 0.439, 1, 1), (0, 0.91, 0.078, 1), (0, 0.91, 0.078, 1), (0, 0.012, 1, 1), (0, 0.012, 1, 1), (0, 0.012, 1, 1) ]
@@ -43,7 +43,8 @@ TEAM_ORDER = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercede
 TEAM_ORDERnodev = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "McLaren", "McLaren", "Haas", "Haas", "Williams", "Williams", "Sauber", "Sauber", "RB", "RB"]
 DRIVER_NUM = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]
 DRIVER_DICT = { 'VER':'Max Verstappen - Red Bull', 'PER': 'Sergio Perez - Red Bull', 'LEC':'Charles Leclerc - Ferrari' , 'SAI':'Carlos Sainz - Ferrari' , 'HAM': 'Lewis Hamilton - Mercedes', 'RUS':'George Russell - Mercedes', 'ALO':'Fernando Alonso - Aston Martin', 'STR':'Lance Stroll - Aston Martin', 'GAS':'Pierre Gasly - Alpine', 'OCO':'Esteban Ocon - Alpine',
-                'NOR':"Lando Norris - Mclaren", 'PIA':"Oscar Piastri - Mclaren", 'MAG':'Kevin Magnussen - Haas', 'HUL':'Nico Hulkenberg - Haas', 'ALB':'Alex Albon - Williams', 'SAR':'Logan Sargeant - Williams', 'BOT':'Valtteri Bottas - Stake', 'ZHO':'Zhou Guanyu - Stake', 'TSU':'Yuki Tsunoda - RB' , 'RIC':'Daniel Ricciardo - RB' , 'DEV':'Nyck Devries - RB' }
+                'NOR':"Lando Norris - Mclaren", 'PIA':"Oscar Piastri - Mclaren", 'MAG':'Kevin Magnussen - Haas', 'HUL':'Nico Hulkenberg - Haas', 'ALB':'Alex Albon - Williams', 'SAR':'Logan Sargeant - Williams', 'BOT':'Valtteri Bottas - Stake', 'ZHO':'Zhou Guanyu - Stake', 'TSU':'Yuki Tsunoda - RB' , 'RIC':'Daniel Ricciardo - RB' , 'DEV':'Nyck Devries - RB', 'COL': 'Franco Colapinto - Williams'}
+
 ADMIN_PASS = "jamesitsvaltteri"
 
 #-----METHODS----------
@@ -352,6 +353,11 @@ comp = Competition()
 
 #set_guess_db('Abigail', 20, "LEC, NOR, PIA, SAI, HAM, OCO, RIC, RUS, PER, TSU, GAS, ALO, HUL, BOT, ALB, MAG, SAR, ZHO, STR, VER")
 
+#set_guess_db24('Sofia', 14, "VER, PER, LEC, SAI, HAM, RUS, ALO, STR, GAS, OCO, NOR, PIA, MAG, HUL, ALB, SAR, BOT, ZHO, TSU, RIC")
+#set_guess_db24('Humberto', 14, "VER, PER, LEC, SAI, HAM, RUS, ALO, STR, GAS, OCO, NOR, PIA, MAG, HUL, ALB, SAR, BOT, ZHO, TSU, RIC")
+#set_guess_db24('test', 14, "VER, PER, LEC, SAI, HAM, RUS, ALO, STR, GAS, OCO, NOR, PIA, MAG, HUL, ALB, SAR, BOT, ZHO, TSU, RIC")
+
+
 #calculate_points(comp.get_competitors_names(), 2024, 2)
 #rrdb.put({"key": "current round", "round": 5})
 
@@ -440,9 +446,13 @@ if st.session_state['user'] != 'Invalid':
                     "Lando Norris - Mclaren":'NOR', "Oscar Piastri - Mclaren":'PIA', 'Kevin Magnussen - Haas':'MAG', 'Nico Hulkenberg - Haas':'HUL', 'Alex Albon - Williams':'ALB', 'Logan Sargeant - Williams':'SAR', 'Valtteri Bottas - Stake':'BOT', 'Zhou Guanyu - Stake': 'ZHO', 'Yuki Tsunoda - RB': 'TSU', 'Daniel Ricciardo - RB': 'RIC'}
 
         #without teams
-        driversOrder2 = ['Max Verstappen', 'Sergio Perez', 'Charles Leclerc', 'Carlos Sainz', 'Lewis Hamilton', 'George Russell', 'Fernando Alonso', 'Lance Stroll', 'Pierre Gasly', 'Esteban Ocon', "Lando Norris", "Oscar Piastri", 'Kevin Magnussen', 'Nico Hulkenberg', 'Alex Albon', 'Logan Sargeant', 'Valtteri Bottas', 'Zhou Guanyu', 'Yuki Tsunoda', 'Daniel Ricciardo']
+        #driversOrder2 = ['Max Verstappen', 'Sergio Perez', 'Charles Leclerc', 'Carlos Sainz', 'Lewis Hamilton', 'George Russell', 'Fernando Alonso', 'Lance Stroll', 'Pierre Gasly', 'Esteban Ocon', "Lando Norris", "Oscar Piastri", 'Kevin Magnussen', 'Nico Hulkenberg', 'Alex Albon', 'Logan Sargeant', 'Valtteri Bottas', 'Zhou Guanyu', 'Yuki Tsunoda', 'Daniel Ricciardo']
         drivdict2 = {'Max Verstappen': 'VER', 'Sergio Perez': 'PER', 'Charles Leclerc': 'LEC', 'Carlos Sainz': 'SAI', 'Lewis Hamilton':'HAM', 'George Russell':'RUS', 'Fernando Alonso':'ALO', 'Lance Stroll':'STR', 'Pierre Gasly':'GAS', 'Esteban Ocon':'OCO',
-                    "Lando Norris":'NOR', "Oscar Piastri":'PIA', 'Kevin Magnussen':'MAG', 'Nico Hulkenberg':'HUL', 'Alex Albon':'ALB', 'Logan Sargeant':'SAR', 'Valtteri Bottas':'BOT', 'Zhou Guanyu': 'ZHO', 'Yuki Tsunoda': 'TSU', 'Daniel Ricciardo': 'RIC'}
+                    "Lando Norris":'NOR', "Oscar Piastri":'PIA', 'Kevin Magnussen':'MAG', 'Nico Hulkenberg':'HUL', 'Alex Albon':'ALB', 'Logan Sargeant':'SAR', 'Valtteri Bottas':'BOT', 'Zhou Guanyu': 'ZHO', 'Yuki Tsunoda': 'TSU', 'Daniel Ricciardo': 'RIC', 'Franco Colapinto': 'COL'}
+
+        driversOrder3 = ['Max Verstappen', 'Sergio Perez', 'Charles Leclerc', 'Carlos Sainz', 'Lewis Hamilton', 'George Russell', 'Fernando Alonso', 'Lance Stroll', 'Pierre Gasly', 'Esteban Ocon', "Lando Norris", "Oscar Piastri", 'Kevin Magnussen', 'Nico Hulkenberg', 'Alex Albon', 'Franco Colapinto', 'Valtteri Bottas', 'Zhou Guanyu', 'Yuki Tsunoda', 'Daniel Ricciardo']
+        #drivdict3 = {'Max Verstappen': 'VER', 'Sergio Perez': 'PER', 'Charles Leclerc': 'LEC', 'Carlos Sainz': 'SAI', 'Lewis Hamilton':'HAM', 'George Russell':'RUS', 'Fernando Alonso':'ALO', 'Lance Stroll':'STR', 'Pierre Gasly':'GAS', 'Esteban Ocon':'OCO',
+        #            "Lando Norris":'NOR', "Oscar Piastri":'PIA', 'Kevin Magnussen':'MAG', 'Nico Hulkenberg':'HUL', 'Alex Albon':'ALB', 'Franco Colapinto':'COL', 'Valtteri Bottas':'BOT', 'Zhou Guanyu': 'ZHO', 'Yuki Tsunoda': 'TSU', 'Daniel Ricciardo': 'RIC'}
 
         teams = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "McLaren", "McLaren", "Haas", "Haas", "Williams", "Williams", "Alfa Romeo", "Alfa Romeo", "Alpha Tauri", "Alpha Tauri"]
         daf = pd.DataFrame({'drivers': driversOrder, 'abb': drivers}, columns=['drivers', 'abb'])
@@ -465,7 +475,7 @@ if st.session_state['user'] != 'Invalid':
         col1, col2 = st.columns([10,12])
             
         with col1:
-            sitems = sort_items(driversOrder2, direction="vertical")
+            sitems = sort_items(driversOrder3, direction="vertical")
             
                 
                 #gp = st.selectbox("Select a Grand Prix:", gps)
