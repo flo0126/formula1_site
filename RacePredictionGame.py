@@ -355,12 +355,17 @@ comp = Competition()
 #set_guess_db('Abigail', 20, "LEC, NOR, PIA, SAI, HAM, OCO, RIC, RUS, PER, TSU, GAS, ALO, HUL, BOT, ALB, MAG, SAR, ZHO, STR, VER")
 
 #set_guess_db24('Sofia', 14, "VER, PER, LEC, SAI, HAM, RUS, ALO, STR, GAS, OCO, NOR, PIA, MAG, HUL, ALB, SAR, BOT, ZHO, TSU, RIC")
-#set_guess_db24('Humberto', 14, "VER, PER, LEC, SAI, HAM, RUS, ALO, STR, GAS, OCO, NOR, PIA, MAG, HUL, ALB, SAR, BOT, ZHO, TSU, RIC")
+#set_guess_db24('Alex', 17, "VER, PER, LEC, SAI, HAM, RUS, ALO, STR, GAS, OCO, NOR, PIA, MAG, HUL, ALB, SAR, BOT, ZHO, TSU, RIC")
+#set_guess_db24('Alex', 17, "VER, PER, LEC, SAI, HAM, RUS, ALO, STR, GAS, OCO, NOR, PIA, MAG, HUL, ALB, SAR, BOT, ZHO, TSU, RIC")
 #set_guess_db24('test', 14, "VER, PER, LEC, SAI, HAM, RUS, ALO, STR, GAS, OCO, NOR, PIA, MAG, HUL, ALB, SAR, BOT, ZHO, TSU, RIC")
 
 
 #calculate_points(comp.get_competitors_names(), 2024, 2)
 #rrdb.put({"key": "current round", "round": 5})
+#for i in comp.get_competitors_names():
+    #print(get_round_db)
+    #print(i)
+    #print(get_guess_db24(i,17))
 
 
 
@@ -419,7 +424,7 @@ if st.session_state['user'] != 'Invalid':
     
 
     # Set Tabs
-    tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Race Trends", "2023", "Admin View"])
+    tabs = st.tabs(["Enter Guess", "Your Results", "View Leaderboard", "Race Trends", "Admin View"])
 
     
 
@@ -739,127 +744,6 @@ if st.session_state['user'] != 'Invalid':
     tabs_2023 = tabs[4]
 
     #-----------2023 Results-------------------------------------
-    with tabs_2023:
-        st.header(f"Leaderboard")
-        fig, ax = plt.subplots()
-        
-        names_plot = comp.get_competitors_names()
-        points_plot = np.sum(comp.get_competitors_points(), axis = 1)
-        df = pd.DataFrame({'name': names_plot, 'points': points_plot}, columns = ['name', 'points'])
-        df = df.sort_values(by=['points'], ascending=True)
-        color = (0.918, 0.047, 0.047, 1)
-        bars = plt.barh(df['name'], df['points'], color=color)
-        plt.grid(False)
-        plt.bar_label(bars)
-        for spine in plt.gca().spines.values():
-            spine.set_visible(False)
-        plt.tick_params(left = False, right = False , labelleft = True , labelbottom = False, bottom = False)
-        st.pyplot(fig)
-
-        gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
-        #userSelect = st.selectbox("Select Competitor:", users)
-        st.header("View Results for "+ st.session_state['user'])
-        gpSelect2 = st.selectbox("Choose a Grand Prix:", gps)
-
-        st.subheader(gpSelect2 + " Guess")
-        gp_num = 0
-        for x in range(len(gps)):
-            if gpSelect2 == gps[x]:
-                gp_num = x + (23-len(gps))
-        if gp_num == 0: #removed user == ''
-            st.error('Select a Grand Prix to view a guess')
-        elif get_guess_db(st.session_state['user'], gp_num) == None:
-            st.error('No guess has been entered for this Grand Prix')
-        else:
-            #st.write('**Points: ' + str(get_points_db(userSelect, gp_num)) + '**')
-            #st.write('**Guess:**')
-            col1, col2, col3 = st.columns([2,2,1])
-            gs = get_guess_db(st.session_state['user'], gp_num)
-            gs = str_to_arr(gs)
-            gs1 = gs[:10]
-            gs2 = gs[-10:]
-            tick = 1
-
-
-            with col1:
-                for i in gs1:
-                    st.write(str(tick) + ': ' + str(DRIVER_DICT.get(i)))
-                    tick = tick + 1
-            tick = 11
-            with col2:
-                for i in gs2:
-                    st.write(str(tick) + ': ' + str(DRIVER_DICT.get(i)))
-                    tick = tick + 1
-
-        st.write(" -- ")
-
-        st.subheader(gpSelect2 + " Race Points")
-        
-            #userstouse = comp.get_competitors_names()
-            #users = [""]
-            #for i in userstouse:
-                #users.append(i)
-        #gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
-        #userSelect = st.selectbox("Select Competitor:", users)
-        #gpSelect2 = st.selectbox("Select a Grand Prix:", gps)
-        
-        
-        gp_num = 0
-        for x in range(len(gps)):
-            if gpSelect2 == gps[x]:
-                gp_num = x + (23-len(gps))
-        if gp_num == 0: #removed user
-            st.error('Select a Grand Prix to view a guess')
-        elif get_guess_db(st.session_state['user'], gp_num) == None or get_guess_db(st.session_state['user'], gp_num) == "":
-            st.error('No guess has been entered for this Grand Prix')
-        elif get_points_db(st.session_state['user'], gp_num) == 0:
-            st.error('Sorry, points have not been calculated yet')
-        else:
-            st.write('**Points: ' + str(get_points_db(st.session_state['user'], gp_num)) + '**')
-            
-            gs = get_coll_points_db(st.session_state['user'], gp_num)
-            gs = str_to_arr(gs)
-            df = pd.DataFrame(
-                {'Driver': DRIVER_ORDER, 'Points': gs, 'Color': TEAM_COLOR, 'Num': DRIVER_NUM},
-                columns=['Driver', 'Points', 'Color', 'Num']
-            )
-            df = df.sort_values(by=['Points', 'Num'], ascending=[True,False])
-            
-            fig, ax = plt.subplots()
-            bars = plt.barh(df['Driver'], df['Points'], color=df['Color'])
-            plt.grid(False)
-            plt.bar_label(bars)
-            for spine in plt.gca().spines.values():
-                spine.set_visible(False)
-            plt.tick_params(left = False, right = False , labelleft = True , labelbottom = False, bottom = False)
-            st.pyplot(fig)
-
-        #gp_num = 0
-        #for x in range(len(gps)):
-            #if gp == gps[x]:
-                #gp_num = x + (23-len(gps))
-        st.subheader(gpSelect2 + " Race Leaderboard")
-        if gp_num == 0:
-            st.error('Select a Grand Prix')
-        else:
-            fig, ax = plt.subplots()
-
-            gpval = gp_num - 1
-            points2 = np.array(comp.get_competitors_points())
-            points2 = points2[:, gpval]
-            
-            df2 = pd.DataFrame({'name': names_plot, 'points': points2}, columns = ['name', 'points'])
-            df2 = df2.sort_values(by=['points'], ascending=True)
-            color = (0.918, 0.047, 0.047, 1)
-            bars = plt.barh(df2['name'], df2['points'], color=color)
-            plt.grid(False)
-            plt.bar_label(bars)
-            for spine in plt.gca().spines.values():
-                spine.set_visible(False)
-            plt.tick_params(left = False, right = False , labelleft = True , labelbottom = False, bottom = False)
-            st.pyplot(fig)
-
-
     #tabs_manage = tabs[5]
 
     #------------Manage Game Tab-----------------------------------
@@ -876,7 +760,7 @@ if st.session_state['user'] != 'Invalid':
 
 
 
-    tabs_admin = tabs[5]
+    tabs_admin = tabs[4]
 
     #-------------- Admin View Tab -----------------------------------
     with tabs_admin:
