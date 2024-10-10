@@ -5,3 +5,5 @@ numpy
 pandas
 deta
 streamlit_sortables
+sqlalchemy
+psycopg2

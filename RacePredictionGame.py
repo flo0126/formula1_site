@@ -17,9 +17,20 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 
-from deta import Deta
+#from deta import Deta
 
 from PIL import Image
+
+
+from sqlalchemy.sql import text
+
+import psycopg2
+conn2 = psycopg2.connect("postgresql://competitors_owner:GMOeQ51NiFwp@ep-polished-snow-a5xqn4ws.us-east-2.aws.neon.tech/competitors?sslmode=require")
+cursor = conn2.cursor()
+
+
+
+
 
 
 
@@ -30,10 +41,10 @@ from PIL import Image
 ff1.Cache.enable_cache('cache') 
 
 # Database setup
-DETA_KEY = "b0c6conepbn_sCXCz4BFP3tTzQbqRvoWT55PjD33V8hJ"
-deta = Deta(DETA_KEY)
-db = deta.Base("competitors_db")
-rrdb = deta.Base("raceround_db")
+#DETA_KEY = "b0c6conepbn_sCXCz4BFP3tTzQbqRvoWT55PjD33V8hJ"
+#deta = Deta(DETA_KEY)
+#db = deta.Base("competitors_db")
+#rrdb = deta.Base("raceround_db")
 
 DRIVER_ORDER = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'COL', 'BOT', 'ZHO',  'TSU', 'RIC', 'DEV',]
 DRIVER_ORDERnodev = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC']
@@ -116,10 +127,10 @@ def str_to_arr(str):
     return str.split(', ')
 
 #gets total points for all people in a competition
-def get_leaderboard(comp):
-    for player in comp.get_competitors_names():
-        points = get_total_points_db(player)
-        print("Total points for " + player + ": " + str(points))
+#def get_leaderboard(comp):
+    #for player in comp.get_competitors_names():
+        #points = get_total_points_db(player)
+        #print("Total points for " + player + ": " + str(points))
 
 #checks it is valid to enter a guess and sets guess
 def enter_guess(gp, competitor, guess):
@@ -145,102 +156,164 @@ def points_driver_to_string(arr):
 
 #------DATABASE-METHODS------
 def get_round_db():
-    cf = rrdb.fetch()
-    r = cf.items
-    round = [item["round"] for item in r]
-    return round[0]
+    #cf = rrdb.fetch()
+    #r = cf.items
+    #round = [item["round"] for item in r]
+    #return round[0]
+    cursor.execute('SELECT id FROM round_db')
+    round = cursor.fetchone()[0]
+    return int(round)
 
 def set_round_db(round):
-    rrdb.update({"round": round}, "current round")
+    #rrdb.update({"round": round}, "current round")
+    cursor.execute('UPDATE round_db SET id='+ str(round))
+    conn2.commit()
 
 #points for all races for 1 person  
-def get_total_points_db(name):
-    persondb = comp.get_competitor_by_name(name)
-    
-    pointsdb = persondb["points"]
-    
-    tot = 0
-    for i in range(len(pointsdb)):
-        tot += pointsdb[i]
-    return tot
+#def get_total_points_db(name):
+#    persondb = comp.get_competitor_by_name(name)
+#   
+#    pointsdb = persondb["points"]
+#    
+#    tot = 0
+#    for i in range(len(pointsdb)):
+#        tot += pointsdb[i]
+#    return tot
 
 def get_total_points_db24(name):
-    persondb = comp.get_competitor_by_name(name)
+    #persondb = comp.get_competitor_by_name(name)
     
-    pointsdb = persondb["points24"]
+    #pointsdb = persondb["points24"]
+
+    namemine = "'" + name + "'" 
+    sqlstatement = 'Select * from competitors_db where name=' + namemine
+    cursor.execute(sqlstatement)
+    pointsdb = cursor.fetchone()[2]
+    pointsdb = np.array(pointsdb)
     
     tot = 0
     for i in range(len(pointsdb)):
         tot += pointsdb[i]
     return tot
 
-def set_guess_db(name, gp, guess):
-    persondb = comp.get_competitor_by_name(name)
-    guessdb = persondb["guesses"]
-    guessdb[gp-1] = guess
-    db.update({"guesses": guessdb}, name)
+#def set_guess_db(name, gp, guess):
+#    persondb = comp.get_competitor_by_name(name)
+#    guessdb = persondb["guesses"]
+#    guessdb[gp-1] = guess
+#    db.update({"guesses": guessdb}, name)
 
 def set_guess_db24(name, gp, guess):
-    persondb = comp.get_competitor_by_name(name)
-    guessdb = persondb["guesses24"]
-    guessdb[gp-1] = guess
-    db.update({"guesses24": guessdb}, name)
+    #persondb = comp.get_competitor_by_name(name)
+    #guessdb = persondb["guesses24"]
+    #guessdb[gp-1] = guess
+    #db.update({"guesses24": guessdb}, name)
+   
+    namemine = "'" + name + "'" 
+    sqlstatement = 'Select * from competitors_db where name=' + namemine
+    cursor.execute(sqlstatement)
+    guesses = cursor.fetchone()[1]
+    guesses[gp-1] = guess
 
-def get_guess_db(name, gp):
-    persondb = comp.get_competitor_by_name(name)
-    guessdb = persondb["guesses"]
-    return guessdb[gp-1]
+    sqlstatement2 = 'UPDATE competitors_db SET guesses24=ARRAY' + str(guesses) + ' WHERE name = '+ namemine
+    cursor.execute(sqlstatement2)
+    conn2.commit()
+    
+
+
+#def get_guess_db(name, gp):
+#    persondb = comp.get_competitor_by_name(name)
+#    guessdb = persondb["guesses"]
+#    return guessdb[gp-1]
 
 def get_guess_db24(name, gp):
-    persondb = comp.get_competitor_by_name(name)
-    guessdb = persondb["guesses24"]
-    return guessdb[gp-1]
+    #persondb = comp.get_competitor_by_name(name)
+    #guessdb = persondb["guesses24"]
+    #return guessdb[gp-1]
+    namemine = "'" + name + "'" 
+    sqlstatement = 'Select * from competitors_db where name=' + namemine
+    cursor.execute(sqlstatement)
+    me = cursor.fetchone()[1]
+    me = np.array(me)
+    return me[gp-1]
 
 #points for 1 race for 1 person
-def set_points_db(name, gp, n):
-    persondb = comp.get_competitor_by_name(name)
-    pointsdb = persondb["points"]
-    pointsdb[gp-1] = n
-    db.update({"points" : pointsdb}, name)
+#def set_points_db(name, gp, n):
+#    persondb = comp.get_competitor_by_name(name)
+#    pointsdb = persondb["points"]
+#    pointsdb[gp-1] = n
+#    db.update({"points" : pointsdb}, name)
 
 def set_points_db24(name, gp, n):
-    persondb = comp.get_competitor_by_name(name)
-    pointsdb = persondb["points24"]
+    #persondb = comp.get_competitor_by_name(name)
+    #pointsdb = persondb["points24"]
+    #pointsdb[gp-1] = n
+    #db.update({"points24" : pointsdb}, name)
+
+    namemine = "'" + name + "'" 
+    sqlstatement = 'Select * from competitors_db where name=' + namemine
+    cursor.execute(sqlstatement)
+    pointsdb = cursor.fetchone()[2]
     pointsdb[gp-1] = n
-    db.update({"points24" : pointsdb}, name)
+
+    sqlstatement2 = 'UPDATE competitors_db SET points24=ARRAY' + str(pointsdb) + ' WHERE name = '+ namemine
+    cursor.execute(sqlstatement2)
+    conn2.commit()
+
 
 #points for 1 race for 1 person
-def get_points_db(name, gp):
-    persondb = comp.get_competitor_by_name(name)
-    pointsdb = persondb["points"]
-    return pointsdb[gp-1]
+#def get_points_db(name, gp):
+#    persondb = comp.get_competitor_by_name(name)
+#    pointsdb = persondb["points"]
+#    return pointsdb[gp-1]
 
 def get_points_db24(name, gp):
-    persondb = comp.get_competitor_by_name(name)
-    pointsdb = persondb["points24"]
+    namemine = "'" + name + "'" 
+    sqlstatement = 'Select * from competitors_db where name=' + namemine
+    cursor.execute(sqlstatement)
+    pointsdb = cursor.fetchone()[2]
+    pointsdb = np.array(pointsdb)
     return pointsdb[gp-1]
 
-def set_coll_points_db(name, gp, arr):
-    persondb = comp.get_competitor_by_name(name)
-    arrdb = persondb["pointsdriver"]
-    arrdb[gp-1] = arr
-    db.update({"pointsdriver": arrdb}, name)
+#def set_coll_points_db(name, gp, arr):
+    #persondb = comp.get_competitor_by_name(name)
+    #arrdb = persondb["pointsdriver"]
+    #arrdb[gp-1] = arr
+    #db.update({"pointsdriver": arrdb}, name)
 
 def set_coll_points_db24(name, gp, arr):
-    persondb = comp.get_competitor_by_name(name)
-    arrdb = persondb["pointsdriver24"]
-    arrdb[gp-1] = arr
-    db.update({"pointsdriver24": arrdb}, name)
+    #persondb = comp.get_competitor_by_name(name)
+    #arrdb = persondb["pointsdriver24"]
+    #arrdb[gp-1] = arr
+    #db.update({"pointsdriver24": arrdb}, name)
 
-def get_coll_points_db(name, gp):
-    persondb = comp.get_competitor_by_name(name)
-    arrdb = persondb["pointsdriver"]
-    return arrdb[gp-1]
+    namemine = "'" + name + "'" 
+    sqlstatement = 'Select * from competitors_db where name=' + namemine
+    cursor.execute(sqlstatement)
+    pointsdb = cursor.fetchone()[3]
+    pointsdb[gp-1] = arr
+
+    sqlstatement2 = 'UPDATE competitors_db SET pointsdriver=ARRAY' + str(pointsdb) + ' WHERE name = '+ namemine
+    cursor.execute(sqlstatement2)
+    conn2.commit()
+
+
+#def get_coll_points_db(name, gp):
+    #persondb = comp.get_competitor_by_name(name)
+    #arrdb = persondb["pointsdriver"]
+    #return arrdb[gp-1]
 
 def get_coll_points_db24(name, gp):
-    persondb = comp.get_competitor_by_name(name)
-    arrdb = persondb["pointsdriver24"]
-    return arrdb[gp-1]
+    #persondb = comp.get_competitor_by_name(name)
+    #arrdb = persondb["pointsdriver24"]
+    #return arrdb[gp-1]
+
+    namemine = "'" + name + "'" 
+    sqlstatement = 'Select * from competitors_db where name=' + namemine
+    cursor.execute(sqlstatement)
+    pointsdb = cursor.fetchone()[3]
+    pointsdb = np.array(pointsdb)
+    return pointsdb[gp-1]
+
 
 
 
@@ -293,21 +366,32 @@ class Competition:
 
     def add_competitor(self, person):
         self.competitors.append(person)
-        return db.put({"key": person.get_name(), "points": np.array(person.get_points()).tolist(), "guesses": np.array(person.get_guesses()).tolist(), "pointsdriver": ["" for x in range(23)],
-                       "points24": np.array(person.get_points24()).tolist(), "guesses24": ["" for x in range(24)], "pointsdriver24": ["" for x in range(24)]})
-        #TODO figure out solution for putting list in database
+        toadd = (person.get_name(), ["" for x in range(24)], np.array(person.get_points24()).tolist(), ["" for x in range(24)])
+        cursor.execute('INSERT INTO competitors_db VALUES (%s, %s, %s, %s)', toadd)
+        conn2.commit()
+        #return db.put({"key": person.get_name(), "points": np.array(person.get_points()).tolist(), "guesses": np.array(person.get_guesses()).tolist(), "pointsdriver": ["" for x in range(23)],
+                       #"points24": np.array(person.get_points24()).tolist(), "guesses24": ["" for x in range(24)], "pointsdriver24": ["" for x in range(24)]})
+        
+        
 
     def get_competitors(self):
         #return self.competitors
-        res = db.fetch()
-        items = res.items
-        competitors = [item["key"] for item in items]
-        return competitors
+        #res = db.fetch()
+        #items = res.items
+        #competitors = [item["key"] for item in items]
+        #return competitors
+
+        cursor.execute('SELECT name FROM competitors_db ORDER BY name')
+        thenames = cursor.fetchall()
+        nameslist = []
+        for singlename in thenames:
+            nameslist.append(singlename[0])
+        return nameslist
 
     
-    def remove_competitor(self, person):
-        self.competitors.remove(person)
-        db.delete("person")
+    #def remove_competitor(self, person):
+        #self.competitors.remove(person)
+        #db.delete("person")
 
     def get_competitors_names(self):
         #namelist = []
@@ -320,26 +404,33 @@ class Competition:
         return competitors
 
 
-        
     
-    def get_competitor_by_name(self, name):
+    #def get_competitor_by_name(self, name):
         #for x in self.competitors:
         #    if name == x.get_name():
         #        return x
-        competitor = db.get(name)
-        return competitor
+        #competitor = db.get(name)
+        #return competitor
     
-    def get_competitors_points(self):
-        res = db.fetch()
-        items = res.items
-        points = [item["points"] for item in items]
-        return points
+   #def get_competitors_points(self):
+        #res = db.fetch()
+        #items = res.items
+        #points = [item["points"] for item in items]
+        #return points
     
     def get_competitors_points24(self):
-        res = db.fetch()
-        items = res.items
-        points = [item["points24"] for item in items]
-        return points
+        #res = db.fetch()
+        #items = res.items
+        #points = [item["points24"] for item in items]
+        #print(points)
+        #print(type(points[0]))
+        cursor.execute('SELECT points24 FROM competitors_db ORDER BY name')
+        everypoints = cursor.fetchall()
+        allpoints = []
+        for onething in everypoints:
+            allpoints.append(onething[0])
+        return allpoints
+        #return points
 
             
 
@@ -373,11 +464,21 @@ comp = Competition()
 
 
 
+
 #------ Frontend with streamlit ----------------------------
 
 #Set up page and title
 st.set_page_config(page_title='Formula 1 Race Predictions',page_icon = ':racing_car:', layout = "centered")
 #st.title('F1 Predictions' + " " + ':racing_car:')
+conn = st.connection("neon", type="sql")
+
+
+names_from_neon = conn.query('SELECT name FROM competitors_db ORDER BY name')
+#st.text(names_from_neon)
+
+
+
+
 im = Image.open('photos/f1predictions.png')
 st.image(im)
 
