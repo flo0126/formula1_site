@@ -6,4 +6,4 @@ pandas
 deta
 streamlit_sortables
 sqlalchemy
-psycopg2
+psycopg2-binary
