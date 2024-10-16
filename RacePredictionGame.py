@@ -46,7 +46,7 @@ ff1.Cache.enable_cache('cache')
 #db = deta.Base("competitors_db")
 #rrdb = deta.Base("raceround_db")
 
-DRIVER_ORDER = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'COL', 'BOT', 'ZHO',  'TSU', 'RIC', 'DEV',]
+DRIVER_ORDER = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'COL', 'BOT', 'ZHO',  'TSU', 'LAW', 'DEV',]
 DRIVER_ORDERnodev = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC']
 TEAM_COLOR_RGB = [(0.078, 0.122, 0.702, 1), (0.078, 0.122, 0.702, 1), (1, 0.008, 0.008, 1), (1, 0.008, 0.008, 1), (0.4, 0.929, 0.929, 1), (0.4, 0.929, 0.929, 1), (0.059, 0.451, 0.251, 1), (0.059, 0.451, 0.251, 1), (1, 0.341, 0.827,1), (1, 0.341, 0.827, 1), (1, 0.494, 0, 1), (1, 0.494, 0, 1),
               (0.612, 0.612, 0.612, 1), (0.612, 0.612, 0.612, 1), (0.251, 0.439, 1, 1), (0.251, 0.439, 1, 1), (0, 0.91, 0.078, 1), (0, 0.91, 0.078, 1), (0, 0.012, 1, 1), (0, 0.012, 1, 1), (0, 0.012, 1, 1) ]
@@ -55,7 +55,7 @@ TEAM_ORDER = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercede
 TEAM_ORDERnodev = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "McLaren", "McLaren", "Haas", "Haas", "Williams", "Williams", "Sauber", "Sauber", "RB", "RB"]
 DRIVER_NUM = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]
 DRIVER_DICT = { 'VER':'Max Verstappen - Red Bull', 'PER': 'Sergio Perez - Red Bull', 'LEC':'Charles Leclerc - Ferrari' , 'SAI':'Carlos Sainz - Ferrari' , 'HAM': 'Lewis Hamilton - Mercedes', 'RUS':'George Russell - Mercedes', 'ALO':'Fernando Alonso - Aston Martin', 'STR':'Lance Stroll - Aston Martin', 'GAS':'Pierre Gasly - Alpine', 'OCO':'Esteban Ocon - Alpine',
-                'NOR':"Lando Norris - Mclaren", 'PIA':"Oscar Piastri - Mclaren", 'MAG':'Kevin Magnussen - Haas', 'HUL':'Nico Hulkenberg - Haas', 'ALB':'Alex Albon - Williams', 'SAR':'Logan Sargeant - Williams', 'BOT':'Valtteri Bottas - Stake', 'ZHO':'Zhou Guanyu - Stake', 'TSU':'Yuki Tsunoda - RB' , 'RIC':'Daniel Ricciardo - RB' , 'DEV':'Nyck Devries - RB', 'COL': 'Franco Colapinto - Williams'}
+                'NOR':"Lando Norris - Mclaren", 'PIA':"Oscar Piastri - Mclaren", 'MAG':'Kevin Magnussen - Haas', 'HUL':'Nico Hulkenberg - Haas', 'ALB':'Alex Albon - Williams', 'SAR':'Logan Sargeant - Williams', 'BOT':'Valtteri Bottas - Stake', 'ZHO':'Zhou Guanyu - Stake', 'TSU':'Yuki Tsunoda - RB' , 'RIC':'Daniel Ricciardo - RB' , 'DEV':'Nyck Devries - RB', 'COL': 'Franco Colapinto - Williams', 'LAW': 'Liam Lawson - RB'}
 
 ADMIN_PASS = "jamesitsvaltteri"
 
@@ -550,14 +550,14 @@ if st.session_state['user'] != 'Invalid':
         #drivers with teams
         driversOrder = ['Max Verstappen - Red Bull', 'Sergio Perez - Red Bull', 'Charles Leclerc - Ferrari', 'Carlos Sainz - Ferrari', 'Lewis Hamilton - Mercedes', 'George Russell - Mercedes', 'Fernando Alonso - Aston Martin', 'Lance Stroll - Aston Martin', 'Pierre Gasly - Alpine', 'Esteban Ocon - Alpine', "Lando Norris - Mclaren", "Oscar Piastri - Mclaren", 'Kevin Magnussen - Haas', 'Nico Hulkenberg - Haas', 'Alex Albon - Williams', 'Logan Sargeant - Williams', 'Valtteri Bottas - Stake', 'Zhou Guanyu - Stake', 'Yuki Tsunoda - RB', 'Daniel Ricciardo - RB']
         drivdict = {'Max Verstappen - Red Bull': 'VER', 'Sergio Perez - Red Bull': 'PER', 'Charles Leclerc - Ferrari': 'LEC', 'Carlos Sainz - Ferrari': 'SAI', 'Lewis Hamilton - Mercedes':'HAM', 'George Russell - Mercedes':'RUS', 'Fernando Alonso - Aston Martin':'ALO', 'Lance Stroll - Aston Martin':'STR', 'Pierre Gasly - Alpine':'GAS', 'Esteban Ocon - Alpine':'OCO',
-                    "Lando Norris - Mclaren":'NOR', "Oscar Piastri - Mclaren":'PIA', 'Kevin Magnussen - Haas':'MAG', 'Nico Hulkenberg - Haas':'HUL', 'Alex Albon - Williams':'ALB', 'Logan Sargeant - Williams':'SAR', 'Valtteri Bottas - Stake':'BOT', 'Zhou Guanyu - Stake': 'ZHO', 'Yuki Tsunoda - RB': 'TSU', 'Daniel Ricciardo - RB': 'RIC'}
+                    "Lando Norris - Mclaren":'NOR', "Oscar Piastri - Mclaren":'PIA', 'Kevin Magnussen - Haas':'MAG', 'Nico Hulkenberg - Haas':'HUL', 'Alex Albon - Williams':'ALB', 'Logan Sargeant - Williams':'SAR', 'Valtteri Bottas - Stake':'BOT', 'Zhou Guanyu - Stake': 'ZHO', 'Yuki Tsunoda - RB': 'TSU', 'Daniel Ricciardo - RB': 'RIC', 'Liam Lawson - RB': 'LAW'}
 
         #without teams
         #driversOrder2 = ['Max Verstappen', 'Sergio Perez', 'Charles Leclerc', 'Carlos Sainz', 'Lewis Hamilton', 'George Russell', 'Fernando Alonso', 'Lance Stroll', 'Pierre Gasly', 'Esteban Ocon', "Lando Norris", "Oscar Piastri", 'Kevin Magnussen', 'Nico Hulkenberg', 'Alex Albon', 'Logan Sargeant', 'Valtteri Bottas', 'Zhou Guanyu', 'Yuki Tsunoda', 'Daniel Ricciardo']
         drivdict2 = {'Max Verstappen': 'VER', 'Sergio Perez': 'PER', 'Charles Leclerc': 'LEC', 'Carlos Sainz': 'SAI', 'Lewis Hamilton':'HAM', 'George Russell':'RUS', 'Fernando Alonso':'ALO', 'Lance Stroll':'STR', 'Pierre Gasly':'GAS', 'Esteban Ocon':'OCO',
-                    "Lando Norris":'NOR', "Oscar Piastri":'PIA', 'Kevin Magnussen':'MAG', 'Nico Hulkenberg':'HUL', 'Alex Albon':'ALB', 'Logan Sargeant':'SAR', 'Valtteri Bottas':'BOT', 'Zhou Guanyu': 'ZHO', 'Yuki Tsunoda': 'TSU', 'Daniel Ricciardo': 'RIC', 'Franco Colapinto': 'COL'}
+                    "Lando Norris":'NOR', "Oscar Piastri":'PIA', 'Kevin Magnussen':'MAG', 'Nico Hulkenberg':'HUL', 'Alex Albon':'ALB', 'Logan Sargeant':'SAR', 'Valtteri Bottas':'BOT', 'Zhou Guanyu': 'ZHO', 'Yuki Tsunoda': 'TSU', 'Daniel Ricciardo': 'RIC', 'Franco Colapinto': 'COL', 'Liam Lawson': 'LAW'}
 
-        driversOrder3 = ['Max Verstappen', 'Sergio Perez', 'Charles Leclerc', 'Carlos Sainz', 'Lewis Hamilton', 'George Russell', 'Fernando Alonso', 'Lance Stroll', 'Pierre Gasly', 'Esteban Ocon', "Lando Norris", "Oscar Piastri", 'Kevin Magnussen', 'Nico Hulkenberg', 'Alex Albon', 'Franco Colapinto', 'Valtteri Bottas', 'Zhou Guanyu', 'Yuki Tsunoda', 'Daniel Ricciardo']
+        driversOrder3 = ['Max Verstappen', 'Sergio Perez', 'Charles Leclerc', 'Carlos Sainz', 'Lewis Hamilton', 'George Russell', 'Fernando Alonso', 'Lance Stroll', 'Pierre Gasly', 'Esteban Ocon', "Lando Norris", "Oscar Piastri", 'Kevin Magnussen', 'Nico Hulkenberg', 'Alex Albon', 'Franco Colapinto', 'Valtteri Bottas', 'Zhou Guanyu', 'Yuki Tsunoda', 'Liam Lawson']
         #drivdict3 = {'Max Verstappen': 'VER', 'Sergio Perez': 'PER', 'Charles Leclerc': 'LEC', 'Carlos Sainz': 'SAI', 'Lewis Hamilton':'HAM', 'George Russell':'RUS', 'Fernando Alonso':'ALO', 'Lance Stroll':'STR', 'Pierre Gasly':'GAS', 'Esteban Ocon':'OCO',
         #            "Lando Norris":'NOR', "Oscar Piastri":'PIA', 'Kevin Magnussen':'MAG', 'Nico Hulkenberg':'HUL', 'Alex Albon':'ALB', 'Franco Colapinto':'COL', 'Valtteri Bottas':'BOT', 'Zhou Guanyu': 'ZHO', 'Yuki Tsunoda': 'TSU', 'Daniel Ricciardo': 'RIC'}
 
