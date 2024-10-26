@@ -5,6 +5,7 @@ from fastf1 import plotting
 from fastf1 import utils
 
 import streamlit as st
+
 from streamlit_sortables import sort_items
 
 
