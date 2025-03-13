@@ -606,7 +606,7 @@ if st.session_state['user'] != 'Invalid':
             
         submitted = st.button("Enter")
         if submitted:
-                print(sitems)
+                
                 gp_num = round
                 #for x in range(len(gps)):
                 #    if gp == gps[x]:
@@ -624,7 +624,7 @@ if st.session_state['user'] != 'Invalid':
                         additem = drivdict2.get(sitems[v])
                         guessList.append(additem)
     
-                    print(guessList)
+                    
                     ##guess_concat = p1 + ", " + p2 + ", " + p3 + ", " + p4 + ", " + p5 + ", " + p6 + ", " + p7 + ", " + p8 + ", " + p9 + ", " + p10 + ", " + p11 + ", " + p12 + ", " + p13 + ", " + p14 + ", " + p15 + ", " + p16 + ", " + p17 + ", " + p18 + ", " + p19 + ", " + p20
                     guess_concat = ', '.join(guessList)
                     #print(guess_concat)
