@@ -477,7 +477,7 @@ names_from_neon = conn.query('SELECT name FROM competitors_db ORDER BY name')
 #st.text(names_from_neon)
 
 
-
+st.write('<style>div.block-container{padding-top:2rem;}</style>', unsafe_allow_html=True)
 
 im = Image.open('photos/f1predictions.png')
 st.image(im)
