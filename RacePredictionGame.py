@@ -55,7 +55,7 @@ TEAM_ORDER = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "McLaren", "McLaren"
 TEAM_ORDERnodev = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "McLaren", "McLaren", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "Haas", "Haas", "Williams", "Williams", "Sauber", "Sauber", "RB", "RB"]
 DRIVER_NUM = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]
 DRIVER_DICT = { 'VER':'Max Verstappen - Red Bull', 'LAW': 'Liam Lawson - Red Bull', 'LEC':'Charles Leclerc - Ferrari' , 'HAM':'Lewis Hamilton - Ferrari' , 'ANT': 'Kimi Antonelli - Mercedes', 'RUS':'George Russell - Mercedes', 'ALO':'Fernando Alonso - Aston Martin', 'STR':'Lance Stroll - Aston Martin', 'GAS':'Pierre Gasly - Alpine', 'DOO':'Jack Doohan - Alpine',
-                'NOR':"Lando Norris - Mclaren", 'PIA':"Oscar Piastri - Mclaren", 'OCO':'Esteban Ocon - Haas', 'BEA':'Ollie Bearman - Haas', 'ALB':'Alex Albon - Williams', 'SAI':'Carlos Sainz - Williams', 'HUL':'Nico Hulkenberg - Stake', 'BOR':'Gabriel Bortoleto - Stake', 'TSU':'Yuki Tsunoda - RB' , 'HAD':'Isack Hadjar - RB' , 'DEV':'Nyck Devries - RB', 'COL': 'Franco Colapinto - Williams'}
+                'NOR':'Lando Norris - Mclaren', 'PIA':'Oscar Piastri - Mclaren', 'OCO':'Esteban Ocon - Haas', 'BEA':'Ollie Bearman - Haas', 'ALB':'Alex Albon - Williams', 'SAI':'Carlos Sainz - Williams', 'HUL':'Nico Hulkenberg - Stake', 'BOR':'Gabriel Bortoleto - Stake', 'TSU':'Yuki Tsunoda - VCARB' , 'HAD':'Isack Hadjar - VCARB' , 'DEV':'Nyck Devries - RB', 'COL': 'Franco Colapinto - Williams'}
 
 ADMIN_PASS = "jamesitsvaltteri"
 
@@ -550,12 +550,15 @@ if st.session_state['user'] != 'Invalid':
         #drivers with teams
         driversOrder = ['Max Verstappen - Red Bull', 'Liam Lawson - Red Bull', 'Charles Leclerc - Ferrari', 'Lewis Hamilton - Ferrari', 'Kimi Antonelli - Mercedes', 'George Russell - Mercedes', 'Fernando Alonso - Aston Martin', 'Lance Stroll - Aston Martin', 'Pierre Gasly - Alpine', 'Jack Doohan - Alpine', "Lando Norris - Mclaren", "Oscar Piastri - Mclaren", 'Esteban Ocon - Haas', 'Ollie Bearman - Haas', 'Alex Albon - Williams', 'Carlos Sainz - Williams', 'Nico Hulkenberg - Stake', 'Gabriel Bortoleto - Stake', 'Yuki Tsunoda - RB', 'Isack Hadjar - RB']
         drivdict = { 'VER':'Max Verstappen - Red Bull', 'LAW': 'Liam Lawson - Red Bull', 'LEC':'Charles Leclerc - Ferrari' , 'HAM':'Lewis Hamilton - Ferrari' , 'ANT': 'Kimi Antonelli - Mercedes', 'RUS':'George Russell - Mercedes', 'ALO':'Fernando Alonso - Aston Martin', 'STR':'Lance Stroll - Aston Martin', 'GAS':'Pierre Gasly - Alpine', 'DOO':'Jack Doohan - Alpine',
-                'NOR':"Lando Norris - Mclaren", 'PIA':"Oscar Piastri - Mclaren", 'OCO':'Esteban Ocon - Haas', 'BEA':'Ollie Bearman - Haas', 'ALB':'Alex Albon - Williams', 'SAI':'Carlos Sainz - Williams', 'HUL':'Nico Hulkenberg - Stake', 'BOR':'Gabriel Bortoleto - Stake', 'TSU':'Yuki Tsunoda - RB' , 'HAD':'Isack Hadjar - RB' , 'DEV':'Nyck Devries - RB', 'COL': 'Franco Colapinto - Williams'}
+                'NOR':'Lando Norris - Mclaren', 'PIA':'Oscar Piastri - Mclaren', 'OCO':'Esteban Ocon - Haas', 'BEA':'Ollie Bearman - Haas', 'ALB':'Alex Albon - Williams', 'SAI':'Carlos Sainz - Williams', 'HUL':'Nico Hulkenberg - Stake', 'BOR':'Gabriel Bortoleto - Stake', 'TSU':'Yuki Tsunoda - VCARB' , 'HAD':'Isack Hadjar - VCARB' , 'DEV':'Nyck Devries - RB', 'COL': 'Franco Colapinto - Williams'}
 
         #without teams
         #driversOrder2 = ['Max Verstappen', 'Sergio Perez', 'Charles Leclerc', 'Carlos Sainz', 'Lewis Hamilton', 'George Russell', 'Fernando Alonso', 'Lance Stroll', 'Pierre Gasly', 'Esteban Ocon', "Lando Norris", "Oscar Piastri", 'Kevin Magnussen', 'Nico Hulkenberg', 'Alex Albon', 'Logan Sargeant', 'Valtteri Bottas', 'Zhou Guanyu', 'Yuki Tsunoda', 'Daniel Ricciardo']
-        drivdict2 = { 'VER':'Max Verstappen - Red Bull', 'LAW': 'Liam Lawson - Red Bull', 'LEC':'Charles Leclerc - Ferrari' , 'HAM':'Lewis Hamilton - Ferrari' , 'ANT': 'Kimi Antonelli - Mercedes', 'RUS':'George Russell - Mercedes', 'ALO':'Fernando Alonso - Aston Martin', 'STR':'Lance Stroll - Aston Martin', 'GAS':'Pierre Gasly - Alpine', 'DOO':'Jack Doohan - Alpine',
-                'NOR':"Lando Norris - Mclaren", 'PIA':"Oscar Piastri - Mclaren", 'OCO':'Esteban Ocon - Haas', 'BEA':'Ollie Bearman - Haas', 'ALB':'Alex Albon - Williams', 'SAI':'Carlos Sainz - Williams', 'HUL':'Nico Hulkenberg - Stake', 'BOR':'Gabriel Bortoleto - Stake', 'TSU':'Yuki Tsunoda - RB' , 'HAD':'Isack Hadjar - RB' , 'DEV':'Nyck Devries - RB', 'COL': 'Franco Colapinto - Williams'}
+        #drivdict2 = { 'VER':'Max Verstappen', 'LAW': 'Liam Lawson', 'LEC':'Charles Leclerc' , 'HAM':'Lewis Hamilton' , 'ANT': 'Kimi Antonelli', 'RUS':'George Russell', 'ALO':'Fernando Alonso', 'STR':'Lance Stroll', 'GAS':'Pierre Gasly', 'DOO':'Jack Doohan',
+        #        'NOR':"Lando Norris", 'PIA':"Oscar Piastri", 'OCO':'Esteban Ocon', 'BEA':'Ollie Bearman', 'ALB':'Alex Albon', 'SAI':'Carlos Sainz', 'HUL':'Nico Hulkenberg', 'BOR':'Gabriel Bortoleto', 'TSU':'Yuki Tsunoda' , 'HAD':'Isack Hadjar' , 'DEV':'Nyck Devries', 'COL': 'Franco Colapinto'}
+        drivdict2 = { 'Max Verstappen':'VER', 'Liam Lawson': 'LAW', 'Charles Leclerc':'LEC' , 'Lewis Hamilton':'HAM' , 'Kimi Antonelli':'ANT' , 'George Russell':'RUS', 'Fernando Alonso':'ALO', 'Lance Stroll':'STR', 'Pierre Gasly':'GAS', 'Jack Doohan':'DOO',
+                'Lando Norris':'NOR', 'Oscar Piastri':'PIA', 'Esteban Ocon':'OCO', 'Ollie Bearman':'BEA', 'Alex Albon':'ALB', 'Carlos Sainz':'SAI', 'Nico Hulkenberg':'HUL', 'Gabriel Bortoleto':'BOR', 'Yuki Tsunoda':'TSU', 'Isack Hadjar':'HAD', 'Franco Colapinto':'COL' }
+
 
 
         driversOrder3 = ['Max Verstappen', 'Liam Lawson', 'Charles Leclerc', 'Lewis Hamilton', 'Lando Norris', 'Oscar Piastri', 'Kimi Antonelli', 'George Russell', 'Fernando Alonso', 'Lance Stroll', 'Pierre Gasly', 'Jack Doohan', 'Esteban Ocon', 'Ollie Bearman', 'Alex Albon', 'Carlos Sainz', 'Nico Hulkenberg', 'Gabriel Bortoleto', 'Yuki Tsunoda', 'Isack Hadjar']
@@ -603,6 +606,7 @@ if st.session_state['user'] != 'Invalid':
             
         submitted = st.button("Enter")
         if submitted:
+                print(sitems)
                 gp_num = round
                 #for x in range(len(gps)):
                 #    if gp == gps[x]:
@@ -619,6 +623,8 @@ if st.session_state['user'] != 'Invalid':
                     for v in range(20):
                         additem = drivdict2.get(sitems[v])
                         guessList.append(additem)
+    
+                    print(guessList)
                     ##guess_concat = p1 + ", " + p2 + ", " + p3 + ", " + p4 + ", " + p5 + ", " + p6 + ", " + p7 + ", " + p8 + ", " + p9 + ", " + p10 + ", " + p11 + ", " + p12 + ", " + p13 + ", " + p14 + ", " + p15 + ", " + p16 + ", " + p17 + ", " + p18 + ", " + p19 + ", " + p20
                     guess_concat = ', '.join(guessList)
                     #print(guess_concat)
