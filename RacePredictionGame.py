@@ -46,16 +46,16 @@ ff1.Cache.enable_cache('cache')
 #db = deta.Base("competitors_db")
 #rrdb = deta.Base("raceround_db")
 
-DRIVER_ORDER = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'COL', 'BOT', 'ZHO',  'TSU', 'LAW', 'DEV',]
-DRIVER_ORDERnodev = ['VER', 'PER', 'LEC', 'SAI', 'HAM', 'RUS', 'ALO', 'STR', 'GAS', 'OCO', 'NOR', 'PIA', 'MAG', 'HUL', 'ALB', 'SAR', 'BOT', 'ZHO',  'TSU', 'RIC']
+DRIVER_ORDER = ['VER', 'LAW', 'LEC', 'HAM', 'NOR', 'PIA', 'ANT', 'RUS', 'ALO', 'STR', 'GAS', 'DOO', 'OCO', 'BEA', 'ALB', 'SAI', 'HUL', 'BOR',  'TSU', 'HAD', 'COL']
+DRIVER_ORDERnodev = ['VER', 'LAW', 'LEC', 'HAM', 'NOR', 'PIA', 'ANT', 'RUS', 'ALO', 'STR', 'GAS', 'DOO', 'OCO', 'BEA', 'ALB', 'SAI', 'HUL', 'BOR',  'TSU', 'HAD']
 TEAM_COLOR_RGB = [(0.078, 0.122, 0.702, 1), (0.078, 0.122, 0.702, 1), (1, 0.008, 0.008, 1), (1, 0.008, 0.008, 1), (0.4, 0.929, 0.929, 1), (0.4, 0.929, 0.929, 1), (0.059, 0.451, 0.251, 1), (0.059, 0.451, 0.251, 1), (1, 0.341, 0.827,1), (1, 0.341, 0.827, 1), (1, 0.494, 0, 1), (1, 0.494, 0, 1),
               (0.612, 0.612, 0.612, 1), (0.612, 0.612, 0.612, 1), (0.251, 0.439, 1, 1), (0.251, 0.439, 1, 1), (0, 0.91, 0.078, 1), (0, 0.91, 0.078, 1), (0, 0.012, 1, 1), (0, 0.012, 1, 1), (0, 0.012, 1, 1) ]
-TEAM_COLOR = ['darkblue', 'darkblue', 'red', 'red', 'turquoise', 'turquoise', 'seagreen', 'seagreen', 'hotpink', 'hotpink', 'darkorange', 'darkorange', 'silver', 'silver', 'royalblue', 'royalblue', 'lime', 'lime', 'blue', 'blue', 'blue']
-TEAM_ORDER = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "McLaren", "McLaren", "Haas", "Haas", "Williams", "Williams", "Alfa Romeo", "Alfa Romeo", "Alpha Tauri", "Alpha Tauri","Alpha Tauri"]
-TEAM_ORDERnodev = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "McLaren", "McLaren", "Haas", "Haas", "Williams", "Williams", "Sauber", "Sauber", "RB", "RB"]
+TEAM_COLOR = ['darkblue', 'darkblue', 'red', 'red', 'darkorange', 'darkorange', 'turquoise', 'turquoise', 'seagreen', 'seagreen', 'hotpink', 'hotpink', 'silver', 'silver', 'royalblue', 'royalblue', 'lime', 'lime', 'blue', 'blue', 'blue']
+TEAM_ORDER = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "McLaren", "McLaren", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "Haas", "Haas", "Williams", "Williams", "Alfa Romeo", "Alfa Romeo", "Alpha Tauri", "Alpha Tauri","Alpha Tauri"]
+TEAM_ORDERnodev = ["Red Bull", "Red Bull", "Ferrari", "Ferrari", "McLaren", "McLaren", "Mercedes", "Mercedes", "Aston Martin", "Aston Martin", "Alpine", "Alpine", "Haas", "Haas", "Williams", "Williams", "Sauber", "Sauber", "RB", "RB"]
 DRIVER_NUM = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]
-DRIVER_DICT = { 'VER':'Max Verstappen - Red Bull', 'PER': 'Sergio Perez - Red Bull', 'LEC':'Charles Leclerc - Ferrari' , 'SAI':'Carlos Sainz - Ferrari' , 'HAM': 'Lewis Hamilton - Mercedes', 'RUS':'George Russell - Mercedes', 'ALO':'Fernando Alonso - Aston Martin', 'STR':'Lance Stroll - Aston Martin', 'GAS':'Pierre Gasly - Alpine', 'OCO':'Esteban Ocon - Alpine',
-                'NOR':"Lando Norris - Mclaren", 'PIA':"Oscar Piastri - Mclaren", 'MAG':'Kevin Magnussen - Haas', 'HUL':'Nico Hulkenberg - Haas', 'ALB':'Alex Albon - Williams', 'SAR':'Logan Sargeant - Williams', 'BOT':'Valtteri Bottas - Stake', 'ZHO':'Zhou Guanyu - Stake', 'TSU':'Yuki Tsunoda - RB' , 'RIC':'Daniel Ricciardo - RB' , 'DEV':'Nyck Devries - RB', 'COL': 'Franco Colapinto - Williams', 'LAW': 'Liam Lawson - RB'}
+DRIVER_DICT = { 'VER':'Max Verstappen - Red Bull', 'LAW': 'Liam Lawson - Red Bull', 'LEC':'Charles Leclerc - Ferrari' , 'HAM':'Lewis Hamilton - Ferrari' , 'ANT': 'Kimi Antonelli - Mercedes', 'RUS':'George Russell - Mercedes', 'ALO':'Fernando Alonso - Aston Martin', 'STR':'Lance Stroll - Aston Martin', 'GAS':'Pierre Gasly - Alpine', 'DOO':'Jack Doohan - Alpine',
+                'NOR':"Lando Norris - Mclaren", 'PIA':"Oscar Piastri - Mclaren", 'OCO':'Esteban Ocon - Haas', 'BEA':'Ollie Bearman - Haas', 'ALB':'Alex Albon - Williams', 'SAI':'Carlos Sainz - Williams', 'HUL':'Nico Hulkenberg - Stake', 'BOR':'Gabriel Bortoleto - Stake', 'TSU':'Yuki Tsunoda - RB' , 'HAD':'Isack Hadjar - RB' , 'DEV':'Nyck Devries - RB', 'COL': 'Franco Colapinto - Williams'}
 
 ADMIN_PASS = "jamesitsvaltteri"
 
@@ -451,7 +451,7 @@ comp = Competition()
 #set_guess_db24('test', 14, "VER, PER, LEC, SAI, HAM, RUS, ALO, STR, GAS, OCO, NOR, PIA, MAG, HUL, ALB, SAR, BOT, ZHO, TSU, RIC")
 
 
-#calculate_points(comp.get_competitors_names(), 2024, 2)
+#calculate_points(comp.get_competitors_names(), 2025, 2)
 #rrdb.put({"key": "current round", "round": 5})
 #for i in comp.get_competitors_names():
     #print(get_round_db)
@@ -637,7 +637,7 @@ if st.session_state['user'] != 'Invalid':
         #users = [""]
         #for i in userstouse:
             #users.append(i)
-        gps = ["Bahrain", "Saudi Arabia", "Australia", "Japan", "China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
+        gps = ["Australia", "China", "Japan", "Bahrain", "Saudi Arabia", "Miami", "Imola", "Monaco", "Spain", "Canada", "Austria", "Silverstone", "Spa", "Hungary", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
         #userSelect = st.selectbox("Select Competitor:", users)
         st.header("View Results for "+ st.session_state['user'])
         round = get_round_db()
@@ -748,7 +748,7 @@ if st.session_state['user'] != 'Invalid':
         st.header(f"Leaderboard per Race")
         
         
-        gps2 = ["Bahrain", "Saudi Arabia", "Australia", "Japan", "China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
+        gps2 = ["Australia", "China", "Japan", "Bahrain", "Saudi Arabia", "Miami", "Imola", "Monaco", "Spain", "Canada", "Austria", "Silverstone", "Spa", "Hungary", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
         round = get_round_db()
         index = 0
         if round > 2:
@@ -794,7 +794,7 @@ if st.session_state['user'] != 'Invalid':
             #users.append(i)
         #userSelect = st.selectbox("Select Competitor:", users)
         #gps = ["Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Singapore", "Japan", "Qatar", "USA", "Mexico", "Brazil", "Las Vegas", "Abu Dhabi"]
-        gps = ["Bahrain", "Saudi Arabia", "Australia", "Japan", "China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
+        gps = ["Australia", "China", "Japan", "Bahrain", "Saudi Arabia", "Miami", "Imola", "Monaco", "Spain", "Canada", "Austria", "Silverstone", "Spa", "Hungary", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
         
     
         data = np.array([TEAM_ORDERnodev, DRIVER_ORDERnodev])
@@ -869,7 +869,7 @@ if st.session_state['user'] != 'Invalid':
         if admin_enter == ADMIN_PASS:
             st.header("Calculate Points")
             with st.form("admin_form",clear_on_submit = False):
-                gps = ["Bahrain", "Saudi Arabia", "Australia", "Japan", "China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
+                gps = ["Australia", "China", "Japan", "Bahrain", "Saudi Arabia", "Miami", "Imola", "Monaco", "Spain", "Canada", "Austria", "Silverstone", "Spa", "Hungary", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
                 gp = st.selectbox("Select a Grand Prix:", gps)
                 submitted = st.form_submit_button("Enter")
                 if submitted:
@@ -878,14 +878,14 @@ if st.session_state['user'] != 'Invalid':
                         if gp == gps[x]:
                             gp_num = x + (24-len(gps)) + 1
                     try:
-                        calculate_points(comp.get_competitors_names(), 2024, gp_num)
+                        calculate_points(comp.get_competitors_names(), 2025, gp_num)
                         st.success("all done")
                     except:
                         st.error("Something went wrong")
             st.header("Change Round")
             with st.form("admin_form_round", clear_on_submit = False):
                 curr = get_round_db()
-                gps = ["Bahrain", "Saudi Arabia", "Australia", "Japan", "China", "Miami", "Imola", "Monaco", "Canada", "Spain", "Austria", "Silverstone", "Hungary", "Spa", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
+                gps = ["Australia", "China", "Japan", "Bahrain", "Saudi Arabia", "Miami", "Imola", "Monaco", "Spain", "Canada", "Austria", "Silverstone", "Spa", "Hungary", "Zandvoort", "Monza", "Baku", "Singapore", "USA", "Mexico", "Brazil", "Las Vegas", "Qatar", "Abu Dhabi"]
                 #st.write("Current Round: " + gps[curr - 1])
                 round = st.selectbox("Select Current Round:", gps)
                 submitted = st.form_submit_button("Enter")
