@@ -37,7 +37,7 @@ cursor = conn2.cursor()
 
 
 # Enable the cache by providing the name of the cache folder
-ff1.Cache.clear_cache('cache')
+#ff1.Cache.clear_cache('cache')
 ff1.Cache.enable_cache('cache') 
 
 # Database setup
