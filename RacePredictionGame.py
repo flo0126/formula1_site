@@ -37,7 +37,7 @@ cursor = conn2.cursor()
 
 
 # Enable the cache by providing the name of the cache folder
-#ff1.Cache.clear_cache('cache')
+ff1.Cache.clear_cache('cache')
 ff1.Cache.enable_cache('cache') 
 
 # Database setup
@@ -70,9 +70,11 @@ def calculate_points(competitors, year, grand_prix):
     session.load()
     #laps = session.laps
     results = session.results
+    print(results)
     results = results[["Abbreviation", "ClassifiedPosition"]]
     print(results)
-    #abshere = ['VER', 'PER', 'LEC', 'PIA', 'ALO', 'RUS', 'BEA', 'NOR', 'HAM', 'HUL', 'ALB', 'MAG', 'OCO', 'SAR', 'TSU', 'RIC', 'BOT', 'ZHO', 'STR', 'GAS']
+    
+    #abshere = ['PIA', 'NOR', 'RUS', 'VER', 'OCO', 'ANT', 'ALB', 'BEA', 'STR', 'SAI', 'HAD', 'LAW', 'DOO', 'BOR', 'HUL', 'TSU', 'ALO', 'LEC', 'HAM', 'GAS']
     #cp = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
 
     #results = pd.DataFrame({'Abbreviation': abshere, "ClassifiedPosition": cp}, columns=['Abbreviation', "ClassifiedPosition"])
@@ -835,10 +837,11 @@ if st.session_state['user'] != 'Invalid':
             for ind in range(len(arr)):
                 driv = df['Driver'][ind]
                 color =  ""
-                #if driv == 'RIC':
-                    #color =  ff1.plotting.driver_color('DEV')
-                #else:
-                color = ff1.plotting.driver_color(driv)
+                if driv == 'BOR':
+                    color =  ff1.plotting.driver_color('VER')
+                else:
+                    color = ff1.plotting.driver_color(driv)
+                print(color)
                 ax.plot(gps[:len(arr[ind])], arr[ind], label = driv, color = color,)
             ax.legend(bbox_to_anchor=(1.0, 1.02))
             plt.xticks(rotation=90)
