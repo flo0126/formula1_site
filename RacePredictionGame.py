@@ -834,13 +834,14 @@ if st.session_state['user'] != 'Invalid':
             #st.dataframe(df, hide_index = True)
             #TODO: not dataframe, this should be a graph of some sort
             fig, ax = plt.subplots()
+            sess = ff1.get_session(2025,1,'R')
             for ind in range(len(arr)):
                 driv = df['Driver'][ind]
                 color =  ""
-                if driv == 'BOR':
-                    color =  ff1.plotting.driver_color('VER')
-                else:
-                    color = ff1.plotting.driver_color(driv)
+                #if driv == 'BOR':
+                    #color =  ff1.plotting.get_driver_color('VER')
+                #else:
+                color = ff1.plotting.get_driver_color(driv,sess)
                 print(color)
                 ax.plot(gps[:len(arr[ind])], arr[ind], label = driv, color = color,)
             ax.legend(bbox_to_anchor=(1.0, 1.02))
