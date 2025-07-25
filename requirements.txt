@@ -1,4 +1,4 @@
-fastf1>=3.5.3
+fastf1=3.5.3
 matplotlib
 datetime
 numpy
